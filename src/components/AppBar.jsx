@@ -1,41 +1,10 @@
+import { forwardRef } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  GithubIcon,
-  Linkedin01Icon,
-  Calendar03Icon,
-  InstagramIcon,
-} from "@hugeicons/core-free-icons";
+import { CONTACT, SOCIAL } from "../data/nav.js";
 
-const SOCIAL = [
-  {
-    id: "github",
-    label: "GitHub",
-    href: "https://github.com/nikbobbary",
-    icon: GithubIcon,
-  },
-  {
-    id: "linkedin",
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/nikbobbary",
-    icon: Linkedin01Icon,
-  },
-  {
-    id: "calendar",
-    label: "Calendar",
-    href: "https://cal.com/nikbobbary",
-    icon: Calendar03Icon,
-  },
-  {
-    id: "instagram",
-    label: "Instagram",
-    href: "https://instagram.com/nikbobbary",
-    icon: InstagramIcon,
-  },
-];
-
-export default function AppBar() {
+const AppBar = forwardRef(function AppBar(_, ref) {
   return (
-    <nav className="appbar" aria-label="Primary">
+    <nav ref={ref} className="appbar" aria-label="Primary">
       <div className="appbar__social">
         {SOCIAL.map(({ id, label, href, icon }) => (
           <a
@@ -50,9 +19,11 @@ export default function AppBar() {
           </a>
         ))}
       </div>
-      <a className="appbar__cta" href="mailto:nikbobbary@gmail.com">
-        Get in touch
+      <a className="appbar__cta" href={CONTACT.href}>
+        {CONTACT.label}
       </a>
     </nav>
   );
-}
+});
+
+export default AppBar;

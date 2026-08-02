@@ -1,93 +1,3 @@
-@font-face {
-  font-family: "Grityle";
-  src:
-    url("/fonts/Grityle-Thin.otf") format("opentype"),
-    url("/fonts/Grityle-Thin.ttf") format("truetype");
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Grityle";
-  src:
-    url("/fonts/Grityle-ExtraLight.otf") format("opentype"),
-    url("/fonts/Grityle-ExtraLight.ttf") format("truetype");
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Grityle";
-  src:
-    url("/fonts/Grityle-Light.otf") format("opentype"),
-    url("/fonts/Grityle-Light.ttf") format("truetype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Grityle";
-  src:
-    url("/fonts/Grityle-Regular.otf") format("opentype"),
-    url("/fonts/Grityle-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Grityle";
-  src:
-    url("/fonts/Grityle-Medium.otf") format("opentype"),
-    url("/fonts/Grityle-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Grityle";
-  src:
-    url("/fonts/Grityle-SemiBold.otf") format("opentype"),
-    url("/fonts/Grityle-SemiBold.ttf") format("truetype");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Grityle";
-  src:
-    url("/fonts/Grityle-Bold.otf") format("opentype"),
-    url("/fonts/Grityle-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Grityle";
-  src:
-    url("/fonts/Grityle-ExtraBold.otf") format("opentype"),
-    url("/fonts/Grityle-ExtraBold.ttf") format("truetype");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Grityle";
-  src:
-    url("/fonts/Grityle-Black.otf") format("opentype"),
-    url("/fonts/Grityle-Black.ttf") format("truetype");
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   --gap: 2rem;
   --padding: 1.5rem;
@@ -95,7 +5,7 @@
   --fog: #c8c4bc;
   --mist: rgba(200, 196, 188, 0.72);
   --line: rgba(200, 196, 188, 0.18);
-  --font: "Grityle", sans-serif;
+  --font: "Google Sans", sans-serif;
   --appbar-h: 3.5rem;
   --image-radius: clamp(0.75rem, 2.2vw, 1.75rem);
   --cursor-size: clamp(1rem, 0.9vw, 2rem);
@@ -131,11 +41,6 @@ body {
 .has-custom-cursor,
 .has-custom-cursor * {
   cursor: none !important;
-}
-
-.has-custom-cursor.is-hand,
-.has-custom-cursor.is-hand * {
-  cursor: pointer !important;
 }
 
 .cursor {
@@ -229,6 +134,100 @@ body {
   background: rgba(242, 239, 232, 0.06);
 }
 
+/* —— Bottom pill nav —— */
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bottom-nav.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.bottom-nav__pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(100%, 28rem);
+  padding: 0.45rem 0.55rem 0.45rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(20, 20, 20, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+.bottom-nav__social {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.bottom-nav__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  color: #f2efe8;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.bottom-nav__icon:hover {
+  opacity: 0.65;
+}
+
+.bottom-nav__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 0.55rem 0.95rem;
+  line-height: 1;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.bottom-nav__cta:hover {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav {
+    transition: opacity 0.2s ease;
+    transform: none;
+  }
+
+  .bottom-nav.is-visible {
+    transform: none;
+  }
+}
+
 /* —— Hero —— */
 .hero {
   display: flex;
@@ -261,7 +260,7 @@ body {
 /* 1 — Brand: heaviest, brightest, largest */
 .hero__name {
   font-family: var(--font);
-  font-weight: 900;
+  font-weight: 700;
   font-size: clamp(3.5rem, 9vw, 6rem);
   line-height: 0.95;
   letter-spacing: -0.045em;

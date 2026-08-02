@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import AppBar from "./components/AppBar.jsx";
+import BottomNav from "./components/BottomNav.jsx";
 import Cursor from "./components/Cursor.jsx";
 
 const FRAMES = [
@@ -14,7 +15,24 @@ const FRAMES = [
 
 export default function App() {
   const workRef = useRef(null);
+  const topNavRef = useRef(null);
   const [revealed, setRevealed] = useState(() => new Set());
+  const [bottomNavVisible, setBottomNavVisible] = useState(false);
+
+  useEffect(() => {
+    const topNav = topNavRef.current;
+    if (!topNav || !("IntersectionObserver" in window)) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setBottomNavVisible(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(topNav);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const root = workRef.current;
@@ -56,7 +74,7 @@ export default function App() {
     <>
       <Cursor />
       <header className="hero">
-        <AppBar />
+        <AppBar ref={topNavRef} />
         <div className="hero__inner">
           <div className="hero__copy">
             <h1 className="hero__name">Nikitha</h1>
@@ -87,6 +105,8 @@ export default function App() {
           />
         ))}
       </main>
+
+      <BottomNav visible={bottomNavVisible} />
     </>
   );
 }
