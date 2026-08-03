@@ -475,7 +475,7 @@ main {
   align-items: flex-end;
   justify-content: space-between;
   gap: 1.25rem 2rem;
-  padding-top: 32px;
+  padding-top: 64px;
 }
 
 .work-meta__copy {
