@@ -2,16 +2,34 @@ import { useEffect, useRef, useState } from "react";
 import AppBar from "./components/AppBar.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import Cursor from "./components/Cursor.jsx";
+import WorkCaption from "./components/WorkCaption.jsx";
 
-const FRAMES = [
-  "/Screens/frame.svg",
-  "/Screens/frame-1.svg",
-  "/Screens/frame-2.svg",
-  "/Screens/frame-3.svg",
-  "/Screens/frame-4.svg",
-  "/Screens/frame-5.svg",
-  "/Screens/frame-6.svg",
+const EMPTY_CHIPS = ["", "", ""];
+
+const WORK = [
+  { src: "/Screens/frame.svg"},
+  {
+    src: "/Screens/frame-1.svg",
+    caption:
+      "Group support messaging for tutors, students, and Lessonpal—role-aware threads that replaced fragmented 1:1s and scaled multi-admin support ops."
+  },
+  { src: "/Screens/frame-2.svg"},
+  { src: "/Screens/frame-3.svg"},
+  {
+    src: "/Screens/frame-4.svg",
+    caption:
+      "Rescheduling for students and tutors, status-aware flows with conflict checks and Command Center controls that cut missed-session friction and support load."
+  },
+  {
+    src: "/Screens/frame-5.svg",
+    caption:
+      "Acquisition experience for finding trusted tutors and booking lessons.",
+    chips: ["Landing Page", "Responsive"],
+  },
+  { src: "/Screens/frame-6.svg"},
 ];
+
+const FRAME_SRCS = WORK.map((item) => item.src);
 
 const FOCUS_CHIPS = [
   "0→1 Product",
@@ -79,7 +97,7 @@ export default function App() {
     ).matches;
 
     if (reduceMotion || !("IntersectionObserver" in window)) {
-      setRevealed(new Set(FRAMES));
+      setRevealed(new Set(FRAME_SRCS));
       return;
     }
 
@@ -146,13 +164,31 @@ export default function App() {
       </header>
 
       <main id="work" ref={workRef}>
-        {FRAMES.map((src) => (
-          <img
-            key={src}
-            src={src}
-            alt=""
-            className={revealed.has(src) ? "is-visible" : undefined}
-          />
+        {WORK.map(({ src, caption, chips = [] }) => (
+          <figure key={src} className="work-block">
+            <div className="work-meta">
+              <div className="work-meta__copy">
+                {caption ? <WorkCaption text={caption} /> : null}
+              </div>
+              {chips.length > 0 ? (
+                <ul className="work-chips" aria-label="Project tags">
+                  {chips.map((chip, index) => (
+                    <li
+                      key={`${src}-chip-${index}`}
+                      className={`work-chip${chip ? "" : " is-empty"}`}
+                    >
+                      {chip || "\u00A0"}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
+            <img
+              src={src}
+              alt=""
+              className={revealed.has(src) ? "is-visible" : undefined}
+            />
+          </figure>
         ))}
       </main>
 
