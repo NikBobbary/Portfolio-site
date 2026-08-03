@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { Mail01Icon } from "@hugeicons/core-free-icons";
 import { CONTACT, SOCIAL } from "../data/nav.js";
 
 const AppBar = forwardRef(function AppBar(_, ref) {
@@ -20,6 +21,12 @@ const AppBar = forwardRef(function AppBar(_, ref) {
         ))}
       </div>
       <a className="appbar__cta" href={CONTACT.href}>
+        <HugeiconsIcon
+          className="appbar__cta-icon"
+          icon={Mail01Icon}
+          size={16}
+          strokeWidth={1}
+        />
         {CONTACT.label}
       </a>
     </nav>

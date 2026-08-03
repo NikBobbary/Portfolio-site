@@ -1,4 +1,5 @@
 import { HugeiconsIcon } from "@hugeicons/react";
+import { Mail01Icon } from "@hugeicons/core-free-icons";
 import { CONTACT, SOCIAL } from "../data/nav.js";
 
 export default function BottomNav({ visible }) {
@@ -30,6 +31,12 @@ export default function BottomNav({ visible }) {
           href={CONTACT.href}
           tabIndex={visible ? 0 : -1}
         >
+          <HugeiconsIcon
+            className="bottom-nav__cta-icon"
+            icon={Mail01Icon}
+            size={16}
+            strokeWidth={1}
+          />
           {CONTACT.label}
         </a>
       </div>
