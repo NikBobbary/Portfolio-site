@@ -1,32 +1,70 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import AppBar from "./components/AppBar.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import Cursor from "./components/Cursor.jsx";
 import WorkCaption from "./components/WorkCaption.jsx";
-
-const EMPTY_CHIPS = ["", "", ""];
+import WorkFrame from "./components/WorkFrame.jsx";
+import { CONTACT } from "./data/nav.js";
 
 const WORK = [
-  { src: "/Screens/frame.svg"},
   {
-    src: "/Screens/frame-1.svg",
+    src: "/Screens/frame.svg",
     caption:
-      "Group support messaging for tutors, students, and Lessonpal—role-aware threads that replaced fragmented 1:1s and scaled multi-admin support ops."
+      "Role-aware group support messaging for tutors, students, and support team that replaced fragmented 1:1s and scaled multi-admin support ops.",
+    chips: ["Admin Workflows", "Role Systems", "Multi-Party"],
+    decisions: [
+      {
+        x: "18%",
+        y: "28%",
+        text: "Role chips gate who can post, see, and escalate in-thread.",
+      },
+      {
+        x: "62%",
+        y: "54%",
+        text: "Threaded context replaces fragmented 1:1 support handoffs.",
+      },
+    ],
   },
-  { src: "/Screens/frame-2.svg"},
-  { src: "/Screens/frame-3.svg"},
+  { src: "/Screens/frame-1.svg" },
+  { src: "/Screens/frame-2.svg" },
+  { src: "/Screens/frame-3.svg" },
   {
     src: "/Screens/frame-4.svg",
     caption:
-      "Rescheduling for students and tutors, status-aware flows with conflict checks and Command Center controls that cut missed-session friction and support load."
+      "Rescheduling for students and tutors, status-aware flows with conflict checks that cut missed-session friction.",
+    chips: ["Conflict Resolution", "Edge Cases"],
+    decisions: [
+      {
+        x: "30%",
+        y: "36%",
+        text: "Status drives which reschedule actions are available.",
+      },
+      {
+        x: "70%",
+        y: "58%",
+        text: "Conflict checks block double-books before confirm.",
+      },
+    ],
   },
   {
     src: "/Screens/frame-5.svg",
     caption:
-      "Acquisition experience for finding trusted tutors and booking lessons.",
-    chips: ["Landing Page", "Responsive"],
+      "Marketplace landing for tutor discovery; quick subject browsing, reviews, and Good Fit Guarantee optimized for conversion.",
+    chips: ["Landing Page", "Information Architecture"],
+    decisions: [
+      {
+        x: "24%",
+        y: "32%",
+        text: "Subject discovery sits above the fold to start intent fast.",
+      },
+      {
+        x: "66%",
+        y: "62%",
+        text: "Reviews + Good Fit Guarantee reduce first-lesson risk.",
+      },
+    ],
   },
-  { src: "/Screens/frame-6.svg"},
+  { src: "/Screens/frame-6.svg" },
 ];
 
 const FRAME_SRCS = WORK.map((item) => item.src);
@@ -160,36 +198,51 @@ export default function App() {
               ))}
             </ul>
           </div>
+
+          <div className="hero__ctas">
+            <a className="hero__cta hero__cta--primary" href="#work">
+              Explore work
+            </a>
+            <a className="hero__cta hero__cta--secondary" href={CONTACT.href}>
+              Contact me
+            </a>
+          </div>
         </div>
       </header>
 
       <main id="work" ref={workRef}>
-        {WORK.map(({ src, caption, chips = [] }) => (
-          <figure key={src} className="work-block">
-            <div className="work-meta">
-              <div className="work-meta__copy">
-                {caption ? <WorkCaption text={caption} /> : null}
-              </div>
-              {chips.length > 0 ? (
-                <ul className="work-chips" aria-label="Project tags">
-                  {chips.map((chip, index) => (
-                    <li
-                      key={`${src}-chip-${index}`}
-                      className={`work-chip${chip ? "" : " is-empty"}`}
-                    >
-                      {chip || "\u00A0"}
-                    </li>
-                  ))}
-                </ul>
+        {WORK.map(({ src, caption, chips = [], decisions = [] }) => {
+          const hasMeta = Boolean(caption) || chips.length > 0;
+
+          return (
+            <Fragment key={src}>
+              {hasMeta ? (
+                <div className="work-meta">
+                  <div className="work-meta__copy">
+                    {caption ? <WorkCaption text={caption} /> : null}
+                  </div>
+                  {chips.length > 0 ? (
+                    <ul className="work-chips" aria-label="Project tags">
+                      {chips.map((chip, index) => (
+                        <li
+                          key={`${src}-chip-${index}`}
+                          className={`work-chip${chip ? "" : " is-empty"}`}
+                        >
+                          {chip || "\u00A0"}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
               ) : null}
-            </div>
-            <img
-              src={src}
-              alt=""
-              className={revealed.has(src) ? "is-visible" : undefined}
-            />
-          </figure>
-        ))}
+              <WorkFrame
+                src={src}
+                revealed={revealed.has(src)}
+                decisions={decisions}
+              />
+            </Fragment>
+          );
+        })}
       </main>
 
       <BottomNav visible={bottomNavVisible} />
