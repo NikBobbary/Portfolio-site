@@ -1,15 +1,25 @@
 import { Fragment, useEffect, useRef, useState } from "react";
+import { HugeiconsIcon } from "@hugeicons/react";
 import AppBar from "./components/AppBar.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import Cursor from "./components/Cursor.jsx";
+import SideNav from "./components/SideNav.jsx";
 import WorkCaption from "./components/WorkCaption.jsx";
 import WorkFrame from "./components/WorkFrame.jsx";
-import { CONTACT } from "./data/nav.js";
+import { CONTACT, SOCIAL } from "./data/nav.js";
 
 const WORK = [
-  { src: "/Screens/frame-7.svg" },
+  { src: "/Screens/frame-7.svg",
+    caption:
+    "Pairty verified networking—identity gates, paid verification, and match flows that replaced low-trust discovery with credentialed professional connections.",
+    chips: ["Onboarding", "Activation Flows", "Identity Systems"],
+   },
   { src: "/Screens/frame-8.svg" },
-  { src: "/Screens/frame-9.svg" },
+  { src: "/Screens/frame-9.svg",
+    caption:
+    "Focusoft brand system—logo, type, and palette that unified an AI software company's identity across web and marketing.",
+    chips: ["Brand Identity", "Visual Systems"],
+   },
   {
     src: "/Screens/frame.svg",
     caption:
@@ -30,7 +40,6 @@ const WORK = [
   },
   { src: "/Screens/frame-1.svg" },
   { src: "/Screens/frame-2.svg" },
-  { src: "/Screens/frame-3.svg" },
   {
     src: "/Screens/frame-4.svg",
     caption:
@@ -90,6 +99,8 @@ export default function App() {
   const [imagesReady, setImagesReady] = useState(false);
   const [revealed, setRevealed] = useState(() => new Set());
   const [bottomNavVisible, setBottomNavVisible] = useState(false);
+  const topNavOutRef = useRef(false);
+  const contactInRef = useRef(false);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia(
@@ -113,17 +124,39 @@ export default function App() {
 
   useEffect(() => {
     const topNav = topNavRef.current;
+    const contact = document.getElementById("contact");
     if (!topNav || !("IntersectionObserver" in window)) return;
 
-    const observer = new IntersectionObserver(
+    const syncBottomNav = () => {
+      setBottomNavVisible(topNavOutRef.current && !contactInRef.current);
+    };
+
+    const topObserver = new IntersectionObserver(
       ([entry]) => {
-        setBottomNavVisible(!entry.isIntersecting);
+        topNavOutRef.current = !entry.isIntersecting;
+        syncBottomNav();
       },
       { threshold: 0 }
     );
 
-    observer.observe(topNav);
-    return () => observer.disconnect();
+    topObserver.observe(topNav);
+
+    let contactObserver;
+    if (contact) {
+      contactObserver = new IntersectionObserver(
+        ([entry]) => {
+          contactInRef.current = entry.isIntersecting;
+          syncBottomNav();
+        },
+        { threshold: 0.2 }
+      );
+      contactObserver.observe(contact);
+    }
+
+    return () => {
+      topObserver.disconnect();
+      contactObserver?.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -167,7 +200,8 @@ export default function App() {
   return (
     <div className={intro ? "is-intro" : undefined}>
       <Cursor />
-      <header className="hero">
+      <SideNav />
+      <header id="home" className="hero">
         <AppBar ref={topNavRef} />
         <div className="hero__inner">
           <div className="hero__stage">
@@ -206,7 +240,7 @@ export default function App() {
             <a className="hero__cta hero__cta--primary" href="#work">
               Explore work
             </a>
-            <a className="hero__cta hero__cta--secondary" href={CONTACT.href}>
+            <a className="hero__cta hero__cta--secondary" href="#contact">
               Contact me
             </a>
           </div>
@@ -247,6 +281,46 @@ export default function App() {
           );
         })}
       </main>
+
+      <section id="about" className="about" aria-labelledby="about-heading">
+        <div className="about__inner">
+          <h2 id="about-heading" className="about__title">
+            Designing the systems people use to find each other
+          </h2>
+          <p className="about__body">
+            I work on 0→1 products where trust, identity, and community shape the
+            experience — from verification flows and role systems to brand that
+            holds the whole thing together.
+          </p>
+        </div>
+      </section>
+
+      <section id="contact" className="contact" aria-labelledby="contact-heading">
+        <div className="contact__inner">
+          <h2 id="contact-heading" className="contact__title">
+            Let’s build something people can rely on
+          </h2>
+          <div className="contact__actions">
+            <a className="hero__cta hero__cta--primary" href={CONTACT.href}>
+              {CONTACT.label}
+            </a>
+            <div className="contact__social">
+              {SOCIAL.map(({ id, label, href, icon }) => (
+                <a
+                  key={id}
+                  className="contact__icon"
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={label}
+                >
+                  <HugeiconsIcon icon={icon} size={18} strokeWidth={1} />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       <BottomNav visible={bottomNavVisible} />
     </div>

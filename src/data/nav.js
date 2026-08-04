@@ -36,3 +36,10 @@ export const CONTACT = {
   label: "Get in touch",
   href: "mailto:nikbobbary@gmail.com",
 };
+
+export const SECTIONS = [
+  { id: "home", label: "Home" },
+  { id: "work", label: "Work" },
+  { id: "about", label: "About" },
+  { id: "contact", label: "Contact" },
+];
