@@ -7,6 +7,9 @@ import WorkFrame from "./components/WorkFrame.jsx";
 import { CONTACT } from "./data/nav.js";
 
 const WORK = [
+  { src: "/Screens/frame-7.svg" },
+  { src: "/Screens/frame-8.svg" },
+  { src: "/Screens/frame-9.svg" },
   {
     src: "/Screens/frame.svg",
     caption:
