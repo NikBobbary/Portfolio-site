@@ -10,19 +10,17 @@ import WorkFrame from "./components/WorkFrame.jsx";
 import { CONTACT, SOCIAL } from "./data/nav.js";
 
 const WORK = [
-  {
-    src: "/Screens/frame-7.svg",
+  { src: "/Screens/frame-7.svg",
     caption:
-      "Pairty verified networking—identity gates, paid verification, and match flows that replaced low-trust discovery with credentialed professional connections.",
+    "Pairty verified networking—identity gates, paid verification, and match flows that replaced low-trust discovery with credentialed professional connections.",
     chips: ["Onboarding", "Activation Flows", "Identity Systems"],
-  },
+   },
   { src: "/Screens/frame-8.svg" },
-  {
-    src: "/Screens/frame-9.svg",
+  { src: "/Screens/frame-9.svg",
     caption:
-      "Focusoft brand system—logo, type, and palette that unified an AI software company's identity across web and marketing.",
+    "Focusoft brand system—logo, type, and palette that unified an AI software company's identity across web and marketing.",
     chips: ["Brand Identity", "Visual Systems"],
-  },
+   },
   {
     src: "/Screens/frame.svg",
     caption:
@@ -82,21 +80,13 @@ const WORK = [
   { src: "/Screens/frame-6.svg" },
 ];
 
-const FOCUS_CHIPS = [
-  "0→1 Product",
-  "Product Systems",
-  "AI Craft",
-  "UX Design",
-  "Branding",
-];
-
-/** First frames get high-priority fetch so scroll lands on real imagery. */
+/** First N frames start downloading immediately (rest wait until near viewport). */
 const PRIORITY_COUNT = 2;
-/** Soft boot waits for the lead frame only — later giants load in the background. */
-const BOOT_SRCS = WORK.slice(0, 1).map((item) => item.src);
-const BOOT_MAX_MS = 5000;
+/** Boot waits on the first frame only — later giants load in the background. */
+const CRITICAL_SRC = WORK[0].src;
+const BOOT_TIMEOUT_MS = 7000;
 
-function loadImage(src) {
+function preloadImage(src) {
   return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => resolve(true);
@@ -105,16 +95,56 @@ function loadImage(src) {
   });
 }
 
+const FOCUS_CHIPS = [
+  "0→1 Product",
+  "Product Systems",
+  "AI Craft",
+  "UX Design",
+  "Branding",
+];
+
 export default function App() {
   const topNavRef = useRef(null);
+  const [bootDone, setBootDone] = useState(false);
   const [intro, setIntro] = useState(false);
-  const [bootReady, setBootReady] = useState(false);
-  const [bootProgress, setBootProgress] = useState(0);
   const [bottomNavVisible, setBottomNavVisible] = useState(false);
   const topNavOutRef = useRef(false);
   const contactInRef = useRef(false);
 
   useEffect(() => {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    let cancelled = false;
+    let timeoutId;
+
+    const finish = () => {
+      if (cancelled) return;
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+      setBootDone(true);
+    };
+
+    if (reduceMotion) {
+      preloadImage(CRITICAL_SRC).finally(finish);
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    timeoutId = window.setTimeout(finish, BOOT_TIMEOUT_MS);
+    preloadImage(CRITICAL_SRC).then(finish);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!bootDone) return;
+
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
@@ -126,65 +156,7 @@ export default function App() {
 
     const boot = window.requestAnimationFrame(() => setIntro(true));
     return () => window.cancelAnimationFrame(boot);
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-    let settled = 0;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const markProgress = () => {
-      settled += 1;
-      if (!cancelled) {
-        setBootProgress(settled / Math.max(BOOT_SRCS.length, 1));
-      }
-    };
-
-    const finish = () => {
-      if (cancelled) return;
-      setBootProgress(1);
-      setBootReady(true);
-      document.body.style.overflow = previousOverflow;
-    };
-
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (reduceMotion) {
-      finish();
-      return () => {
-        cancelled = true;
-        document.body.style.overflow = previousOverflow;
-      };
-    }
-
-    const timeout = window.setTimeout(finish, BOOT_MAX_MS);
-
-    Promise.all(
-      BOOT_SRCS.map((src) =>
-        loadImage(src).then((ok) => {
-          markProgress();
-          return ok;
-        })
-      )
-    ).then(() => {
-      window.clearTimeout(timeout);
-      finish();
-    });
-
-    // Warm the next priority frames without blocking the gate.
-    WORK.slice(1, PRIORITY_COUNT).forEach((item) => {
-      loadImage(item.src);
-    });
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timeout);
-      document.body.style.overflow = previousOverflow;
-    };
-  }, []);
+  }, [bootDone]);
 
   useEffect(() => {
     const topNav = topNavRef.current;
@@ -223,27 +195,17 @@ export default function App() {
     };
   }, []);
 
-  const showBoot = !bootReady;
-
   return (
-    <div
-      className={[intro ? "is-intro" : "", bootReady ? "is-ready" : ""]
-        .filter(Boolean)
-        .join(" ") || undefined}
-    >
+    <div className={intro ? "is-intro" : undefined}>
       <div
-        className={`boot${showBoot ? "" : " is-done"}`}
-        aria-busy={showBoot}
-        aria-live="polite"
+        className={`boot${bootDone ? " is-done" : ""}`}
+        aria-hidden={bootDone}
+        aria-busy={!bootDone}
       >
-        <p className="boot__name">Nikitha Bobbary</p>
+        <div className="boot__mark">Nikitha Bobbary</div>
         <div className="boot__track" aria-hidden="true">
-          <span
-            className="boot__fill"
-            style={{ transform: `scaleX(${Math.max(bootProgress, 0.08)})` }}
-          />
+          <span className="boot__bar" />
         </div>
-        <p className="boot__label">{showBoot ? "Preparing work" : "Ready"}</p>
       </div>
 
       <Cursor />
