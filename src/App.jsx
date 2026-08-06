@@ -1,12 +1,14 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import ActionButton from "./components/ActionButton.jsx";
 import AppBar from "./components/AppBar.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import Cursor from "./components/Cursor.jsx";
+import LegalModal from "./components/LegalModal.jsx";
 import SideNav from "./components/SideNav.jsx";
 import WorkCaption from "./components/WorkCaption.jsx";
 import WorkFrame from "./components/WorkFrame.jsx";
+import { LEGAL } from "./data/legal.js";
 import { CONTACT, SOCIAL } from "./data/nav.js";
 
 const WORK = [
@@ -103,14 +105,25 @@ const FOCUS_CHIPS = [
   "Branding",
 ];
 
+/** Domains aligned to shipped work — and commercially strong. */
+const DOMAIN_CHIPS = [
+  "AI SaaS",
+  "B2B Platforms",
+  "Marketplaces",
+  "EdTech",
+  "Identity Systems",
+];
+
 export default function App() {
   const topNavRef = useRef(null);
   const [bootDone, setBootDone] = useState(false);
   const [bootProgress, setBootProgress] = useState(0.1);
   const [intro, setIntro] = useState(false);
   const [bottomNavVisible, setBottomNavVisible] = useState(false);
+  const [legalDoc, setLegalDoc] = useState(null);
   const topNavOutRef = useRef(false);
   const contactInRef = useRef(false);
+  const closeLegal = useCallback(() => setLegalDoc(null), []);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia(
@@ -260,6 +273,23 @@ export default function App() {
                   <p className="hero__role">0→1 Product Designer</p>
                 </div>
               </div>
+
+              <div className="hero__ctas">
+                <ActionButton
+                  className="hero__cta hero__cta--primary"
+                  href="#work"
+                  tooltip="Scroll to selected work"
+                >
+                  Explore work
+                </ActionButton>
+                <ActionButton
+                  className="hero__cta hero__cta--secondary"
+                  href="#contact"
+                  tooltip="Jump to contact"
+                >
+                  Contact me
+                </ActionButton>
+              </div>
             </div>
 
             <ul className="hero__chips" aria-label="Focus areas">
@@ -269,23 +299,6 @@ export default function App() {
                 </li>
               ))}
             </ul>
-          </div>
-
-          <div className="hero__ctas">
-            <ActionButton
-              className="hero__cta hero__cta--primary"
-              href="#work"
-              tooltip="Scroll to selected work"
-            >
-              Explore work
-            </ActionButton>
-            <ActionButton
-              className="hero__cta hero__cta--secondary"
-              href="#contact"
-              tooltip="Jump to contact"
-            >
-              Contact me
-            </ActionButton>
           </div>
         </div>
       </header>
@@ -341,39 +354,76 @@ export default function App() {
       </section>
 
       <section id="contact" className="contact" aria-labelledby="contact-heading">
-        <div className="contact__inner">
-          <h2 id="contact-heading" className="contact__title">
-            Let’s build something people can rely on
-          </h2>
-          <div className="contact__actions">
-            <ActionButton
-              className="hero__cta hero__cta--primary"
-              href={CONTACT.href}
-              tooltip={CONTACT.tooltip}
-            >
-              {CONTACT.label}
-            </ActionButton>
-            <div className="contact__social">
-              {SOCIAL.map(({ id, label, href, icon, tooltip }) => (
+        <div className="contact__box">
+          <div className="contact__stage">
+            <div className="contact__inner">
+              <h2 id="contact-heading" className="contact__title">
+                Let’s build something people can rely on
+              </h2>
+              <div className="contact__actions">
                 <ActionButton
-                  key={id}
-                  className="contact__icon"
-                  href={href}
-                  external
-                  tooltip={tooltip}
-                  aria-label={label}
+                  className="hero__cta hero__cta--primary"
+                  href={CONTACT.href}
+                  tooltip={CONTACT.tooltip}
                 >
-                  <HugeiconsIcon icon={icon} size={18} strokeWidth={1} />
+                  {CONTACT.label}
                 </ActionButton>
-              ))}
+                <div className="contact__social">
+                  {SOCIAL.map(({ id, label, href, icon, tooltip }) => (
+                    <ActionButton
+                      key={id}
+                      className="contact__icon"
+                      href={href}
+                      external
+                      tooltip={tooltip}
+                      aria-label={label}
+                    >
+                      <HugeiconsIcon icon={icon} size={18} strokeWidth={1} />
+                    </ActionButton>
+                  ))}
+                </div>
+              </div>
             </div>
+            <ul className="contact__chips" aria-label="Domains of interest">
+              {DOMAIN_CHIPS.map((chip) => (
+                <li key={chip} className="contact__chip">
+                  {chip}
+                </li>
+              ))}
+            </ul>
           </div>
+          <img
+            className="contact__brand"
+            src="/footer-name.svg"
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+          />
         </div>
-        <p className="contact__copyright">
-          © {new Date().getFullYear()} Nikitha Bobbary
-        </p>
+        <div className="contact__legal">
+          <p className="contact__copyright">
+            © {new Date().getFullYear()} Nikitha Bobbary
+          </p>
+          <nav className="contact__policies" aria-label="Legal">
+            <ActionButton
+              className="contact__policy"
+              tooltip="Open privacy policy"
+              onClick={() => setLegalDoc(LEGAL.privacy)}
+            >
+              Privacy Policy
+            </ActionButton>
+            <ActionButton
+              className="contact__policy"
+              tooltip="Open terms and conditions"
+              onClick={() => setLegalDoc(LEGAL.terms)}
+            >
+              Terms & Conditions
+            </ActionButton>
+          </nav>
+        </div>
       </section>
 
+      <LegalModal doc={legalDoc} onClose={closeLegal} />
       <BottomNav visible={bottomNavVisible} />
     </div>
   );

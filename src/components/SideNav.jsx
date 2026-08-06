@@ -24,12 +24,37 @@ export default function SideNav() {
   const [active, setActive] = useState(SECTIONS[0].id);
   const [revealed, setRevealed] = useState(false);
   const [hot, setHot] = useState(false);
+  const [atBottom, setAtBottom] = useState(false);
   const hideTimer = useRef(null);
   const activeRef = useRef(SECTIONS[0].id);
   const scrollYRef = useRef(0);
 
   useEffect(() => {
+    const contact = document.getElementById("contact");
+    if (!contact || !("IntersectionObserver" in window)) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setAtBottom(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setRevealed(false);
+          setHot(false);
+          window.clearTimeout(hideTimer.current);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(contact);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     const onMove = (event) => {
+      if (atBottom) {
+        setHot(false);
+        return;
+      }
       setHot(event.clientX <= window.innerWidth * HOT_ZONE);
     };
     const onLeave = () => setHot(false);
@@ -40,7 +65,7 @@ export default function SideNav() {
       window.removeEventListener("mousemove", onMove);
       document.documentElement.removeEventListener("mouseleave", onLeave);
     };
-  }, []);
+  }, [atBottom]);
 
   useEffect(() => {
     scrollYRef.current = window.scrollY;
@@ -77,13 +102,14 @@ export default function SideNav() {
     };
   }, []);
 
-  const open = revealed || hot;
+  const open = !atBottom && (revealed || hot);
 
   return (
     <nav
-      className={`side-nav${open ? " is-open" : ""}`}
+      className={`side-nav${open ? " is-open" : ""}${atBottom ? " is-hidden" : ""}`}
       aria-label="Sections"
       aria-hidden={!open}
+      inert={atBottom || undefined}
     >
       <span className="side-nav__rail" aria-hidden="true" />
       <div className="side-nav__pill">

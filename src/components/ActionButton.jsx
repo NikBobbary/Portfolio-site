@@ -1,3 +1,5 @@
+import { forwardRef } from "react";
+
 function go(href, { external = false } = {}) {
   if (!href) return;
 
@@ -18,18 +20,22 @@ function go(href, { external = false } = {}) {
   window.location.assign(href);
 }
 
-export default function ActionButton({
-  href,
-  external = false,
-  tooltip,
-  tooltipPlace,
-  className,
-  children,
-  onClick,
-  ...props
-}) {
+const ActionButton = forwardRef(function ActionButton(
+  {
+    href,
+    external = false,
+    tooltip,
+    tooltipPlace,
+    className,
+    children,
+    onClick,
+    ...props
+  },
+  ref
+) {
   return (
     <button
+      ref={ref}
       type="button"
       className={className}
       data-tooltip={tooltip || undefined}
@@ -44,4 +50,6 @@ export default function ActionButton({
       {children}
     </button>
   );
-}
+});
+
+export default ActionButton;

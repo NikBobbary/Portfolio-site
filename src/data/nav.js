@@ -46,5 +46,4 @@ export const SECTIONS = [
   { id: "home", label: "Home", tooltip: "Go to home" },
   { id: "work", label: "Work", tooltip: "Jump to work" },
   { id: "about", label: "About", tooltip: "Jump to about" },
-  { id: "contact", label: "Contact", tooltip: "Jump to contact" },
 ];
