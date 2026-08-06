@@ -1,5 +1,6 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Mail01Icon } from "@hugeicons/core-free-icons";
+import ActionButton from "./ActionButton.jsx";
 import { CONTACT, SOCIAL } from "../data/nav.js";
 
 export default function BottomNav({ visible }) {
@@ -12,23 +13,24 @@ export default function BottomNav({ visible }) {
     >
       <div className="bottom-nav__pill">
         <div className="bottom-nav__social">
-          {SOCIAL.map(({ id, label, href, icon }) => (
-            <a
+          {SOCIAL.map(({ id, label, href, icon, tooltip }) => (
+            <ActionButton
               key={id}
               className="bottom-nav__icon"
               href={href}
-              target="_blank"
-              rel="noreferrer noopener"
+              external
+              tooltip={tooltip}
               aria-label={label}
               tabIndex={visible ? 0 : -1}
             >
               <HugeiconsIcon icon={icon} size={18} strokeWidth={1} />
-            </a>
+            </ActionButton>
           ))}
         </div>
-        <a
+        <ActionButton
           className="bottom-nav__cta"
           href={CONTACT.href}
+          tooltip={CONTACT.tooltip}
           tabIndex={visible ? 0 : -1}
         >
           <HugeiconsIcon
@@ -38,7 +40,7 @@ export default function BottomNav({ visible }) {
             strokeWidth={1}
           />
           {CONTACT.label}
-        </a>
+        </ActionButton>
       </div>
     </nav>
   );

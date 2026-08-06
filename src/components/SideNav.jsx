@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import ActionButton from "./ActionButton.jsx";
 import { SECTIONS } from "../data/nav.js";
 
 const REVEAL_MS = 1000;
@@ -84,18 +85,21 @@ export default function SideNav() {
       aria-label="Sections"
       aria-hidden={!open}
     >
+      <span className="side-nav__rail" aria-hidden="true" />
       <div className="side-nav__pill">
         <ul className="side-nav__list">
-          {SECTIONS.map(({ id, label }) => (
+          {SECTIONS.map(({ id, label, tooltip }) => (
             <li key={id}>
-              <a
+              <ActionButton
                 className={`side-nav__link${active === id ? " is-active" : ""}`}
                 href={`#${id}`}
+                tooltip={tooltip}
+                tooltipPlace="right"
                 aria-current={active === id ? "true" : undefined}
                 tabIndex={open ? 0 : -1}
               >
                 {label}
-              </a>
+              </ActionButton>
             </li>
           ))}
         </ul>

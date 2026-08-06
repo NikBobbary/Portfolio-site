@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
+import ActionButton from "./components/ActionButton.jsx";
 import AppBar from "./components/AppBar.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import Cursor from "./components/Cursor.jsx";
@@ -14,7 +15,7 @@ const WORK = [
     "Pairty verified networking—identity gates, paid verification, and match flows that replaced low-trust discovery with credentialed professional connections.",
     chips: ["Onboarding", "Activation Flows", "Identity Systems"],
    },
-  { src: "/Screens/frame-8.svg" },
+  { src: "/Screens/frame-8.jpg" },
   { src: "/Screens/frame-9.svg",
     caption:
     "Focusoft brand system—logo, type, and palette that unified an AI software company's identity across web and marketing.",
@@ -79,7 +80,20 @@ const WORK = [
   { src: "/Screens/frame-6.svg" },
 ];
 
-const FRAME_SRCS = WORK.map((item) => item.src);
+/** First frame is critical; next starts after boot so it doesn’t starve #1. */
+const WARM_AFTER_BOOT = 2;
+/** Boot waits on the first frame only — later giants load progressively. */
+const CRITICAL_SRC = WORK[0].src;
+const BOOT_TIMEOUT_MS = 7000;
+
+function preloadImage(src) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = src;
+  });
+}
 
 const FOCUS_CHIPS = [
   "0→1 Product",
@@ -89,15 +103,11 @@ const FOCUS_CHIPS = [
   "Branding",
 ];
 
-/** After quote + profile have the stage; then chrome + images join. */
-const INTRO_MS = 1200;
-
 export default function App() {
-  const workRef = useRef(null);
   const topNavRef = useRef(null);
+  const [bootDone, setBootDone] = useState(false);
+  const [bootProgress, setBootProgress] = useState(0.1);
   const [intro, setIntro] = useState(false);
-  const [imagesReady, setImagesReady] = useState(false);
-  const [revealed, setRevealed] = useState(() => new Set());
   const [bottomNavVisible, setBottomNavVisible] = useState(false);
   const topNavOutRef = useRef(false);
   const contactInRef = useRef(false);
@@ -107,20 +117,67 @@ export default function App() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
+    let alive = true;
+    let finished = false;
+    let timeoutId;
+    let tickId;
+    let dismissId;
+
+    const finish = () => {
+      if (!alive || finished) return;
+      finished = true;
+      window.clearTimeout(timeoutId);
+      window.clearInterval(tickId);
+      setBootProgress(1);
+      dismissId = window.setTimeout(
+        () => {
+          if (alive) setBootDone(true);
+        },
+        reduceMotion ? 0 : 220
+      );
+    };
+
+    if (!reduceMotion) {
+      tickId = window.setInterval(() => {
+        setBootProgress((value) => Math.min(value + 0.05, 0.78));
+      }, 280);
+    }
+
+    timeoutId = window.setTimeout(finish, BOOT_TIMEOUT_MS);
+    preloadImage(CRITICAL_SRC).then(finish);
+
+    return () => {
+      alive = false;
+      window.clearTimeout(timeoutId);
+      window.clearTimeout(dismissId);
+      window.clearInterval(tickId);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (bootDone) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [bootDone]);
+
+  useEffect(() => {
+    if (!bootDone) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
     if (reduceMotion) {
       setIntro(true);
-      setImagesReady(true);
       return;
     }
 
-    const boot = window.requestAnimationFrame(() => setIntro(true));
-    const unlockImages = window.setTimeout(() => setImagesReady(true), INTRO_MS);
-
-    return () => {
-      window.cancelAnimationFrame(boot);
-      window.clearTimeout(unlockImages);
-    };
-  }, []);
+    const frame = window.requestAnimationFrame(() => setIntro(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, [bootDone]);
 
   useEffect(() => {
     const topNav = topNavRef.current;
@@ -159,46 +216,24 @@ export default function App() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!imagesReady) return;
-
-    const root = workRef.current;
-    if (!root) return;
-
-    const frames = root.querySelectorAll("img");
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (reduceMotion || !("IntersectionObserver" in window)) {
-      setRevealed(new Set(FRAME_SRCS));
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const src = entry.target.getAttribute("src");
-          if (!src) return;
-          setRevealed((prev) => {
-            if (prev.has(src)) return prev;
-            const next = new Set(prev);
-            next.add(src);
-            return next;
-          });
-          observer.unobserve(entry.target);
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
-    );
-
-    frames.forEach((frame) => observer.observe(frame));
-    return () => observer.disconnect();
-  }, [imagesReady]);
-
   return (
     <div className={intro ? "is-intro" : undefined}>
+      <div
+        className={`boot${bootDone ? " is-done" : ""}`}
+        aria-hidden={bootDone}
+        aria-busy={!bootDone}
+        role="status"
+      >
+        <p className="boot__name">Nikitha Bobbary</p>
+        <div className="boot__track" aria-hidden="true">
+          <span
+            className="boot__fill"
+            style={{ transform: `scaleX(${bootProgress})` }}
+          />
+        </div>
+        <p className="boot__label">Preparing work</p>
+      </div>
+
       <Cursor />
       <SideNav />
       <header id="home" className="hero">
@@ -237,18 +272,26 @@ export default function App() {
           </div>
 
           <div className="hero__ctas">
-            <a className="hero__cta hero__cta--primary" href="#work">
+            <ActionButton
+              className="hero__cta hero__cta--primary"
+              href="#work"
+              tooltip="Scroll to selected work"
+            >
               Explore work
-            </a>
-            <a className="hero__cta hero__cta--secondary" href="#contact">
+            </ActionButton>
+            <ActionButton
+              className="hero__cta hero__cta--secondary"
+              href="#contact"
+              tooltip="Jump to contact"
+            >
               Contact me
-            </a>
+            </ActionButton>
           </div>
         </div>
       </header>
 
-      <main id="work" ref={workRef}>
-        {WORK.map(({ src, caption, chips = [], decisions = [] }) => {
+      <main id="work">
+        {WORK.map(({ src, caption, chips = [], decisions = [] }, index) => {
           const hasMeta = Boolean(caption) || chips.length > 0;
 
           return (
@@ -260,9 +303,9 @@ export default function App() {
                   </div>
                   {chips.length > 0 ? (
                     <ul className="work-chips" aria-label="Project tags">
-                      {chips.map((chip, index) => (
+                      {chips.map((chip, chipIndex) => (
                         <li
-                          key={`${src}-chip-${index}`}
+                          key={`${src}-chip-${chipIndex}`}
                           className={`work-chip${chip ? "" : " is-empty"}`}
                         >
                           {chip || "\u00A0"}
@@ -274,7 +317,9 @@ export default function App() {
               ) : null}
               <WorkFrame
                 src={src}
-                revealed={revealed.has(src)}
+                priority={
+                  index === 0 || (bootDone && index < WARM_AFTER_BOOT)
+                }
                 decisions={decisions}
               />
             </Fragment>
@@ -301,25 +346,32 @@ export default function App() {
             Let’s build something people can rely on
           </h2>
           <div className="contact__actions">
-            <a className="hero__cta hero__cta--primary" href={CONTACT.href}>
+            <ActionButton
+              className="hero__cta hero__cta--primary"
+              href={CONTACT.href}
+              tooltip={CONTACT.tooltip}
+            >
               {CONTACT.label}
-            </a>
+            </ActionButton>
             <div className="contact__social">
-              {SOCIAL.map(({ id, label, href, icon }) => (
-                <a
+              {SOCIAL.map(({ id, label, href, icon, tooltip }) => (
+                <ActionButton
                   key={id}
                   className="contact__icon"
                   href={href}
-                  target="_blank"
-                  rel="noreferrer noopener"
+                  external
+                  tooltip={tooltip}
                   aria-label={label}
                 >
                   <HugeiconsIcon icon={icon} size={18} strokeWidth={1} />
-                </a>
+                </ActionButton>
               ))}
             </div>
           </div>
         </div>
+        <p className="contact__copyright">
+          © {new Date().getFullYear()} Nikitha Bobbary
+        </p>
       </section>
 
       <BottomNav visible={bottomNavVisible} />
