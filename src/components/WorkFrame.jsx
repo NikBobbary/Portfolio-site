@@ -17,7 +17,11 @@ export default function WorkFrame({
   const hasDecisions = decisions.length > 0;
   const revealed = inView && loaded;
 
-  // Start fetching once the frame is near the viewport (skip if priority).
+  useEffect(() => {
+    if (priority) setActiveSrc(src);
+  }, [priority, src]);
+
+  // Start fetching once the frame is near the viewport (skip if already active).
   useEffect(() => {
     if (activeSrc) return;
 
@@ -35,7 +39,7 @@ export default function WorkFrame({
         setActiveSrc(src);
         observer.disconnect();
       },
-      { rootMargin: "140% 0px" }
+      { rootMargin: "160% 0px", threshold: 0.01 }
     );
 
     observer.observe(el);
@@ -51,7 +55,7 @@ export default function WorkFrame({
     }
   }, [activeSrc]);
 
-  // Unblur only after the image is both loaded and meaningfully on screen.
+  // Unblur only after the image is both loaded and on screen.
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
@@ -71,7 +75,7 @@ export default function WorkFrame({
         setInView(true);
         observer.disconnect();
       },
-      { threshold: 0.06, rootMargin: "12% 0px" }
+      { threshold: 0.05, rootMargin: "16% 0px" }
     );
 
     observer.observe(el);
@@ -94,7 +98,8 @@ export default function WorkFrame({
       ref={wrapRef}
       className={[
         "work-frame-wrap",
-        loaded ? "is-loaded" : "is-loading",
+        activeSrc && !loaded ? "is-loading" : "",
+        loaded ? "is-loaded" : "",
         revealed ? "is-visible" : "",
         lensOpen ? "is-lens-open" : "",
         hasDecisions ? "has-lens" : "",
@@ -110,6 +115,7 @@ export default function WorkFrame({
           src={activeSrc}
           alt=""
           decoding="async"
+          loading={priority ? "eager" : "lazy"}
           fetchPriority={priority ? "high" : "auto"}
           onLoad={() => setLoaded(true)}
           onError={() => setLoaded(true)}

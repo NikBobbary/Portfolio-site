@@ -80,9 +80,9 @@ const WORK = [
   { src: "/Screens/frame-6.svg" },
 ];
 
-/** First N frames start downloading immediately (rest wait until near viewport). */
-const PRIORITY_COUNT = 2;
-/** Boot waits on the first frame only — later giants load in the background. */
+/** First frame is critical; next starts after boot so it doesn’t starve #1. */
+const WARM_AFTER_BOOT = 2;
+/** Boot waits on the first frame only — later giants load progressively. */
 const CRITICAL_SRC = WORK[0].src;
 const BOOT_TIMEOUT_MS = 7000;
 
@@ -106,6 +106,7 @@ const FOCUS_CHIPS = [
 export default function App() {
   const topNavRef = useRef(null);
   const [bootDone, setBootDone] = useState(false);
+  const [bootProgress, setBootProgress] = useState(0.1);
   const [intro, setIntro] = useState(false);
   const [bottomNavVisible, setBottomNavVisible] = useState(false);
   const topNavOutRef = useRef(false);
@@ -116,31 +117,51 @@ export default function App() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    let cancelled = false;
+    let alive = true;
+    let finished = false;
     let timeoutId;
+    let tickId;
+    let dismissId;
 
     const finish = () => {
-      if (cancelled) return;
-      cancelled = true;
+      if (!alive || finished) return;
+      finished = true;
       window.clearTimeout(timeoutId);
-      setBootDone(true);
+      window.clearInterval(tickId);
+      setBootProgress(1);
+      dismissId = window.setTimeout(
+        () => {
+          if (alive) setBootDone(true);
+        },
+        reduceMotion ? 0 : 220
+      );
     };
 
-    if (reduceMotion) {
-      preloadImage(CRITICAL_SRC).finally(finish);
-      return () => {
-        cancelled = true;
-      };
+    if (!reduceMotion) {
+      tickId = window.setInterval(() => {
+        setBootProgress((value) => Math.min(value + 0.05, 0.78));
+      }, 280);
     }
 
     timeoutId = window.setTimeout(finish, BOOT_TIMEOUT_MS);
     preloadImage(CRITICAL_SRC).then(finish);
 
     return () => {
-      cancelled = true;
+      alive = false;
       window.clearTimeout(timeoutId);
+      window.clearTimeout(dismissId);
+      window.clearInterval(tickId);
     };
   }, []);
+
+  useEffect(() => {
+    if (bootDone) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [bootDone]);
 
   useEffect(() => {
     if (!bootDone) return;
@@ -154,8 +175,8 @@ export default function App() {
       return;
     }
 
-    const boot = window.requestAnimationFrame(() => setIntro(true));
-    return () => window.cancelAnimationFrame(boot);
+    const frame = window.requestAnimationFrame(() => setIntro(true));
+    return () => window.cancelAnimationFrame(frame);
   }, [bootDone]);
 
   useEffect(() => {
@@ -201,11 +222,16 @@ export default function App() {
         className={`boot${bootDone ? " is-done" : ""}`}
         aria-hidden={bootDone}
         aria-busy={!bootDone}
+        role="status"
       >
-        <div className="boot__mark">Nikitha Bobbary</div>
+        <p className="boot__name">Nikitha Bobbary</p>
         <div className="boot__track" aria-hidden="true">
-          <span className="boot__bar" />
+          <span
+            className="boot__fill"
+            style={{ transform: `scaleX(${bootProgress})` }}
+          />
         </div>
+        <p className="boot__label">Preparing work</p>
       </div>
 
       <Cursor />
@@ -291,7 +317,9 @@ export default function App() {
               ) : null}
               <WorkFrame
                 src={src}
-                priority={index < PRIORITY_COUNT}
+                priority={
+                  index === 0 || (bootDone && index < WARM_AFTER_BOOT)
+                }
                 decisions={decisions}
               />
             </Fragment>
