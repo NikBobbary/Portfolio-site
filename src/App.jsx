@@ -12,19 +12,27 @@ import { LEGAL } from "./data/legal.js";
 import { CONTACT, SOCIAL } from "./data/nav.js";
 
 const WORK = [
-  { src: "/Screens/Pairty-1.jpg",
+  {
+    src: "/Screens/Pairty-1.jpg",
+    width: 12062,
+    height: 6812,
     caption:
-    "Pairty verified networking—identity gates, paid verification, and match flows that replaced low-trust discovery with credentialed professional connections.",
+      "Pairty verified networking—identity gates, paid verification, and match flows that replaced low-trust discovery with credentialed professional connections.",
     chips: ["Onboarding", "Activation Flows", "Identity Systems"],
-   },
-  { src: "/Screens/Pairty-2.jpg" },
-  { src: "/Screens/frame-9.svg",
+  },
+  { src: "/Screens/Pairty-2.jpg", width: 12062, height: 7977 },
+  {
+    src: "/Screens/frame-9.svg",
+    width: 8041,
+    height: 5159,
     caption:
-    "Focusoft brand system—logo, type, and palette that unified an AI software company's identity across web and marketing.",
+      "Focusoft brand system—logo, type, and palette that unified an AI software company's identity across web and marketing.",
     chips: ["Brand Identity", "Visual Systems"],
-   },
+  },
   {
     src: "/Screens/frame.svg",
+    width: 8041,
+    height: 4806,
     caption:
       "Role-aware group support messaging for tutors, students, and support team that replaced fragmented 1:1s and scaled multi-admin support ops.",
     chips: ["Admin Workflows", "Role Systems", "Multi-Party"],
@@ -41,10 +49,12 @@ const WORK = [
       },
     ],
   },
-  { src: "/Screens/frame-1.svg" },
-  { src: "/Screens/frame-2.svg" },
+  { src: "/Screens/frame-1.svg", width: 8041, height: 4806 },
+  { src: "/Screens/frame-2.svg", width: 8041, height: 5159 },
   {
     src: "/Screens/frame-4.svg",
+    width: 8041,
+    height: 4806,
     caption:
       "Rescheduling for students and tutors, status-aware flows with conflict checks that cut missed-session friction.",
     chips: ["Conflict Resolution", "Edge Cases"],
@@ -63,6 +73,8 @@ const WORK = [
   },
   {
     src: "/Screens/frame-5.svg",
+    width: 8041,
+    height: 8862,
     caption:
       "Marketplace landing for tutor discovery; quick subject browsing, reviews, and Good Fit Guarantee optimized for conversion.",
     chips: ["Landing Page", "Information Architecture"],
@@ -79,7 +91,7 @@ const WORK = [
       },
     ],
   },
-  { src: "/Screens/frame-6.svg" },
+  { src: "/Screens/frame-6.svg", width: 8041, height: 5318 },
 ];
 
 /** First frame is critical; next starts after boot so it doesn’t starve #1. */
@@ -284,40 +296,44 @@ export default function App() {
       </header>
 
       <main id="work">
-        {WORK.map(({ src, caption, chips = [], decisions = [] }, index) => {
-          const hasMeta = Boolean(caption) || chips.length > 0;
+        {WORK.map(
+          ({ src, width, height, caption, chips = [], decisions = [] }, index) => {
+            const hasMeta = Boolean(caption) || chips.length > 0;
 
-          return (
-            <Fragment key={src}>
-              {hasMeta ? (
-                <div className="work-meta">
-                  <div className="work-meta__copy">
-                    {caption ? <WorkCaption text={caption} /> : null}
+            return (
+              <Fragment key={src}>
+                {hasMeta ? (
+                  <div className="work-meta">
+                    <div className="work-meta__copy">
+                      {caption ? <WorkCaption text={caption} /> : null}
+                    </div>
+                    {chips.length > 0 ? (
+                      <ul className="work-chips" aria-label="Project tags">
+                        {chips.map((chip, chipIndex) => (
+                          <li
+                            key={`${src}-chip-${chipIndex}`}
+                            className="work-chip"
+                          >
+                            {chip}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
                   </div>
-                  {chips.length > 0 ? (
-                    <ul className="work-chips" aria-label="Project tags">
-                      {chips.map((chip, chipIndex) => (
-                        <li
-                          key={`${src}-chip-${chipIndex}`}
-                          className="work-chip"
-                        >
-                          {chip}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </div>
-              ) : null}
-              <WorkFrame
-                src={src}
-                priority={
-                  index === 0 || (bootDone && index < WARM_AFTER_BOOT)
-                }
-                decisions={decisions}
-              />
-            </Fragment>
-          );
-        })}
+                ) : null}
+                <WorkFrame
+                  src={src}
+                  width={width}
+                  height={height}
+                  priority={
+                    index === 0 || (bootDone && index < WARM_AFTER_BOOT)
+                  }
+                  decisions={decisions}
+                />
+              </Fragment>
+            );
+          }
+        )}
       </main>
 
       <section id="about" className="about" aria-labelledby="about-heading">

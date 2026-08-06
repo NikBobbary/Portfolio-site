@@ -4,6 +4,8 @@ import { Cancel01Icon, CenterFocusIcon } from "@hugeicons/core-free-icons";
 
 export default function WorkFrame({
   src,
+  width,
+  height,
   priority = false,
   decisions = [],
 }) {
@@ -11,11 +13,9 @@ export default function WorkFrame({
   const imgRef = useRef(null);
   const [activeSrc, setActiveSrc] = useState(priority ? src : null);
   const [loaded, setLoaded] = useState(false);
-  const [inView, setInView] = useState(false);
   const [lensOpen, setLensOpen] = useState(false);
   const panelId = useId();
   const hasDecisions = decisions.length > 0;
-  const revealed = inView && loaded;
 
   useEffect(() => {
     if (priority) setActiveSrc(src);
@@ -55,33 +55,6 @@ export default function WorkFrame({
     }
   }, [activeSrc]);
 
-  // Unblur only after the image is both loaded and on screen.
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (reduceMotion || !("IntersectionObserver" in window)) {
-      setInView(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setInView(true);
-        observer.disconnect();
-      },
-      { threshold: 0.05, rootMargin: "16% 0px" }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   useEffect(() => {
     if (!lensOpen) return;
 
@@ -98,14 +71,15 @@ export default function WorkFrame({
       ref={wrapRef}
       className={[
         "work-frame-wrap",
-        activeSrc && !loaded ? "is-loading" : "",
-        loaded ? "is-loaded" : "",
-        revealed ? "is-visible" : "",
+        loaded ? "is-loaded" : "is-loading",
         lensOpen ? "is-lens-open" : "",
         hasDecisions ? "has-lens" : "",
       ]
         .filter(Boolean)
         .join(" ")}
+      style={{
+        "--frame-ar": width && height ? `${width} / ${height}` : "16 / 10",
+      }}
       onClick={hasDecisions ? () => setLensOpen((open) => !open) : undefined}
     >
       {activeSrc ? (
@@ -114,15 +88,15 @@ export default function WorkFrame({
           className="work-frame"
           src={activeSrc}
           alt=""
+          width={width}
+          height={height}
           decoding="async"
           loading={priority ? "eager" : "lazy"}
           fetchPriority={priority ? "high" : "auto"}
           onLoad={() => setLoaded(true)}
           onError={() => setLoaded(true)}
         />
-      ) : (
-        <div className="work-frame work-frame--slot" aria-hidden="true" />
-      )}
+      ) : null}
 
       {hasDecisions ? (
         <>
