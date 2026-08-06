@@ -84,6 +84,7 @@ export default function SideNav() {
       aria-label="Sections"
       aria-hidden={!open}
     >
+      <span className="side-nav__rail" aria-hidden="true" />
       <div className="side-nav__pill">
         <ul className="side-nav__list">
           {SECTIONS.map(({ id, label }) => (

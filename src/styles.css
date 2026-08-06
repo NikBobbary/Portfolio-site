@@ -292,6 +292,42 @@ body {
   pointer-events: none;
 }
 
+.side-nav__rail {
+  position: absolute;
+  left: 0.55rem;
+  top: 50%;
+  width: 2px;
+  height: min(7.5rem, 18vh);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.28) 22%,
+    rgba(255, 255, 255, 0.42) 50%,
+    rgba(255, 255, 255, 0.28) 78%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.08),
+    inset 0 0 6px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 1;
+  transform: translateY(-50%) scaleY(1);
+  transition:
+    opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.45s ease;
+}
+
+.side-nav.is-open .side-nav__rail {
+  opacity: 0;
+  transform: translateY(-50%) scaleY(0.72);
+  filter: blur(2px);
+  pointer-events: none;
+}
+
 .side-nav__pill {
   display: flex;
   flex-direction: column;
@@ -303,16 +339,20 @@ body {
   -webkit-backdrop-filter: blur(18px);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
   opacity: 0;
-  transform: translateX(-0.5rem);
+  transform: translateX(-1.15rem) scale(0.94);
+  filter: blur(4px);
   transition:
-    opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
+  will-change: transform, opacity, filter;
 }
 
 .side-nav.is-open .side-nav__pill {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateX(0) scale(1);
+  filter: blur(0);
   pointer-events: auto;
 }
 
@@ -358,9 +398,21 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .side-nav__rail,
   .side-nav__pill {
     transform: none;
+    filter: none;
     transition: opacity 0.2s ease;
+  }
+
+  .side-nav.is-open .side-nav__rail {
+    transform: none;
+    filter: none;
+  }
+
+  .side-nav.is-open .side-nav__pill {
+    transform: none;
+    filter: none;
   }
 }
 
