@@ -1,6 +1,5 @@
 export const LEGAL = {
   privacy: {
-    id: "privacy",
     title: "Privacy Policy",
     updated: "August 2026",
     sections: [
@@ -27,7 +26,6 @@ export const LEGAL = {
     ],
   },
   terms: {
-    id: "terms",
     title: "Terms & Conditions",
     updated: "August 2026",
     sections: [

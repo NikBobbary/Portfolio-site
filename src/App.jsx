@@ -253,45 +253,11 @@ export default function App() {
         <AppBar ref={topNavRef} />
         <div className="hero__inner">
           <div className="hero__stage">
-            <div className="hero__left">
-              <h1 className="hero__quote">
-                “I design for humans to{" "}
-                <strong>connect with each other</strong> — to build{" "}
-                <strong>communities that sustain</strong>”
-              </h1>
-              <div className="hero__profile">
-                <img
-                  className="hero__avatar"
-                  src="/nikitha-avatar.jpg"
-                  alt="Nikitha"
-                  width={48}
-                  height={48}
-                  draggable={false}
-                />
-                <div className="hero__identity">
-                  <p className="hero__name">Nikitha Bobbary</p>
-                  <p className="hero__role">0→1 Product Designer</p>
-                </div>
-              </div>
-
-              <div className="hero__ctas">
-                <ActionButton
-                  className="hero__cta hero__cta--primary"
-                  href="#work"
-                  tooltip="Scroll to selected work"
-                >
-                  Explore work
-                </ActionButton>
-                <ActionButton
-                  className="hero__cta hero__cta--secondary"
-                  href="#contact"
-                  tooltip="Jump to contact"
-                >
-                  Contact me
-                </ActionButton>
-              </div>
-            </div>
-
+            <h1 className="hero__quote">
+              “I design for humans to{" "}
+              <strong>connect with each other</strong> — to build{" "}
+              <strong>communities that sustain</strong>”
+            </h1>
             <ul className="hero__chips" aria-label="Focus areas">
               {FOCUS_CHIPS.map((chip) => (
                 <li key={chip} className="hero__chip">
@@ -299,6 +265,20 @@ export default function App() {
                 </li>
               ))}
             </ul>
+            <div className="hero__profile">
+              <img
+                className="hero__avatar"
+                src="/nikitha-avatar.jpg"
+                alt="Nikitha"
+                width={48}
+                height={48}
+                draggable={false}
+              />
+              <div className="hero__identity">
+                <p className="hero__name">Nikitha Bobbary</p>
+                <p className="hero__role">0→1 Product Designer</p>
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -319,9 +299,9 @@ export default function App() {
                       {chips.map((chip, chipIndex) => (
                         <li
                           key={`${src}-chip-${chipIndex}`}
-                          className={`work-chip${chip ? "" : " is-empty"}`}
+                          className="work-chip"
                         >
-                          {chip || "\u00A0"}
+                          {chip}
                         </li>
                       ))}
                     </ul>
@@ -407,14 +387,12 @@ export default function App() {
           <nav className="contact__policies" aria-label="Legal">
             <ActionButton
               className="contact__policy"
-              tooltip="Open privacy policy"
               onClick={() => setLegalDoc(LEGAL.privacy)}
             >
               Privacy Policy
             </ActionButton>
             <ActionButton
               className="contact__policy"
-              tooltip="Open terms and conditions"
               onClick={() => setLegalDoc(LEGAL.terms)}
             >
               Terms & Conditions
