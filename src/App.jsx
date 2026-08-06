@@ -1,5 +1,6 @@
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
+import About from "./components/About.jsx";
 import ActionButton from "./components/ActionButton.jsx";
 import AppBar from "./components/AppBar.jsx";
 import BottomNav from "./components/BottomNav.jsx";
@@ -336,18 +337,7 @@ export default function App() {
         )}
       </main>
 
-      <section id="about" className="about" aria-labelledby="about-heading">
-        <div className="about__inner">
-          <h2 id="about-heading" className="about__title">
-            Designing the systems people use to find each other
-          </h2>
-          <p className="about__body">
-            I work on 0→1 products where trust, identity, and community shape the
-            experience — from verification flows and role systems to brand that
-            holds the whole thing together.
-          </p>
-        </div>
-      </section>
+      <About />
 
       <section id="contact" className="contact" aria-labelledby="contact-heading">
         <div className="contact__box">
