@@ -15,7 +15,7 @@ const WORK = [
     "Pairty verified networking—identity gates, paid verification, and match flows that replaced low-trust discovery with credentialed professional connections.",
     chips: ["Onboarding", "Activation Flows", "Identity Systems"],
    },
-  { src: "/Screens/frame-8.svg" },
+  { src: "/Screens/frame-8.jpg" },
   { src: "/Screens/frame-9.svg",
     caption:
     "Focusoft brand system—logo, type, and palette that unified an AI software company's identity across web and marketing.",
