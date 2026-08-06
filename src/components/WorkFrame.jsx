@@ -1,15 +1,82 @@
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Cancel01Icon, CenterFocusIcon } from "@hugeicons/core-free-icons";
 
 export default function WorkFrame({
   src,
-  revealed,
+  priority = false,
   decisions = [],
 }) {
+  const wrapRef = useRef(null);
+  const imgRef = useRef(null);
+  const [activeSrc, setActiveSrc] = useState(priority ? src : null);
+  const [loaded, setLoaded] = useState(false);
+  const [inView, setInView] = useState(false);
   const [lensOpen, setLensOpen] = useState(false);
   const panelId = useId();
   const hasDecisions = decisions.length > 0;
+  const revealed = inView && loaded;
+
+  // Start fetching once the frame is near the viewport (skip if priority).
+  useEffect(() => {
+    if (activeSrc) return;
+
+    const el = wrapRef.current;
+    if (!el) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setActiveSrc(src);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setActiveSrc(src);
+        observer.disconnect();
+      },
+      { rootMargin: "140% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [src, activeSrc]);
+
+  // Cached images may already be complete before onLoad attaches.
+  useEffect(() => {
+    const img = imgRef.current;
+    if (!img || !activeSrc) return;
+    if (img.complete && img.naturalWidth > 0) {
+      setLoaded(true);
+    }
+  }, [activeSrc]);
+
+  // Unblur only after the image is both loaded and meaningfully on screen.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      setInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setInView(true);
+        observer.disconnect();
+      },
+      { threshold: 0.06, rootMargin: "12% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!lensOpen) return;
@@ -24,8 +91,10 @@ export default function WorkFrame({
 
   return (
     <div
+      ref={wrapRef}
       className={[
         "work-frame-wrap",
+        loaded ? "is-loaded" : "is-loading",
         revealed ? "is-visible" : "",
         lensOpen ? "is-lens-open" : "",
         hasDecisions ? "has-lens" : "",
@@ -34,7 +103,20 @@ export default function WorkFrame({
         .join(" ")}
       onClick={hasDecisions ? () => setLensOpen((open) => !open) : undefined}
     >
-      <img className="work-frame" src={src} alt="" />
+      {activeSrc ? (
+        <img
+          ref={imgRef}
+          className="work-frame"
+          src={activeSrc}
+          alt=""
+          decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
+          onLoad={() => setLoaded(true)}
+          onError={() => setLoaded(true)}
+        />
+      ) : (
+        <div className="work-frame work-frame--slot" aria-hidden="true" />
+      )}
 
       {hasDecisions ? (
         <>
@@ -44,6 +126,10 @@ export default function WorkFrame({
             aria-expanded={lensOpen}
             aria-controls={panelId}
             aria-label={lensOpen ? "Hide decisions" : "Show decisions"}
+            data-tooltip={
+              lensOpen ? "Hide design decisions" : "Show design decisions"
+            }
+            data-tooltip-place="below"
           >
             <HugeiconsIcon
               icon={lensOpen ? Cancel01Icon : CenterFocusIcon}

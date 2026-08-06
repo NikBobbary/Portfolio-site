@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
+import ActionButton from "./components/ActionButton.jsx";
 import AppBar from "./components/AppBar.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import Cursor from "./components/Cursor.jsx";
@@ -9,17 +10,19 @@ import WorkFrame from "./components/WorkFrame.jsx";
 import { CONTACT, SOCIAL } from "./data/nav.js";
 
 const WORK = [
-  { src: "/Screens/frame-7.svg",
+  {
+    src: "/Screens/frame-7.svg",
     caption:
-    "Pairty verified networking—identity gates, paid verification, and match flows that replaced low-trust discovery with credentialed professional connections.",
+      "Pairty verified networking—identity gates, paid verification, and match flows that replaced low-trust discovery with credentialed professional connections.",
     chips: ["Onboarding", "Activation Flows", "Identity Systems"],
-   },
+  },
   { src: "/Screens/frame-8.svg" },
-  { src: "/Screens/frame-9.svg",
+  {
+    src: "/Screens/frame-9.svg",
     caption:
-    "Focusoft brand system—logo, type, and palette that unified an AI software company's identity across web and marketing.",
+      "Focusoft brand system—logo, type, and palette that unified an AI software company's identity across web and marketing.",
     chips: ["Brand Identity", "Visual Systems"],
-   },
+  },
   {
     src: "/Screens/frame.svg",
     caption:
@@ -79,8 +82,6 @@ const WORK = [
   { src: "/Screens/frame-6.svg" },
 ];
 
-const FRAME_SRCS = WORK.map((item) => item.src);
-
 const FOCUS_CHIPS = [
   "0→1 Product",
   "Product Systems",
@@ -89,15 +90,26 @@ const FOCUS_CHIPS = [
   "Branding",
 ];
 
-/** After quote + profile have the stage; then chrome + images join. */
-const INTRO_MS = 1200;
+/** First frames get high-priority fetch so scroll lands on real imagery. */
+const PRIORITY_COUNT = 2;
+/** Soft boot waits for the lead frame only — later giants load in the background. */
+const BOOT_SRCS = WORK.slice(0, 1).map((item) => item.src);
+const BOOT_MAX_MS = 5000;
+
+function loadImage(src) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = src;
+  });
+}
 
 export default function App() {
-  const workRef = useRef(null);
   const topNavRef = useRef(null);
   const [intro, setIntro] = useState(false);
-  const [imagesReady, setImagesReady] = useState(false);
-  const [revealed, setRevealed] = useState(() => new Set());
+  const [bootReady, setBootReady] = useState(false);
+  const [bootProgress, setBootProgress] = useState(0);
   const [bottomNavVisible, setBottomNavVisible] = useState(false);
   const topNavOutRef = useRef(false);
   const contactInRef = useRef(false);
@@ -109,16 +121,68 @@ export default function App() {
 
     if (reduceMotion) {
       setIntro(true);
-      setImagesReady(true);
       return;
     }
 
     const boot = window.requestAnimationFrame(() => setIntro(true));
-    const unlockImages = window.setTimeout(() => setImagesReady(true), INTRO_MS);
+    return () => window.cancelAnimationFrame(boot);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    let settled = 0;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const markProgress = () => {
+      settled += 1;
+      if (!cancelled) {
+        setBootProgress(settled / Math.max(BOOT_SRCS.length, 1));
+      }
+    };
+
+    const finish = () => {
+      if (cancelled) return;
+      setBootProgress(1);
+      setBootReady(true);
+      document.body.style.overflow = previousOverflow;
+    };
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (reduceMotion) {
+      finish();
+      return () => {
+        cancelled = true;
+        document.body.style.overflow = previousOverflow;
+      };
+    }
+
+    const timeout = window.setTimeout(finish, BOOT_MAX_MS);
+
+    Promise.all(
+      BOOT_SRCS.map((src) =>
+        loadImage(src).then((ok) => {
+          markProgress();
+          return ok;
+        })
+      )
+    ).then(() => {
+      window.clearTimeout(timeout);
+      finish();
+    });
+
+    // Warm the next priority frames without blocking the gate.
+    WORK.slice(1, PRIORITY_COUNT).forEach((item) => {
+      loadImage(item.src);
+    });
 
     return () => {
-      window.cancelAnimationFrame(boot);
-      window.clearTimeout(unlockImages);
+      cancelled = true;
+      window.clearTimeout(timeout);
+      document.body.style.overflow = previousOverflow;
     };
   }, []);
 
@@ -159,46 +223,29 @@ export default function App() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!imagesReady) return;
-
-    const root = workRef.current;
-    if (!root) return;
-
-    const frames = root.querySelectorAll("img");
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (reduceMotion || !("IntersectionObserver" in window)) {
-      setRevealed(new Set(FRAME_SRCS));
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const src = entry.target.getAttribute("src");
-          if (!src) return;
-          setRevealed((prev) => {
-            if (prev.has(src)) return prev;
-            const next = new Set(prev);
-            next.add(src);
-            return next;
-          });
-          observer.unobserve(entry.target);
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
-    );
-
-    frames.forEach((frame) => observer.observe(frame));
-    return () => observer.disconnect();
-  }, [imagesReady]);
+  const showBoot = !bootReady;
 
   return (
-    <div className={intro ? "is-intro" : undefined}>
+    <div
+      className={[intro ? "is-intro" : "", bootReady ? "is-ready" : ""]
+        .filter(Boolean)
+        .join(" ") || undefined}
+    >
+      <div
+        className={`boot${showBoot ? "" : " is-done"}`}
+        aria-busy={showBoot}
+        aria-live="polite"
+      >
+        <p className="boot__name">Nikitha Bobbary</p>
+        <div className="boot__track" aria-hidden="true">
+          <span
+            className="boot__fill"
+            style={{ transform: `scaleX(${Math.max(bootProgress, 0.08)})` }}
+          />
+        </div>
+        <p className="boot__label">{showBoot ? "Preparing work" : "Ready"}</p>
+      </div>
+
       <Cursor />
       <SideNav />
       <header id="home" className="hero">
@@ -237,18 +284,26 @@ export default function App() {
           </div>
 
           <div className="hero__ctas">
-            <a className="hero__cta hero__cta--primary" href="#work">
+            <ActionButton
+              className="hero__cta hero__cta--primary"
+              href="#work"
+              tooltip="Scroll to selected work"
+            >
               Explore work
-            </a>
-            <a className="hero__cta hero__cta--secondary" href="#contact">
+            </ActionButton>
+            <ActionButton
+              className="hero__cta hero__cta--secondary"
+              href="#contact"
+              tooltip="Jump to contact"
+            >
               Contact me
-            </a>
+            </ActionButton>
           </div>
         </div>
       </header>
 
-      <main id="work" ref={workRef}>
-        {WORK.map(({ src, caption, chips = [], decisions = [] }) => {
+      <main id="work">
+        {WORK.map(({ src, caption, chips = [], decisions = [] }, index) => {
           const hasMeta = Boolean(caption) || chips.length > 0;
 
           return (
@@ -260,9 +315,9 @@ export default function App() {
                   </div>
                   {chips.length > 0 ? (
                     <ul className="work-chips" aria-label="Project tags">
-                      {chips.map((chip, index) => (
+                      {chips.map((chip, chipIndex) => (
                         <li
-                          key={`${src}-chip-${index}`}
+                          key={`${src}-chip-${chipIndex}`}
                           className={`work-chip${chip ? "" : " is-empty"}`}
                         >
                           {chip || "\u00A0"}
@@ -274,7 +329,7 @@ export default function App() {
               ) : null}
               <WorkFrame
                 src={src}
-                revealed={revealed.has(src)}
+                priority={index < PRIORITY_COUNT}
                 decisions={decisions}
               />
             </Fragment>
@@ -301,25 +356,32 @@ export default function App() {
             Let’s build something people can rely on
           </h2>
           <div className="contact__actions">
-            <a className="hero__cta hero__cta--primary" href={CONTACT.href}>
+            <ActionButton
+              className="hero__cta hero__cta--primary"
+              href={CONTACT.href}
+              tooltip={CONTACT.tooltip}
+            >
               {CONTACT.label}
-            </a>
+            </ActionButton>
             <div className="contact__social">
-              {SOCIAL.map(({ id, label, href, icon }) => (
-                <a
+              {SOCIAL.map(({ id, label, href, icon, tooltip }) => (
+                <ActionButton
                   key={id}
                   className="contact__icon"
                   href={href}
-                  target="_blank"
-                  rel="noreferrer noopener"
+                  external
+                  tooltip={tooltip}
                   aria-label={label}
                 >
                   <HugeiconsIcon icon={icon} size={18} strokeWidth={1} />
-                </a>
+                </ActionButton>
               ))}
             </div>
           </div>
         </div>
+        <p className="contact__copyright">
+          © {new Date().getFullYear()} Nikitha Bobbary
+        </p>
       </section>
 
       <BottomNav visible={bottomNavVisible} />
