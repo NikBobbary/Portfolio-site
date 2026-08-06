@@ -18,7 +18,7 @@ const WORK = [
     chips: ["Onboarding", "Activation Flows", "Identity Systems"],
    },
   { src: "/Screens/Pairty-2.jpg" },
-  { src: "/Screens/Focusoft-1.jpg",
+  { src: "/Screens/frame-9.svg",
     caption:
     "Focusoft brand system—logo, type, and palette that unified an AI software company's identity across web and marketing.",
     chips: ["Brand Identity", "Visual Systems"],
