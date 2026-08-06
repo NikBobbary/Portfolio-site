@@ -12,13 +12,13 @@ import { LEGAL } from "./data/legal.js";
 import { CONTACT, SOCIAL } from "./data/nav.js";
 
 const WORK = [
-  { src: "/Screens/frame-7.svg",
+  { src: "/Screens/Pairty-1.jpg",
     caption:
     "Pairty verified networking—identity gates, paid verification, and match flows that replaced low-trust discovery with credentialed professional connections.",
     chips: ["Onboarding", "Activation Flows", "Identity Systems"],
    },
-  { src: "/Screens/frame-8.jpg" },
-  { src: "/Screens/frame-9.svg",
+  { src: "/Screens/Pairty-2.jpg" },
+  { src: "/Screens/Focusoft-1.jpg",
     caption:
     "Focusoft brand system—logo, type, and palette that unified an AI software company's identity across web and marketing.",
     chips: ["Brand Identity", "Visual Systems"],
