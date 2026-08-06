@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 const CLICKABLE =
-  'a, button, [role="button"], input, textarea, select, label, summary, [data-cursor="native"]';
+  'a, button, [role="button"], input, textarea, select, label, summary';
 
 export default function Cursor() {
   const cursorRef = useRef(null);
