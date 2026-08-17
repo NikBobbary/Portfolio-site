@@ -20,6 +20,7 @@ const WORK = [
   },
   { src: "/Screens/dyocars-2.svg", width: 8041, height: 5882 },
   { src: "/Screens/dyocars-3.jpg", width: 8041, height: 4541 },
+  { src: "/Screens/dyocars-4.jpg", width: 12062, height: 11711 },
   {
     src: "/Screens/Pairty-1.jpg",
     width: 12062,
@@ -29,6 +30,7 @@ const WORK = [
     chips: ["Onboarding", "Activation Flows", "Identity Systems"],
   },
   { src: "/Screens/Pairty-2.jpg", width: 12062, height: 7977 },
+  { src: "/Screens/Pairty-3.jpg", width: 16034, height: 9730 },
   {
     src: "/Screens/frame-9.svg",
     width: 8041,
@@ -303,7 +305,7 @@ export default function App() {
         </div>
       </header>
 
-      <main id="work">
+      <main id="snapshots">
         {WORK.map(
           ({ src, width, height, caption, chips = [], decisions = [] }, index) => {
             const hasMeta = Boolean(caption) || chips.length > 0;
