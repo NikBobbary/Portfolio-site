@@ -44,6 +44,6 @@ export const CONTACT = {
 
 export const SECTIONS = [
   { id: "home", label: "Home", tooltip: "Go to home" },
-  { id: "work", label: "Work", tooltip: "Jump to work" },
+  { id: "snapshots", label: "Snapshots", tooltip: "Jump to snapshots" },
   { id: "about", label: "About", tooltip: "Jump to about" },
 ];

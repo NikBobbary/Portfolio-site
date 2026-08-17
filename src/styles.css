@@ -1558,8 +1558,8 @@ body {
   }
 }
 
-/* —— Work —— */
-main#work {
+/* —— Snapshots —— */
+main#snapshots {
   display: flex;
   flex-direction: column;
   gap: 0;
