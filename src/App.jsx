@@ -14,6 +14,13 @@ import { CONTACT, SOCIAL } from "./data/nav.js";
 
 const WORK = [
   {
+    src: "/Screens/dyocars-1.jpg",
+    width: 8041,
+    height: 4541,
+  },
+  { src: "/Screens/dyocars-2.svg", width: 8041, height: 5882 },
+  { src: "/Screens/dyocars-3.jpg", width: 8041, height: 4541 },
+  {
     src: "/Screens/Pairty-1.jpg",
     width: 12062,
     height: 6812,
