@@ -359,18 +359,21 @@ export default function App() {
                 <ActionButton
                   className="hero__cta hero__cta--primary"
                   href={CONTACT.href}
+                  external={CONTACT.external}
                   tooltip={CONTACT.tooltip}
+                  tooltipPlace="below"
                 >
                   {CONTACT.label}
                 </ActionButton>
                 <div className="contact__social">
-                  {SOCIAL.map(({ id, label, href, icon, tooltip }) => (
+                  {SOCIAL.map(({ id, label, href, icon, tooltip, external }) => (
                     <ActionButton
                       key={id}
                       className="contact__icon"
                       href={href}
-                      external
+                      external={external}
                       tooltip={tooltip}
+                      tooltipPlace="below"
                       aria-label={label}
                     >
                       <HugeiconsIcon icon={icon} size={18} strokeWidth={1} />

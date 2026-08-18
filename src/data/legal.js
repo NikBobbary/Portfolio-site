@@ -17,7 +17,7 @@ export const LEGAL = {
       },
       {
         heading: "Third-party links",
-        body: "Links to GitHub, LinkedIn, Cal.com, Instagram, and similar services are governed by those platforms’ own privacy policies. Please review them before sharing information there.",
+        body: "Links to GitHub, LinkedIn, Instagram, and similar services are governed by those platforms’ own privacy policies. Please review them before sharing information there.",
       },
       {
         heading: "Contact",

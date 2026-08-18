@@ -28,6 +28,11 @@ export default function SideNav() {
   const hideTimer = useRef(null);
   const activeRef = useRef(SECTIONS[0].id);
   const scrollYRef = useRef(0);
+  const blockedRef = useRef(false);
+
+  const atHome = active === "home";
+  const blocked = atBottom || atHome;
+  blockedRef.current = blocked;
 
   useEffect(() => {
     const contact = document.getElementById("contact");
@@ -50,8 +55,16 @@ export default function SideNav() {
   }, []);
 
   useEffect(() => {
+    if (atHome) {
+      setRevealed(false);
+      setHot(false);
+      window.clearTimeout(hideTimer.current);
+    }
+  }, [atHome]);
+
+  useEffect(() => {
     const onMove = (event) => {
-      if (atBottom) {
+      if (blockedRef.current) {
         setHot(false);
         return;
       }
@@ -65,7 +78,7 @@ export default function SideNav() {
       window.removeEventListener("mousemove", onMove);
       document.documentElement.removeEventListener("mouseleave", onLeave);
     };
-  }, [atBottom]);
+  }, []);
 
   useEffect(() => {
     scrollYRef.current = window.scrollY;
@@ -102,14 +115,14 @@ export default function SideNav() {
     };
   }, []);
 
-  const open = !atBottom && (revealed || hot);
+  const open = !blocked && (revealed || hot);
 
   return (
     <nav
-      className={`side-nav${open ? " is-open" : ""}${atBottom ? " is-hidden" : ""}`}
+      className={`side-nav${open ? " is-open" : ""}${blocked ? " is-hidden" : ""}`}
       aria-label="Sections"
       aria-hidden={!open}
-      inert={atBottom || undefined}
+      inert={blocked || undefined}
     >
       <span className="side-nav__rail" aria-hidden="true" />
       <div className="side-nav__pill">
