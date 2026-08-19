@@ -12,6 +12,11 @@ function go(href, { external = false } = {}) {
     return;
   }
 
+  if (href.startsWith("mailto:") || href.startsWith("tel:")) {
+    window.location.assign(href);
+    return;
+  }
+
   if (external) {
     window.open(href, "_blank", "noopener,noreferrer");
     return;

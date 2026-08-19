@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Mail01Icon } from "@hugeicons/core-free-icons";
+import { Calendar03Icon } from "@hugeicons/core-free-icons";
 import ActionButton from "./ActionButton.jsx";
 import { CONTACT, SOCIAL } from "../data/nav.js";
 
@@ -8,12 +8,12 @@ const AppBar = forwardRef(function AppBar(_, ref) {
   return (
     <nav ref={ref} className="appbar" aria-label="Primary">
       <div className="appbar__social">
-        {SOCIAL.map(({ id, label, href, icon, tooltip }) => (
+        {SOCIAL.map(({ id, label, href, icon, tooltip, external }) => (
           <ActionButton
             key={id}
             className="appbar__icon"
             href={href}
-            external
+            external={external}
             tooltip={tooltip}
             tooltipPlace="below"
             aria-label={label}
@@ -25,14 +25,13 @@ const AppBar = forwardRef(function AppBar(_, ref) {
       <ActionButton
         className="appbar__cta"
         href={CONTACT.href}
-        tooltip={CONTACT.tooltip}
-        tooltipPlace="below"
+        external={CONTACT.external}
       >
         <HugeiconsIcon
           className="appbar__cta-icon"
-          icon={Mail01Icon}
+          icon={Calendar03Icon}
           size={16}
-          strokeWidth={1}
+          strokeWidth={1.5}
         />
         {CONTACT.label}
       </ActionButton>

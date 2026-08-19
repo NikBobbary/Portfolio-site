@@ -1,7 +1,7 @@
 import {
   GithubIcon,
   Linkedin01Icon,
-  Calendar03Icon,
+  Mail01Icon,
   InstagramIcon,
 } from "@hugeicons/core-free-icons";
 
@@ -9,37 +9,41 @@ export const SOCIAL = [
   {
     id: "github",
     label: "GitHub",
-    tooltip: "Open GitHub profile",
+    tooltip: "GitHub",
     href: "https://github.com/nikbobbary",
     icon: GithubIcon,
+    external: true,
   },
   {
     id: "linkedin",
     label: "LinkedIn",
-    tooltip: "Open LinkedIn profile",
+    tooltip: "LinkedIn",
     href: "https://www.linkedin.com/in/nikbobbary",
     icon: Linkedin01Icon,
+    external: true,
   },
   {
-    id: "calendar",
-    label: "Calendar",
-    tooltip: "Book a call on Cal.com",
-    href: "https://cal.com/nikbobbary",
-    icon: Calendar03Icon,
+    id: "email",
+    label: "Email",
+    tooltip: "Send Email",
+    href: "mailto:nikbobbary@gmail.com",
+    icon: Mail01Icon,
   },
   {
     id: "instagram",
     label: "Instagram",
-    tooltip: "Open Instagram",
+    tooltip: "Instagram",
     href: "https://instagram.com/nikbobbary",
     icon: InstagramIcon,
+    external: true,
   },
 ];
 
 export const CONTACT = {
-  label: "Get in touch",
-  tooltip: "Open email to Nikitha",
-  href: "mailto:nikbobbary@gmail.com",
+  label: "Book a call",
+  tooltip: "cal.com",
+  href: "https://cal.com/nikbobbary",
+  external: true,
 };
 
 export const SECTIONS = [

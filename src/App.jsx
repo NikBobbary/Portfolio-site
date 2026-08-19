@@ -16,11 +16,12 @@ const WORK = [
   {
     src: "/Screens/dyocars-1.jpg",
     width: 8041,
-    height: 4541,
+    height: 5346,
   },
-  { src: "/Screens/dyocars-2.svg", width: 8041, height: 5882 },
-  { src: "/Screens/dyocars-3.jpg", width: 8041, height: 4541 },
-  { src: "/Screens/dyocars-4.jpg", width: 12062, height: 11711 },
+  { src: "/Screens/dyocars-2.jpg", width: 8041, height: 5882 },
+  { src: "/Screens/dyocars-3.jpg", width: 8041, height: 5346 },
+  { src: "/Screens/dyocars-4.jpg", width: 8041, height: 7968 },
+  { src: "/Screens/dyocars-5.jpg", width: 8041, height: 5346 },
   {
     src: "/Screens/Pairty-1.jpg",
     width: 12062,
@@ -40,7 +41,7 @@ const WORK = [
     chips: ["Brand Identity", "Visual Systems"],
   },
   {
-    src: "/Screens/frame.svg",
+    src: "/Screens/lessonpal-1.jpg",
     width: 8041,
     height: 4806,
     caption:
@@ -59,10 +60,11 @@ const WORK = [
       },
     ],
   },
-  { src: "/Screens/frame-1.svg", width: 8041, height: 4806 },
-  { src: "/Screens/frame-2.svg", width: 8041, height: 5159 },
+  { src: "/Screens/lessonpal-2.jpg", width: 8041, height: 4806 },
+  { src: "/Screens/lessonpal-3.jpg", width: 8041, height: 5159 },
+  { src: "/Screens/lessonpal-4.jpg", width: 8041, height: 4806 },
   {
-    src: "/Screens/frame-4.svg",
+    src: "/Screens/lessonpal-5.jpg",
     width: 8041,
     height: 4806,
     caption:
@@ -82,7 +84,7 @@ const WORK = [
     ],
   },
   {
-    src: "/Screens/frame-5.svg",
+    src: "/Screens/lessonpal-6.jpg",
     width: 8041,
     height: 8862,
     caption:
@@ -101,7 +103,7 @@ const WORK = [
       },
     ],
   },
-  { src: "/Screens/frame-6.svg", width: 8041, height: 5318 },
+  { src: "/Screens/lessonpal-7.jpg", width: 8041, height: 5318 },
 ];
 
 /** First frame is critical; next starts after boot so it doesn’t starve #1. */
@@ -359,18 +361,21 @@ export default function App() {
                 <ActionButton
                   className="hero__cta hero__cta--primary"
                   href={CONTACT.href}
+                  external={CONTACT.external}
                   tooltip={CONTACT.tooltip}
+                  tooltipPlace="below"
                 >
                   {CONTACT.label}
                 </ActionButton>
                 <div className="contact__social">
-                  {SOCIAL.map(({ id, label, href, icon, tooltip }) => (
+                  {SOCIAL.map(({ id, label, href, icon, tooltip, external }) => (
                     <ActionButton
                       key={id}
                       className="contact__icon"
                       href={href}
-                      external
+                      external={external}
                       tooltip={tooltip}
+                      tooltipPlace="below"
                       aria-label={label}
                     >
                       <HugeiconsIcon icon={icon} size={18} strokeWidth={1} />
