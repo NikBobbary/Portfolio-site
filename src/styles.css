@@ -1876,6 +1876,77 @@ main#snapshots {
   opacity: 1;
 }
 
+.work-shot {
+  display: flex;
+  flex-direction: column;
+}
+
+.work-frame-meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-top: 0.75rem;
+}
+
+.work-frame-note {
+  margin: 0;
+  max-width: 36rem;
+  color: rgba(255, 255, 255, 0.58);
+  font-family: var(--font);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  text-align: left;
+  text-wrap: pretty;
+}
+
+.work-frame-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0 0 auto;
+  padding: 0;
+  min-width: 0;
+  max-width: 22rem;
+}
+
+.work-frame-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.32rem 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  background: transparent;
+}
+
+@media (max-width: 820px) {
+  .work-frame-meta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.55rem;
+    margin-top: 0.65rem;
+  }
+
+  .work-frame-tags {
+    justify-content: flex-start;
+    margin: 0;
+    max-width: none;
+  }
+}
+
 @keyframes frame-shimmer {
   from {
     background-position: 100% 0, 0 0;
