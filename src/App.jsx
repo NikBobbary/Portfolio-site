@@ -341,6 +341,7 @@ export default function App() {
             index
           ) => {
             const hasMeta = Boolean(caption) || chips.length > 0;
+            const hasFoot = Boolean(note) || tags.length > 0;
 
             return (
               <Fragment key={src}>
@@ -363,17 +364,36 @@ export default function App() {
                     ) : null}
                   </div>
                 ) : null}
-                <WorkFrame
-                  src={src}
-                  width={width}
-                  height={height}
-                  priority={
-                    index === 0 || (bootDone && index < WARM_AFTER_BOOT)
-                  }
-                  decisions={decisions}
-                  tags={tags}
-                  note={note}
-                />
+                <div className="work-shot">
+                  <WorkFrame
+                    src={src}
+                    width={width}
+                    height={height}
+                    priority={
+                      index === 0 || (bootDone && index < WARM_AFTER_BOOT)
+                    }
+                    decisions={decisions}
+                  />
+                  {hasFoot ? (
+                    <div className="work-frame-meta">
+                      {note ? (
+                        <p className="work-frame-note">{note}</p>
+                      ) : null}
+                      {tags.length > 0 ? (
+                        <ul className="work-frame-tags" aria-label="Image tags">
+                          {tags.map((tag, tagIndex) => (
+                            <li
+                              key={`${src}-tag-${tagIndex}`}
+                              className="work-frame-tag"
+                            >
+                              {tag}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
               </Fragment>
             );
           }

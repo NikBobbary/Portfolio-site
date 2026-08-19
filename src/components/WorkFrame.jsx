@@ -8,8 +8,6 @@ export default function WorkFrame({
   height,
   priority = false,
   decisions = [],
-  tags = [],
-  note,
 }) {
   const wrapRef = useRef(null);
   const imgRef = useRef(null);
@@ -18,7 +16,6 @@ export default function WorkFrame({
   const [lensOpen, setLensOpen] = useState(false);
   const panelId = useId();
   const hasDecisions = decisions.length > 0;
-  const hasOverlay = tags.length > 0 || Boolean(note);
 
   useEffect(() => {
     if (priority) setActiveSrc(src);
@@ -99,24 +96,6 @@ export default function WorkFrame({
           onLoad={() => setLoaded(true)}
           onError={() => setLoaded(true)}
         />
-      ) : null}
-
-      {hasOverlay ? (
-        <div className="work-frame-meta">
-          {tags.length > 0 ? (
-            <ul className="work-frame-tags" aria-label="Image tags">
-              {tags.map((tag, tagIndex) => (
-                <li
-                  key={`${src}-tag-${tagIndex}`}
-                  className="work-frame-tag"
-                >
-                  {tag}
-                </li>
-              ))}
-            </ul>
-          ) : null}
-          {note ? <p className="work-frame-note">{note}</p> : null}
-        </div>
       ) : null}
 
       {hasDecisions ? (
