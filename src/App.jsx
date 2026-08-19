@@ -18,7 +18,13 @@ const WORK = [
     width: 8041,
     height: 5346,
   },
-  { src: "/Screens/dyocars-2.jpg", width: 8041, height: 5882 },
+  {
+    src: "/Screens/dyocars-2.jpg",
+    width: 8041,
+    height: 5882,
+    tags: ["Marketplace", "Discovery"],
+    note: "Listing detail with live inventory and saved search.",
+  },
   { src: "/Screens/dyocars-3.jpg", width: 8041, height: 5346 },
   { src: "/Screens/dyocars-4.jpg", width: 8041, height: 7968 },
   { src: "/Screens/dyocars-5.jpg", width: 8041, height: 5346 },
@@ -30,7 +36,13 @@ const WORK = [
       "Pairty verified networking—identity gates, paid verification, and match flows that replaced low-trust discovery with credentialed professional connections.",
     chips: ["Onboarding", "Activation Flows", "Identity Systems"],
   },
-  { src: "/Screens/Pairty-2.jpg", width: 12062, height: 7977 },
+  {
+    src: "/Screens/Pairty-2.jpg",
+    width: 12062,
+    height: 7977,
+    tags: ["Identity Systems"],
+    note: "Verification gate before professional matching.",
+  },
   { src: "/Screens/Pairty-3.jpg", width: 16034, height: 9730 },
   {
     src: "/Screens/frame-9.svg",
@@ -60,7 +72,13 @@ const WORK = [
       },
     ],
   },
-  { src: "/Screens/lessonpal-2.jpg", width: 8041, height: 4806 },
+  {
+    src: "/Screens/lessonpal-2.jpg",
+    width: 8041,
+    height: 4806,
+    tags: ["Role Systems", "Multi-Party"],
+    note: "Who can post, see, and escalate in-thread.",
+  },
   { src: "/Screens/lessonpal-3.jpg", width: 8041, height: 5159 },
   { src: "/Screens/lessonpal-4.jpg", width: 8041, height: 4806 },
   {
@@ -309,7 +327,19 @@ export default function App() {
 
       <main id="snapshots">
         {WORK.map(
-          ({ src, width, height, caption, chips = [], decisions = [] }, index) => {
+          (
+            {
+              src,
+              width,
+              height,
+              caption,
+              chips = [],
+              tags = [],
+              note,
+              decisions = [],
+            },
+            index
+          ) => {
             const hasMeta = Boolean(caption) || chips.length > 0;
 
             return (
@@ -341,6 +371,8 @@ export default function App() {
                     index === 0 || (bootDone && index < WARM_AFTER_BOOT)
                   }
                   decisions={decisions}
+                  tags={tags}
+                  note={note}
                 />
               </Fragment>
             );

@@ -1876,6 +1876,97 @@ main#snapshots {
   opacity: 1;
 }
 
+.work-frame-meta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.65rem 1rem;
+  padding: 2.75rem 0.9rem 0.85rem;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.58) 0%,
+    rgba(0, 0, 0, 0.22) 42%,
+    transparent 100%
+  );
+  transition: opacity 0.28s ease;
+}
+
+.work-frame-wrap.is-lens-open .work-frame-meta {
+  opacity: 0;
+}
+
+.work-frame-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 auto 0 0;
+  padding: 0;
+  min-width: 0;
+  max-width: 58%;
+}
+
+.work-frame-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.32rem 0.62rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.48);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: rgba(255, 255, 255, 0.88);
+  font-family: var(--font);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.work-frame-note {
+  margin: 0 0 0 auto;
+  max-width: min(18rem, 48%);
+  color: rgba(255, 255, 255, 0.78);
+  font-family: var(--font);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-align: right;
+  text-wrap: pretty;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 820px) {
+  .work-frame-meta {
+    padding: 2.1rem 0.7rem 0.7rem;
+    gap: 0.5rem 0.75rem;
+  }
+
+  .work-frame-tags {
+    max-width: 62%;
+  }
+
+  .work-frame-tag {
+    font-size: 0.625rem;
+    padding: 0.28rem 0.52rem;
+  }
+
+  .work-frame-note {
+    max-width: min(14rem, 50%);
+    font-size: 0.6875rem;
+  }
+}
+
 @keyframes frame-shimmer {
   from {
     background-position: 100% 0, 0 0;
@@ -2000,6 +2091,7 @@ main#snapshots {
     animation: none;
   }
 
+  .work-frame-meta,
   .work-lens,
   .work-lens-btn {
     transition: none;
