@@ -54,6 +54,8 @@ export default function WorkFrame({
   const [displaySrc, setDisplaySrc] = useState(null);
   const [progress, setProgress] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [inView, setInView] = useState(false);
+  const [hideProgress, setHideProgress] = useState(false);
   const [lensOpen, setLensOpen] = useState(false);
   const panelId = useId();
   const hasDecisions = decisions.length > 0;
@@ -90,12 +92,42 @@ export default function WorkFrame({
         setActiveSrc(src);
         observer.disconnect();
       },
-      { rootMargin: "160% 0px", threshold: 0.01 }
+      { rootMargin: "20% 0px", threshold: 0.01 }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
   }, [src, activeSrc, allowLazy]);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!loaded || !inView) {
+      setHideProgress(false);
+      return;
+    }
+
+    const id = window.setTimeout(() => setHideProgress(true), 720);
+    return () => window.clearTimeout(id);
+  }, [loaded, inView]);
 
   useEffect(() => {
     if (!activeSrc) return;
@@ -163,6 +195,7 @@ export default function WorkFrame({
       className={[
         "work-frame-wrap",
         loaded ? "is-loaded" : "is-loading",
+        hideProgress ? "is-progress-done" : "",
         lensOpen ? "is-lens-open" : "",
         hasDecisions ? "has-lens" : "",
       ]
@@ -190,12 +223,10 @@ export default function WorkFrame({
         />
       ) : null}
 
-      {activeSrc ? (
-        <span className="work-frame-progress" aria-hidden="true">
-          {percent}
-          <span className="work-frame-progress__unit">%</span>
-        </span>
-      ) : null}
+      <span className="work-frame-progress" aria-hidden="true">
+        {percent}
+        <span className="work-frame-progress__unit">%</span>
+      </span>
 
       {hasDecisions ? (
         <>

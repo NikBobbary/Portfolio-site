@@ -1904,15 +1904,15 @@ main#snapshots {
 
 .work-frame-progress {
   position: absolute;
-  right: 0.85rem;
-  bottom: 0.75rem;
-  z-index: 2;
+  right: 1rem;
+  bottom: 0.9rem;
+  z-index: 4;
   display: flex;
   align-items: flex-end;
   margin: 0;
-  color: rgba(255, 255, 255, 0.42);
+  color: var(--fog);
   font-family: var(--font);
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
@@ -1921,7 +1921,7 @@ main#snapshots {
   pointer-events: none;
   user-select: none;
   opacity: 1;
-  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .work-frame-progress__unit {
@@ -1929,10 +1929,10 @@ main#snapshots {
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1;
-  margin: 0 0 0.05em 0.08em;
+  margin: 0 0 0.06em 0.08em;
 }
 
-.work-frame-wrap.is-loaded .work-frame-progress {
+.work-frame-wrap.is-progress-done .work-frame-progress {
   opacity: 0;
 }
 
