@@ -3,6 +3,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import About from "./components/About.jsx";
 import ActionButton from "./components/ActionButton.jsx";
 import AppBar from "./components/AppBar.jsx";
+import Boot from "./components/Boot.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import Cursor from "./components/Cursor.jsx";
 import LegalModal from "./components/LegalModal.jsx";
@@ -129,6 +130,10 @@ const WARM_AFTER_BOOT = 2;
 /** Boot waits on the first frame only — later giants load progressively. */
 const CRITICAL_SRC = WORK[0].src;
 const BOOT_TIMEOUT_MS = 7000;
+/** Keep the counter on stage long enough to read, even on a warm cache. */
+const MIN_BOOT_MS = 2000;
+const BOOT_HOLD_MS = 640;
+const BOOT_SLIDE_MS = 920;
 
 function preloadImage(src) {
   return new Promise((resolve) => {
@@ -159,12 +164,14 @@ const DOMAIN_CHIPS = [
 export default function App() {
   const topNavRef = useRef(null);
   const [bootDone, setBootDone] = useState(false);
-  const [bootProgress, setBootProgress] = useState(0.1);
+  const [bootProgress, setBootProgress] = useState(0);
   const [intro, setIntro] = useState(false);
   const [bottomNavVisible, setBottomNavVisible] = useState(false);
   const [legalDoc, setLegalDoc] = useState(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const topNavOutRef = useRef(false);
   const contactInRef = useRef(false);
+  const bootProgressRef = useRef(0);
   const closeLegal = useCallback(() => setLegalDoc(null), []);
 
   useEffect(() => {
@@ -174,46 +181,117 @@ export default function App() {
 
     let alive = true;
     let finished = false;
+    let holding = false;
+    let imageReady = false;
+    let minElapsed = false;
     let timeoutId;
+    let minId;
     let tickId;
-    let dismissId;
+    let holdId;
+    let raceId;
+
+    const paintProgress = (value) => {
+      bootProgressRef.current = value;
+      setBootProgress(value);
+    };
+
+    const startHold = () => {
+      if (!alive || holding) return;
+      holding = true;
+      paintProgress(1);
+      setIntro(true);
+      holdId = window.setTimeout(
+        () => {
+          if (alive) setBootDone(true);
+        },
+        reduceMotion ? 0 : BOOT_HOLD_MS
+      );
+    };
 
     const finish = () => {
       if (!alive || finished) return;
       finished = true;
       window.clearTimeout(timeoutId);
+      window.clearTimeout(minId);
       window.clearInterval(tickId);
-      setBootProgress(1);
-      dismissId = window.setTimeout(
-        () => {
-          if (alive) setBootDone(true);
-        },
-        reduceMotion ? 0 : 220
-      );
+
+      if (reduceMotion) {
+        startHold();
+        return;
+      }
+
+      const from = bootProgressRef.current;
+      const startedAt = performance.now();
+      const race = (now) => {
+        if (!alive || holding) return;
+        const t = Math.min((now - startedAt) / 420, 1);
+        const eased = 1 - (1 - t) ** 3;
+        if (t < 1) {
+          paintProgress(from + (1 - from) * eased);
+          raceId = window.requestAnimationFrame(race);
+          return;
+        }
+        paintProgress(1);
+        startHold();
+      };
+      raceId = window.requestAnimationFrame(race);
+    };
+
+    const tryFinish = () => {
+      if (imageReady && minElapsed) finish();
     };
 
     if (!reduceMotion) {
       tickId = window.setInterval(() => {
-        setBootProgress((value) => Math.min(value + 0.05, 0.78));
-      }, 280);
+        paintProgress(Math.min(bootProgressRef.current + 0.007, 0.84));
+      }, 16);
     }
 
+    minId = window.setTimeout(() => {
+      minElapsed = true;
+      tryFinish();
+    }, reduceMotion ? 0 : MIN_BOOT_MS);
     timeoutId = window.setTimeout(finish, BOOT_TIMEOUT_MS);
-    preloadImage(CRITICAL_SRC).then(finish);
+    preloadImage(CRITICAL_SRC).then(() => {
+      imageReady = true;
+      tryFinish();
+    });
 
     return () => {
       alive = false;
       window.clearTimeout(timeoutId);
-      window.clearTimeout(dismissId);
+      window.clearTimeout(minId);
+      window.clearTimeout(holdId);
+      window.cancelAnimationFrame(raceId);
       window.clearInterval(tickId);
     };
   }, []);
 
   useEffect(() => {
-    if (bootDone) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
+    if (!bootDone) {
+      return () => {
+        document.body.style.overflow = previous;
+      };
+    }
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (reduceMotion) {
+      document.body.style.overflow = previous;
+      return;
+    }
+
+    const unlockId = window.setTimeout(() => {
+      document.body.style.overflow = previous;
+    }, BOOT_SLIDE_MS);
+
     return () => {
+      window.clearTimeout(unlockId);
       document.body.style.overflow = previous;
     };
   }, [bootDone]);
@@ -221,17 +299,30 @@ export default function App() {
   useEffect(() => {
     if (!bootDone) return;
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    let frame = 0;
+    const measure = () => {
+      const root = document.documentElement;
+      const max = root.scrollHeight - root.clientHeight;
+      const next = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      setScrollProgress(next);
+    };
 
-    if (reduceMotion) {
-      setIntro(true);
-      return;
-    }
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        measure();
+      });
+    };
 
-    const frame = window.requestAnimationFrame(() => setIntro(true));
-    return () => window.cancelAnimationFrame(frame);
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [bootDone]);
 
   useEffect(() => {
@@ -273,21 +364,7 @@ export default function App() {
 
   return (
     <div className={intro ? "is-intro" : undefined}>
-      <div
-        className={`boot${bootDone ? " is-done" : ""}`}
-        aria-hidden={bootDone}
-        aria-busy={!bootDone}
-        role="status"
-      >
-        <p className="boot__name">Nikitha Bobbary</p>
-        <div className="boot__track" aria-hidden="true">
-          <span
-            className="boot__fill"
-            style={{ transform: `scaleX(${bootProgress})` }}
-          />
-        </div>
-        <p className="boot__label">Preparing work</p>
-      </div>
+      <Boot done={bootDone} progress={bootProgress} scroll={scrollProgress} />
 
       <Cursor />
       <SideNav />
