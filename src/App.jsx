@@ -7,6 +7,7 @@ import Boot from "./components/Boot.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import Cursor from "./components/Cursor.jsx";
 import LegalModal from "./components/LegalModal.jsx";
+import Shimeji from "./components/Shimeji.jsx";
 import SideNav from "./components/SideNav.jsx";
 import WorkCaption from "./components/WorkCaption.jsx";
 import WorkFrame from "./components/WorkFrame.jsx";
@@ -143,14 +144,6 @@ function preloadImage(src) {
     img.src = src;
   });
 }
-
-const FOCUS_CHIPS = [
-  "0→1 Product",
-  "Product Systems",
-  "AI Craft",
-  "UX Design",
-  "Branding",
-];
 
 /** Domains aligned to shipped work — and commercially strong. */
 const DOMAIN_CHIPS = [
@@ -367,36 +360,31 @@ export default function App() {
       <Boot done={bootDone} progress={bootProgress} scroll={scrollProgress} />
 
       <Cursor />
+      <Shimeji ready={bootDone} />
       <SideNav />
       <header id="home" className="hero">
         <AppBar ref={topNavRef} />
         <div className="hero__inner">
           <div className="hero__stage">
-            <h1 className="hero__quote">
-              “I design for humans to{" "}
-              <strong>connect with each other</strong> — to build{" "}
-              <strong>communities that sustain</strong>”
-            </h1>
-            <ul className="hero__chips" aria-label="Focus areas">
-              {FOCUS_CHIPS.map((chip) => (
-                <li key={chip} className="hero__chip">
-                  {chip}
-                </li>
-              ))}
-            </ul>
-            <div className="hero__profile">
-              <img
-                className="hero__avatar"
-                src="/nikitha-avatar.jpg"
-                alt="Nikitha"
-                width={48}
-                height={48}
-                draggable={false}
-              />
-              <div className="hero__identity">
-                <p className="hero__name">Nikitha Bobbary</p>
-                <p className="hero__role">0→1 Product Designer</p>
-              </div>
+            <img
+              className="hero__mark"
+              src="/nikitha-avatar.jpg"
+              alt=""
+              width={48}
+              height={48}
+              draggable={false}
+            />
+            <h1 className="hero__name">Nikitha Bobbary</h1>
+            <p className="hero__role">0→1 Product Designer</p>
+            <div className="hero__copy">
+              <p>
+                I design for humans to connect with each other — to build
+                communities that sustain.
+              </p>
+              <p>
+                Currently taking products from first principle through the
+                systems, brand, and craft that make them hold.
+              </p>
             </div>
           </div>
         </div>
