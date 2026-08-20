@@ -126,24 +126,13 @@ const WORK = [
   { src: "/Screens/lessonpal-7.jpg", width: 8041, height: 5318 },
 ];
 
-/** First frame is critical; next starts after boot so it doesn’t starve #1. */
+/** First two frames: #1 during boot, #2 once #1 is in so it doesn’t starve. */
 const WARM_AFTER_BOOT = 2;
-/** Boot waits on the first frame only — later giants load progressively. */
-const CRITICAL_SRC = WORK[0].src;
-const BOOT_TIMEOUT_MS = 7000;
+const BOOT_TIMEOUT_MS = 25000;
 /** Keep the counter on stage long enough to read, even on a warm cache. */
 const MIN_BOOT_MS = 2000;
 const BOOT_HOLD_MS = 640;
 const BOOT_SLIDE_MS = 920;
-
-function preloadImage(src) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => resolve(true);
-    img.onerror = () => resolve(false);
-    img.src = src;
-  });
-}
 
 /** Domains aligned to shipped work — and commercially strong. */
 const DOMAIN_CHIPS = [
@@ -158,7 +147,16 @@ export default function App() {
   const topNavRef = useRef(null);
   const [bootDone, setBootDone] = useState(false);
   const [bootProgress, setBootProgress] = useState(0);
+  const [criticalReady, setCriticalReady] = useState(false);
   const [intro, setIntro] = useState(false);
+  const criticalReadyRef = useRef(false);
+  const onCriticalRef = useRef(() => {});
+  const markCriticalReady = useCallback(() => {
+    if (criticalReadyRef.current) return;
+    criticalReadyRef.current = true;
+    setCriticalReady(true);
+    onCriticalRef.current();
+  }, []);
   const [bottomNavVisible, setBottomNavVisible] = useState(false);
   const [legalDoc, setLegalDoc] = useState(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -245,20 +243,22 @@ export default function App() {
       tryFinish();
     }, reduceMotion ? 0 : MIN_BOOT_MS);
     timeoutId = window.setTimeout(finish, BOOT_TIMEOUT_MS);
-    preloadImage(CRITICAL_SRC).then(() => {
+    onCriticalRef.current = () => {
       imageReady = true;
       tryFinish();
-    });
+    };
+    if (criticalReadyRef.current) onCriticalRef.current();
 
     return () => {
       alive = false;
+      onCriticalRef.current = () => {};
       window.clearTimeout(timeoutId);
       window.clearTimeout(minId);
       window.clearTimeout(holdId);
       window.cancelAnimationFrame(raceId);
       window.clearInterval(tickId);
     };
-  }, []);
+  }, [markCriticalReady]);
 
   useEffect(() => {
     const previous = document.body.style.overflow;
@@ -435,8 +435,11 @@ export default function App() {
                     width={width}
                     height={height}
                     priority={
-                      index === 0 || (bootDone && index < WARM_AFTER_BOOT)
+                      index === 0 ||
+                      (criticalReady && index < WARM_AFTER_BOOT)
                     }
+                    allowLazy={bootDone}
+                    onReady={index === 0 ? markCriticalReady : undefined}
                     decisions={decisions}
                   />
                   {hasFoot ? (
