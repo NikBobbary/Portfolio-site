@@ -16,22 +16,22 @@ import { CONTACT, SOCIAL } from "./data/nav.js";
 
 const WORK = [
   {
-    src: "/Screens/dyocars-1.jpg",
+    src: "/Screens/2400/dyocars-1.jpg",
     width: 8041,
     height: 5346,
   },
   {
-    src: "/Screens/dyocars-2.jpg",
+    src: "/Screens/2400/dyocars-2.jpg",
     width: 8041,
     height: 5882,
     tags: ["Marketplace", "Discovery"],
     note: "Listing detail with live inventory and saved search.",
   },
-  { src: "/Screens/dyocars-3.jpg", width: 8041, height: 5346 },
-  { src: "/Screens/dyocars-4.jpg", width: 8041, height: 7968 },
-  { src: "/Screens/dyocars-5.jpg", width: 8041, height: 5346 },
+  { src: "/Screens/2400/dyocars-3.jpg", width: 8041, height: 5346 },
+  { src: "/Screens/2400/dyocars-4.jpg", width: 8041, height: 7968 },
+  { src: "/Screens/2400/dyocars-5.jpg", width: 8041, height: 5346 },
   {
-    src: "/Screens/Pairty-1.jpg",
+    src: "/Screens/2400/Pairty-1.jpg",
     width: 12062,
     height: 6812,
     caption:
@@ -39,13 +39,13 @@ const WORK = [
     chips: ["Onboarding", "Activation Flows", "Identity Systems"],
   },
   {
-    src: "/Screens/Pairty-2.jpg",
+    src: "/Screens/2400/Pairty-2.jpg",
     width: 12062,
     height: 7977,
     tags: ["Identity Systems"],
     note: "Verification gate before professional matching.",
   },
-  { src: "/Screens/Pairty-3.jpg", width: 16034, height: 9730 },
+  { src: "/Screens/2400/Pairty-3.jpg", width: 16034, height: 9730 },
   {
     src: "/Screens/frame-9.svg",
     width: 8041,
@@ -55,7 +55,7 @@ const WORK = [
     chips: ["Brand Identity", "Visual Systems"],
   },
   {
-    src: "/Screens/lessonpal-1.jpg",
+    src: "/Screens/2400/lessonpal-1.jpg",
     width: 8041,
     height: 4806,
     caption:
@@ -75,16 +75,16 @@ const WORK = [
     ],
   },
   {
-    src: "/Screens/lessonpal-2.jpg",
+    src: "/Screens/2400/lessonpal-2.jpg",
     width: 8041,
     height: 4806,
     tags: ["Role Systems", "Multi-Party"],
     note: "Who can post, see, and escalate in-thread.",
   },
-  { src: "/Screens/lessonpal-3.jpg", width: 8041, height: 5159 },
-  { src: "/Screens/lessonpal-4.jpg", width: 8041, height: 4806 },
+  { src: "/Screens/2400/lessonpal-3.jpg", width: 8041, height: 5159 },
+  { src: "/Screens/2400/lessonpal-4.jpg", width: 8041, height: 4806 },
   {
-    src: "/Screens/lessonpal-5.jpg",
+    src: "/Screens/2400/lessonpal-5.jpg",
     width: 8041,
     height: 4806,
     caption:
@@ -104,7 +104,7 @@ const WORK = [
     ],
   },
   {
-    src: "/Screens/lessonpal-6.jpg",
+    src: "/Screens/2400/lessonpal-6.jpg",
     width: 8041,
     height: 8862,
     caption:
@@ -123,7 +123,7 @@ const WORK = [
       },
     ],
   },
-  { src: "/Screens/lessonpal-7.jpg", width: 8041, height: 5318 },
+  { src: "/Screens/2400/lessonpal-7.jpg", width: 8041, height: 5318 },
 ];
 
 /** First two frames: #1 during boot, #2 once #1 is in so it doesn’t starve. */
@@ -159,11 +159,29 @@ export default function App() {
   }, []);
   const [bottomNavVisible, setBottomNavVisible] = useState(false);
   const [legalDoc, setLegalDoc] = useState(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const topNavOutRef = useRef(false);
   const contactInRef = useRef(false);
   const bootProgressRef = useRef(0);
   const closeLegal = useCallback(() => setLegalDoc(null), []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const lock = () => {
+      root.style.setProperty("--hero-min", `${window.innerHeight}px`);
+    };
+
+    lock();
+
+    const onOrientation = () => {
+      window.setTimeout(lock, 400);
+    };
+
+    window.addEventListener("orientationchange", onOrientation);
+    return () => {
+      window.removeEventListener("orientationchange", onOrientation);
+      root.style.removeProperty("--hero-min");
+    };
+  }, []);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia(
@@ -290,35 +308,6 @@ export default function App() {
   }, [bootDone]);
 
   useEffect(() => {
-    if (!bootDone) return;
-
-    let frame = 0;
-    const measure = () => {
-      const root = document.documentElement;
-      const max = root.scrollHeight - root.clientHeight;
-      const next = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-      setScrollProgress(next);
-    };
-
-    const onScroll = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(() => {
-        frame = 0;
-        measure();
-      });
-    };
-
-    measure();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [bootDone]);
-
-  useEffect(() => {
     const topNav = topNavRef.current;
     const contact = document.getElementById("contact");
     if (!topNav || !("IntersectionObserver" in window)) return;
@@ -357,7 +346,7 @@ export default function App() {
 
   return (
     <div className={intro ? "is-intro" : undefined}>
-      <Boot done={bootDone} progress={bootProgress} scroll={scrollProgress} />
+      <Boot done={bootDone} progress={bootProgress} />
 
       <Cursor />
       <Shimeji ready={bootDone} />

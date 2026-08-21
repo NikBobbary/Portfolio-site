@@ -1,6 +1,39 @@
-export default function Boot({ done, progress, scroll = 0 }) {
+import { useEffect, useRef } from "react";
+
+export default function Boot({ done, progress }) {
+  const scrollRef = useRef(null);
   const percent = Math.min(100, Math.round(progress * 100));
   const complete = percent >= 100;
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!done || !el) return;
+
+    let frame = 0;
+    const measure = () => {
+      const root = document.documentElement;
+      const max = root.scrollHeight - root.clientHeight;
+      const next = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      el.style.transform = `scaleX(${next})`;
+    };
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        measure();
+      });
+    };
+
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [done]);
 
   return (
     <div
@@ -32,10 +65,7 @@ export default function Boot({ done, progress, scroll = 0 }) {
           className="boot__fill"
           style={{ transform: `scaleX(${complete ? 1 : progress})` }}
         />
-        <span
-          className="boot__scroll"
-          style={{ transform: `scaleX(${done ? scroll : 0})` }}
-        />
+        <span ref={scrollRef} className="boot__scroll" />
       </div>
     </div>
   );
