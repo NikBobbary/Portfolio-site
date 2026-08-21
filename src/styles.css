@@ -70,6 +70,7 @@ body {
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  width: 100%;
   margin: 0;
   padding: 0 var(--content-pad) clamp(2.75rem, 8vh, 5rem);
   user-select: none;
@@ -78,6 +79,7 @@ body {
 .boot__cluster {
   display: grid;
   justify-items: center;
+  max-width: 100%;
 }
 
 .boot__face {
@@ -86,7 +88,7 @@ body {
   align-items: flex-end;
   justify-content: center;
   font-family: var(--font);
-  font-size: 30vh;
+  font-size: min(30vh, 38vw);
   font-weight: 500;
   letter-spacing: -0.07em;
   line-height: 0.86;
@@ -1428,8 +1430,10 @@ body {
   box-sizing: border-box;
   width: 100%;
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
+  min-height: var(--hero-min, 100svh);
   background: #000;
+  overflow-anchor: none;
 }
 
 .hero__inner {
@@ -1560,7 +1564,7 @@ body {
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -1571,7 +1575,7 @@ body {
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -2156,7 +2160,7 @@ main#snapshots {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
   background:
     radial-gradient(
       ellipse 78% 52% at 10% 16%,
