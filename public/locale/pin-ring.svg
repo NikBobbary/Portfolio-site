@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="95.8" height="95.8" viewBox="0 0 95.8 95.8" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Ellipse 90 (Stroke)" filter="url(#filter0_f_0_4)">
+<path d="M65.4 47.9C65.4 38.235 57.565 30.4 47.9 30.4C38.235 30.4 30.4 38.235 30.4 47.9C30.4 57.565 38.235 65.4 47.9 65.4C57.565 65.4 65.4 57.565 65.4 47.9ZM89.4 47.9C89.4 70.8198 70.8198 89.4 47.9 89.4C24.9802 89.4 6.4 70.8198 6.4 47.9C6.4 24.9802 24.9802 6.4 47.9 6.4C70.8198 6.4 89.4 24.9802 89.4 47.9Z" fill="#0077FF" fill-opacity="0.31"/>
+</g>
+<defs>
+<filter id="filter0_f_0_4" x="0" y="0" width="95.8" height="95.8" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="3.2" result="effect1_foregroundBlur_0_4"/>
+</filter>
+</defs>
+</svg>
