@@ -56,6 +56,7 @@ export default function WorkFrame({
   const [loaded, setLoaded] = useState(false);
   const [inView, setInView] = useState(false);
   const [hideProgress, setHideProgress] = useState(false);
+  const [sharp, setSharp] = useState(false);
   const [lensOpen, setLensOpen] = useState(false);
   const panelId = useId();
   const hasDecisions = decisions.length > 0;
@@ -125,7 +126,7 @@ export default function WorkFrame({
       return;
     }
 
-    const id = window.setTimeout(() => setHideProgress(true), 720);
+    const id = window.setTimeout(() => setHideProgress(true), 980);
     return () => window.clearTimeout(id);
   }, [loaded, inView]);
 
@@ -138,6 +139,7 @@ export default function WorkFrame({
     setProgress(0);
     setLoaded(false);
     setDisplaySrc(null);
+    setSharp(false);
     readySent.current = false;
 
     fetchImageProgress(
@@ -195,6 +197,8 @@ export default function WorkFrame({
       className={[
         "work-frame-wrap",
         loaded ? "is-loaded" : "is-loading",
+        inView ? "is-in" : "",
+        sharp ? "is-sharp" : "",
         hideProgress ? "is-progress-done" : "",
         lensOpen ? "is-lens-open" : "",
         hasDecisions ? "has-lens" : "",
@@ -220,6 +224,11 @@ export default function WorkFrame({
           fetchPriority={priority ? "high" : "auto"}
           onLoad={markReady}
           onError={markReady}
+          onTransitionEnd={(event) => {
+            if (event.propertyName === "filter" || event.propertyName === "opacity") {
+              setSharp(true);
+            }
+          }}
         />
       ) : null}
 

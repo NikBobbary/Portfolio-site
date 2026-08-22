@@ -62,7 +62,9 @@ export default function BottomNav({ visible }) {
                   <span className="bottom-nav__glyph">
                     <HugeiconsIcon icon={icon} size={18} strokeWidth={1} />
                   </span>
-                  <span className="bottom-nav__hint">{label}</span>
+                  <span className="bottom-nav__hint">
+                    <span className="bottom-nav__hint-text">{label}</span>
+                  </span>
                 </ActionButton>
               );
             })}

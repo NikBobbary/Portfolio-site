@@ -345,7 +345,6 @@ export default function Shimeji({ ready = false }) {
         ledgeAt = now;
       }
 
-      const legalOpen = Boolean(document.querySelector(".legal-modal"));
       const pets = petsRef.current;
       const width = window.innerWidth;
 
@@ -365,7 +364,7 @@ export default function Shimeji({ ready = false }) {
           continue;
         }
 
-        pet.opacity = legalOpen ? 0 : 1;
+        pet.opacity = 1;
 
         if (pet.blink && now >= pet.blinkUntil) pet.blink = false;
         if (!pet.blink && now >= pet.nextBlink && pet.action !== "drag") {

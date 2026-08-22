@@ -8,11 +8,10 @@ import Cursor from "./components/Cursor.jsx";
 import HeroName from "./components/HeroName.jsx";
 import HeroZeroOne from "./components/HeroZeroOne.jsx";
 import LocaleCard from "./components/LocaleCard.jsx";
-import LegalModal from "./components/LegalModal.jsx";
+import FooterName from "./components/FooterName.jsx";
 import Shimeji from "./components/Shimeji.jsx";
 import WorkFrame from "./components/WorkFrame.jsx";
 import WorkHeader from "./components/WorkHeader.jsx";
-import { LEGAL } from "./data/legal.js";
 import { CONTACT, SOCIAL } from "./data/nav.js";
 
 const WORK = [
@@ -176,14 +175,12 @@ export default function App() {
     onCriticalRef.current();
   }, []);
   const [bottomNavVisible, setBottomNavVisible] = useState(false);
-  const [legalDoc, setLegalDoc] = useState(null);
   const [localeHover, setLocaleHover] = useState(false);
   const [localePinned, setLocalePinned] = useState(false);
   const localeOpen = localeHover || localePinned;
   const topNavOutRef = useRef(false);
   const contactInRef = useRef(false);
   const bootProgressRef = useRef(0);
-  const closeLegal = useCallback(() => setLegalDoc(null), []);
   const pinLocale = useCallback(() => {
     setLocalePinned((pinned) => !pinned);
   }, []);
@@ -543,36 +540,15 @@ export default function App() {
               ))}
             </ul>
           </div>
-          <img
-            className="contact__brand"
-            src="/footer-name.svg"
-            alt=""
-            aria-hidden="true"
-            draggable={false}
-          />
+          <FooterName />
         </div>
         <div className="contact__legal">
           <p className="contact__copyright">
             © {new Date().getFullYear()} Nikitha Bobbary
           </p>
-          <nav className="contact__policies" aria-label="Legal">
-            <ActionButton
-              className="contact__policy"
-              onClick={() => setLegalDoc(LEGAL.privacy)}
-            >
-              Privacy Policy
-            </ActionButton>
-            <ActionButton
-              className="contact__policy"
-              onClick={() => setLegalDoc(LEGAL.terms)}
-            >
-              Terms & Conditions
-            </ActionButton>
-          </nav>
         </div>
       </section>
 
-      <LegalModal doc={legalDoc} onClose={closeLegal} />
       <BottomNav visible={bottomNavVisible} />
     </div>
   );
