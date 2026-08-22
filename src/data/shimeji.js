@@ -29,7 +29,6 @@ export const SPRITES = {
 
 export const LEDGE_SELECTORS = [
   ".work-frame-wrap",
-  ".about__portrait",
   ".contact__box",
   ".bottom-nav.is-visible .bottom-nav__pill",
 ].join(", ");

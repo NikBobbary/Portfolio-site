@@ -1,8 +1,11 @@
 import {
+  AtIcon,
   GithubIcon,
+  Home01Icon,
+  InstagramIcon,
   Linkedin01Icon,
   Mail01Icon,
-  InstagramIcon,
+  WorkIcon,
 } from "@hugeicons/core-free-icons";
 
 export const SOCIAL = [
@@ -46,8 +49,26 @@ export const CONTACT = {
   external: true,
 };
 
-export const SECTIONS = [
-  { id: "home", label: "Home", tooltip: "Go to home" },
-  { id: "snapshots", label: "Snapshots", tooltip: "Jump to snapshots" },
-  { id: "about", label: "About", tooltip: "Jump to about" },
+export const BOTTOM_JUMPS = [
+  {
+    id: "home",
+    label: "Home",
+    tooltip: "Hero",
+    href: "#home",
+    icon: Home01Icon,
+  },
+  {
+    id: "snapshots",
+    label: "Works",
+    tooltip: "Works",
+    href: "#snapshots",
+    icon: WorkIcon,
+  },
+  {
+    id: "contact",
+    label: "Contact",
+    tooltip: "Contact",
+    href: "#contact",
+    icon: AtIcon,
+  },
 ];

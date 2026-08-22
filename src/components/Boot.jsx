@@ -43,21 +43,9 @@ export default function Boot({ done, progress }) {
       aria-label={done ? undefined : "Loading work"}
       role={done ? undefined : "status"}
     >
-      <p
-        className="boot__percent"
-        style={{ "--boot-p": `${percent}%` }}
-        aria-hidden="true"
-      >
-        <span className="boot__cluster">
-          <span className="boot__face boot__face--ghost">
-            <span className="boot__count">{percent}</span>
-            <span className="boot__unit">%</span>
-          </span>
-          <span className="boot__face boot__face--live">
-            <span className="boot__count">{percent}</span>
-            <span className="boot__unit">%</span>
-          </span>
-        </span>
+      <p className="boot__percent" aria-hidden="true">
+        <span className="boot__count">{percent}</span>
+        <span className="boot__unit">%</span>
       </p>
 
       <div className="boot__bar" aria-hidden="true">

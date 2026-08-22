@@ -1,129 +1,147 @@
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import About from "./components/About.jsx";
 import ActionButton from "./components/ActionButton.jsx";
 import AppBar from "./components/AppBar.jsx";
 import Boot from "./components/Boot.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import Cursor from "./components/Cursor.jsx";
+import HeroName from "./components/HeroName.jsx";
+import HeroZeroOne from "./components/HeroZeroOne.jsx";
+import LocaleCard from "./components/LocaleCard.jsx";
 import LegalModal from "./components/LegalModal.jsx";
 import Shimeji from "./components/Shimeji.jsx";
-import SideNav from "./components/SideNav.jsx";
-import WorkCaption from "./components/WorkCaption.jsx";
 import WorkFrame from "./components/WorkFrame.jsx";
+import WorkHeader from "./components/WorkHeader.jsx";
 import { LEGAL } from "./data/legal.js";
 import { CONTACT, SOCIAL } from "./data/nav.js";
 
 const WORK = [
   {
-    src: "/Screens/2400/dyocars-1.jpg",
-    width: 8041,
-    height: 5346,
-  },
-  {
-    src: "/Screens/2400/dyocars-2.jpg",
-    width: 8041,
-    height: 5882,
-    tags: ["Marketplace", "Discovery"],
-    note: "Listing detail with live inventory and saved search.",
-  },
-  { src: "/Screens/2400/dyocars-3.jpg", width: 8041, height: 5346 },
-  { src: "/Screens/2400/dyocars-4.jpg", width: 8041, height: 7968 },
-  { src: "/Screens/2400/dyocars-5.jpg", width: 8041, height: 5346 },
-  {
-    src: "/Screens/2400/Pairty-1.jpg",
-    width: 12062,
-    height: 6812,
-    caption:
-      "Pairty verified networking—identity gates, paid verification, and match flows that replaced low-trust discovery with credentialed professional connections.",
-    chips: ["Onboarding", "Activation Flows", "Identity Systems"],
-  },
-  {
-    src: "/Screens/2400/Pairty-2.jpg",
-    width: 12062,
-    height: 7977,
-    tags: ["Identity Systems"],
-    note: "Verification gate before professional matching.",
-  },
-  { src: "/Screens/2400/Pairty-3.jpg", width: 16034, height: 9730 },
-  {
-    src: "/Screens/frame-9.svg",
-    width: 8041,
-    height: 5159,
-    caption:
-      "Focusoft brand system—logo, type, and palette that unified an AI software company's identity across web and marketing.",
-    chips: ["Brand Identity", "Visual Systems"],
-  },
-  {
-    src: "/Screens/2400/lessonpal-1.jpg",
-    width: 8041,
-    height: 4806,
-    caption:
-      "Role-aware group support messaging for tutors, students, and support team that replaced fragmented 1:1s and scaled multi-admin support ops.",
-    chips: ["Admin Workflows", "Role Systems", "Multi-Party"],
-    decisions: [
+    id: "dyocar",
+    name: "Dyocar",
+    tagline: "Hyper-personalized car rental",
+    credit: "Founding Designer",
+    shots: [
       {
-        x: "18%",
-        y: "28%",
-        text: "Role chips gate who can post, see, and escalate in-thread.",
+        src: "/Screens/2400/dyocar-2.jpg",
+        width: 8041,
+        height: 5882,
+        tags: ["Marketplace", "Discovery"],
+        note: "Listing detail with live inventory and saved search.",
       },
       {
-        x: "62%",
-        y: "54%",
-        text: "Threaded context replaces fragmented 1:1 support handoffs.",
+        src: "/Screens/2400/dyocar-1.jpg",
+        width: 8041,
+        height: 5346,
+      },
+      { src: "/Screens/2400/dyocar-3.jpg", width: 8041, height: 5346 },
+      { src: "/Screens/2400/dyocar-4.jpg", width: 8041, height: 7968 },
+      { src: "/Screens/2400/dyocar-5.jpg", width: 8041, height: 5346 },
+    ],
+  },
+  {
+    id: "pairty",
+    name: "Pairty",
+    tagline: "Human venture capital network",
+    credit: "Product Designer",
+    shots: [
+      {
+        src: "/Screens/2400/Pairty-1.jpg",
+        width: 12062,
+        height: 6812,
+      },
+      {
+        src: "/Screens/2400/Pairty-2.jpg",
+        width: 12062,
+        height: 7977,
+        tags: ["Identity Systems"],
+        note: "Verification gate before professional matching.",
+      },
+      { src: "/Screens/2400/Pairty-3.jpg", width: 2400, height: 1432 },
+    ],
+  },
+  {
+    id: "focusoft",
+    name: "Focusoft",
+    tagline: "AI & digital innovation studio",
+    credit: "Lead Designer",
+    shots: [
+      {
+        src: "/Screens/2400/focusoft.jpg",
+        width: 2400,
+        height: 1540,
       },
     ],
   },
   {
-    src: "/Screens/2400/lessonpal-2.jpg",
-    width: 8041,
-    height: 4806,
-    tags: ["Role Systems", "Multi-Party"],
-    note: "Who can post, see, and escalate in-thread.",
-  },
-  { src: "/Screens/2400/lessonpal-3.jpg", width: 8041, height: 5159 },
-  { src: "/Screens/2400/lessonpal-4.jpg", width: 8041, height: 4806 },
-  {
-    src: "/Screens/2400/lessonpal-5.jpg",
-    width: 8041,
-    height: 4806,
-    caption:
-      "Rescheduling for students and tutors, status-aware flows with conflict checks that cut missed-session friction.",
-    chips: ["Conflict Resolution", "Edge Cases"],
-    decisions: [
+    id: "lessonpal",
+    name: "Lessonpal",
+    tagline: "1-on-1 tutoring marketplace",
+    credit: "Product Designer",
+    shots: [
       {
-        x: "30%",
-        y: "36%",
-        text: "Status drives which reschedule actions are available.",
+        src: "/Screens/2400/lessonpal-1.jpg",
+        width: 8041,
+        height: 4806,
+        decisions: [
+          {
+            x: "18%",
+            y: "28%",
+            text: "Role chips gate who can post, see, and escalate in-thread.",
+          },
+          {
+            x: "62%",
+            y: "54%",
+            text: "Threaded context replaces fragmented 1:1 support handoffs.",
+          },
+        ],
       },
       {
-        x: "70%",
-        y: "58%",
-        text: "Conflict checks block double-books before confirm.",
+        src: "/Screens/2400/lessonpal-2.jpg",
+        width: 8041,
+        height: 4806,
+        tags: ["Role Systems", "Multi-Party"],
+        note: "Who can post, see, and escalate in-thread.",
       },
+      { src: "/Screens/2400/lessonpal-3.jpg", width: 8041, height: 5159 },
+      { src: "/Screens/2400/lessonpal-4.jpg", width: 2400, height: 1587 },
+      {
+        src: "/Screens/2400/lessonpal-5.jpg",
+        width: 8041,
+        height: 4806,
+        decisions: [
+          {
+            x: "30%",
+            y: "36%",
+            text: "Status drives which reschedule actions are available.",
+          },
+          {
+            x: "70%",
+            y: "58%",
+            text: "Conflict checks block double-books before confirm.",
+          },
+        ],
+      },
+      {
+        src: "/Screens/2400/lessonpal-6.jpg",
+        width: 8041,
+        height: 8862,
+        decisions: [
+          {
+            x: "24%",
+            y: "32%",
+            text: "Subject discovery sits above the fold to start intent fast.",
+          },
+          {
+            x: "66%",
+            y: "62%",
+            text: "Reviews + Good Fit Guarantee reduce first-lesson risk.",
+          },
+        ],
+      },
+      { src: "/Screens/2400/lessonpal-7.jpg", width: 8041, height: 5318 },
     ],
   },
-  {
-    src: "/Screens/2400/lessonpal-6.jpg",
-    width: 8041,
-    height: 8862,
-    caption:
-      "Marketplace landing for tutor discovery; quick subject browsing, reviews, and Good Fit Guarantee optimized for conversion.",
-    chips: ["Landing Page", "Information Architecture"],
-    decisions: [
-      {
-        x: "24%",
-        y: "32%",
-        text: "Subject discovery sits above the fold to start intent fast.",
-      },
-      {
-        x: "66%",
-        y: "62%",
-        text: "Reviews + Good Fit Guarantee reduce first-lesson risk.",
-      },
-    ],
-  },
-  { src: "/Screens/2400/lessonpal-7.jpg", width: 8041, height: 5318 },
 ];
 
 /** First two frames: #1 during boot, #2 once #1 is in so it doesn’t starve. */
@@ -159,10 +177,35 @@ export default function App() {
   }, []);
   const [bottomNavVisible, setBottomNavVisible] = useState(false);
   const [legalDoc, setLegalDoc] = useState(null);
+  const [localeHover, setLocaleHover] = useState(false);
+  const [localePinned, setLocalePinned] = useState(false);
+  const localeOpen = localeHover || localePinned;
   const topNavOutRef = useRef(false);
   const contactInRef = useRef(false);
   const bootProgressRef = useRef(0);
   const closeLegal = useCallback(() => setLegalDoc(null), []);
+  const pinLocale = useCallback(() => {
+    setLocalePinned((pinned) => !pinned);
+  }, []);
+
+  useEffect(() => {
+    if (!localePinned) return undefined;
+
+    const onKey = (event) => {
+      if (event.key === "Escape") setLocalePinned(false);
+    };
+    const onPointerDown = (event) => {
+      if (event.target.closest(".hero__place, .locale-card")) return;
+      setLocalePinned(false);
+    };
+
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [localePinned]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -350,114 +393,113 @@ export default function App() {
 
       <Cursor />
       <Shimeji ready={bootDone} />
-      <SideNav />
       <header id="home" className="hero">
         <AppBar ref={topNavRef} />
         <div className="hero__inner">
           <div className="hero__stage">
-            <img
-              className="hero__mark"
-              src="/nikitha-avatar.jpg"
-              alt=""
-              width={48}
-              height={48}
-              draggable={false}
-            />
-            <h1 className="hero__name">Nikitha Bobbary</h1>
-            <p className="hero__role">0→1 Product Designer</p>
-            <div className="hero__copy">
-              <p>
-                I design for humans to connect with each other — to build
-                communities that sustain.
-              </p>
-              <p>
-                Currently taking products from first principle through the
-                systems, brand, and craft that make them hold.
-              </p>
-            </div>
+            <h1 className="hero__name">
+              <span className="hero__lead">
+                Hey! I&apos;m <HeroName />
+              </span>
+              a <HeroZeroOne /> from{" "}
+              <button
+                type="button"
+                className={`hero__place${localeOpen ? " is-open" : ""}`}
+                aria-expanded={localeOpen}
+                aria-pressed={localePinned}
+                aria-controls="locale-card"
+                onPointerEnter={() => setLocaleHover(true)}
+                onPointerLeave={() => setLocaleHover(false)}
+                onClick={pinLocale}
+              >
+                India
+                <span className="hero__flag" aria-hidden="true">
+                  <span className="hero__flag-glyph">🇮🇳</span>
+                </span>
+              </button>
+              .
+            </h1>
+            <p className="hero__dek">
+              I&apos;ve been designing global products for 5 years — currently
+              building and designing at Nesaasity.
+            </p>
           </div>
+          {localeOpen ? <LocaleCard /> : null}
         </div>
       </header>
 
       <main id="snapshots">
-        {WORK.map(
-          (
-            {
-              src,
-              width,
-              height,
-              caption,
-              chips = [],
-              tags = [],
-              note,
-              decisions = [],
-            },
-            index
-          ) => {
-            const hasMeta = Boolean(caption) || chips.length > 0;
-            const hasFoot = Boolean(note) || tags.length > 0;
+        {WORK.map((group, groupIndex) => {
+          const shotOffset = WORK.slice(0, groupIndex).reduce(
+            (count, item) => count + item.shots.length,
+            0
+          );
 
-            return (
-              <Fragment key={src}>
-                {hasMeta ? (
-                  <div className="work-meta">
-                    <div className="work-meta__copy">
-                      {caption ? <WorkCaption text={caption} /> : null}
-                    </div>
-                    {chips.length > 0 ? (
-                      <ul className="work-chips" aria-label="Project tags">
-                        {chips.map((chip, chipIndex) => (
-                          <li
-                            key={`${src}-chip-${chipIndex}`}
-                            className="work-chip"
-                          >
-                            {chip}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </div>
-                ) : null}
-                <div className="work-shot">
-                  <WorkFrame
-                    src={src}
-                    width={width}
-                    height={height}
-                    priority={
-                      index === 0 ||
-                      (criticalReady && index < WARM_AFTER_BOOT)
-                    }
-                    allowLazy={bootDone}
-                    onReady={index === 0 ? markCriticalReady : undefined}
-                    decisions={decisions}
-                  />
-                  {hasFoot ? (
-                    <div className="work-frame-meta">
-                      {note ? (
-                        <p className="work-frame-note">{note}</p>
-                      ) : null}
-                      {tags.length > 0 ? (
-                        <ul className="work-frame-tags" aria-label="Image tags">
-                          {tags.map((tag, tagIndex) => (
-                            <li
-                              key={`${src}-tag-${tagIndex}`}
-                              className="work-frame-tag"
+          return (
+            <section
+              key={group.id}
+              id={group.id}
+              className="work-group"
+              aria-label={group.name}
+            >
+              <WorkHeader
+                name={group.name}
+                tagline={group.tagline}
+                credit={group.credit}
+                logo={group.logo}
+              />
+              {group.shots.map(
+                (
+                  { src, width, height, tags = [], note, decisions = [] },
+                  shotIndex
+                ) => {
+                  const index = shotOffset + shotIndex;
+                  const hasFoot = Boolean(note) || tags.length > 0;
+
+                  return (
+                    <div key={src} className="work-shot">
+                      <WorkFrame
+                        src={src}
+                        width={width}
+                        height={height}
+                        priority={
+                          index === 0 ||
+                          (criticalReady && index < WARM_AFTER_BOOT)
+                        }
+                        allowLazy={bootDone}
+                        onReady={index === 0 ? markCriticalReady : undefined}
+                        decisions={decisions}
+                      />
+                      {hasFoot ? (
+                        <div className="work-frame-meta">
+                          {note ? (
+                            <p className="work-frame-note">{note}</p>
+                          ) : null}
+                          {tags.length > 0 ? (
+                            <ul
+                              className="work-frame-tags"
+                              aria-label="Image tags"
                             >
-                              {tag}
-                            </li>
-                          ))}
-                        </ul>
+                              {tags.map((tag, tagIndex) => (
+                                <li
+                                  key={`${src}-tag-${tagIndex}`}
+                                  className="work-frame-tag"
+                                >
+                                  {tag}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : null}
+                        </div>
                       ) : null}
                     </div>
-                  ) : null}
-                </div>
-              </Fragment>
-            );
-          }
-        )}
+                  );
+                }
+              )}
+            </section>
+          );
+        })}
       </main>
-
-      <About />
 
       <section id="contact" className="contact" aria-labelledby="contact-heading">
         <div className="contact__box">
