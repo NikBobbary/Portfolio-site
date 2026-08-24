@@ -22,14 +22,14 @@ const WORK = [
     credit: "Founding Designer",
     shots: [
       {
-        src: "/Screens/2400/dyocar-2.jpg",
+        src: "/Screens/2400/dyocar-1.jpg",
         width: 8041,
         height: 5882,
         tags: ["Marketplace", "Discovery"],
         note: "Listing detail with live inventory and saved search.",
       },
       {
-        src: "/Screens/2400/dyocar-1.jpg",
+        src: "/Screens/2400/dyocar-2.jpg",
         width: 8041,
         height: 5346,
       },
