@@ -10,6 +10,7 @@ import HeroZeroOne from "./components/HeroZeroOne.jsx";
 import LocaleCard from "./components/LocaleCard.jsx";
 import FooterName from "./components/FooterName.jsx";
 import Shimeji from "./components/Shimeji.jsx";
+import Vita from "./components/Vita.jsx";
 import WorkFrame from "./components/WorkFrame.jsx";
 import WorkHeader from "./components/WorkHeader.jsx";
 import { CONTACT, SOCIAL } from "./data/nav.js";
@@ -374,12 +375,12 @@ export default function App() {
               .
             </h1>
             <p className="hero__dek">
-              I&apos;ve been designing global products for 5 years — currently
-              building and designing at Nesaasity.
+            Self-taught in design, trained as an engineer, and endlessly curious about people, art, and how things work.
             </p>
           </div>
           {localeOpen ? <LocaleCard /> : null}
         </div>
+        <Vita />
       </header>
 
       <main id="snapshots">
@@ -464,16 +465,23 @@ export default function App() {
         </h2>
         <div className="like__copy">
           <p>
-          I’m a generalist and a 0→1 designer. I’ve mostly worked with engineering-led teams, especially where the product is complex or the problem isn’t clearly defined yet.
+          I’m a generalist and a 0→1 designer, mostly working with engineering-led teams where the product is complex or the problem isn’t clearly defined yet.
           </p>
           <p>
-            I enjoy working closely with founders and teams, helping connect the dots between what we’re trying to solve and what we actually build. A lot of my work has also been around AI-led products, figuring out how these new tools can become useful products rather than just shiny features.
+          The interesting part is connecting the dots between what 
+          needs solving and what actually gets built. That usually means working closely 
+          with founders and engineers, and more recently, figuring out how AI-led products 
+          can become genuinely useful rather than just shiny features.
           </p>
           <p>
-          I work best in teams that care about understanding the problem properly, but also want to move fast and learn by doing. I like dynamic teams where people and roles overlap — it means I get to see more of the problem and contribute beyond just the design file.
+          The best environments are teams that care about understanding the problem properly, 
+          but also want to move fast and learn by doing. Dynamic teams where roles overlap tend 
+          to work well too — there’s more context to pick up, and more ways to contribute beyond 
+          the design file.
           </p>
           <p>
-          And usually, while working on one problem, I end up finding a few more things worth fixing. Not because I want to expand the scope unnecessarily, but because solving one thing often reveals something else that matters.
+          And while solving one problem, there’s usually another one hiding nearby. 
+          That’s often where the interesting work starts.
           </p>
         </div>
       </section>
