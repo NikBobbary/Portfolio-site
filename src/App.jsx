@@ -465,23 +465,24 @@ export default function App() {
         </h2>
         <div className="like__copy">
           <p>
-          I’m a generalist and a 0→1 designer, mostly working with engineering-led teams where the product is complex or the problem isn’t clearly defined yet.
+            I’m a generalist and a 0→1 designer, mostly working with engineering-led teams where the product is{" "}
+            <em className="like__em">complex or the problem isn’t clearly defined yet</em>.
           </p>
           <p>
-          The interesting part is connecting the dots between what 
-          needs solving and what actually gets built. That usually means working closely 
-          with founders and engineers, and more recently, figuring out how AI-led products 
-          can become genuinely useful rather than just shiny features.
+            The interesting part is{" "}
+            <em className="like__em">connecting the dots between what needs solving and what actually gets built</em>.
+            That usually means working closely with founders and engineers, and more recently, figuring out how AI-led products can become{" "}
+            <em className="like__em">genuinely useful rather than just shiny features</em>.
           </p>
           <p>
-          The best environments are teams that care about understanding the problem properly, 
-          but also want to move fast and learn by doing. Dynamic teams where roles overlap tend 
-          to work well too — there’s more context to pick up, and more ways to contribute beyond 
-          the design file.
+            The best environments are teams that care about{" "}
+            <em className="like__em">understanding the problem properly</em>,
+            but also want to move fast and learn by doing. Dynamic teams where roles overlap tend to work well too — there’s more context to pick up, and more ways to contribute beyond the design file.
           </p>
           <p>
-          And while solving one problem, there’s usually another one hiding nearby. 
-          That’s often where the interesting work starts.
+            And while solving one problem, there’s usually{" "}
+            <em className="like__em">another one hiding nearby</em>.
+            That’s often where the interesting work starts.
           </p>
         </div>
       </section>
