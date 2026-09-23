@@ -3,6 +3,7 @@ import {
   GithubIcon,
   Home01Icon,
   InstagramIcon,
+  JokerIcon,
   Linkedin01Icon,
   Mail01Icon,
   WorkIcon,
@@ -63,6 +64,13 @@ export const BOTTOM_JUMPS = [
     tooltip: "Works",
     href: "#snapshots",
     icon: WorkIcon,
+  },
+  {
+    id: "about",
+    label: "About",
+    tooltip: "About",
+    href: "#about",
+    icon: JokerIcon,
   },
   {
     id: "contact",

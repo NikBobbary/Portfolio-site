@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Calendar03Icon } from "@hugeicons/core-free-icons";
 import ActionButton from "./ActionButton.jsx";
-import { BOTTOM_JUMPS, CONTACT } from "../data/nav.js";
+import { BOTTOM_JUMPS, CONTACT, SOCIAL } from "../data/nav.js";
 
 const SPY_LINE = 0.32;
 const SPY_IDS = BOTTOM_JUMPS.filter((item) => item.href.startsWith("#")).map(
@@ -41,7 +41,7 @@ export default function BottomNav({ visible }) {
   return (
     <nav
       className={`bottom-nav${visible ? " is-visible" : ""}`}
-      aria-label="Page jumps"
+      aria-label="Page jumps and social"
       aria-hidden={!visible}
       inert={!visible}
     >
@@ -60,7 +60,7 @@ export default function BottomNav({ visible }) {
                   tabIndex={visible ? 0 : -1}
                 >
                   <span className="bottom-nav__glyph">
-                    <HugeiconsIcon icon={icon} size={18} strokeWidth={1} />
+                    <HugeiconsIcon icon={icon} size={17} strokeWidth={1} />
                   </span>
                   <span className="bottom-nav__hint">
                     <span className="bottom-nav__hint-text">{label}</span>
@@ -71,20 +71,37 @@ export default function BottomNav({ visible }) {
           </div>
         </div>
         <div className="bottom-nav__pill">
-          <ActionButton
-            className="bottom-nav__cta"
-            href={CONTACT.href}
-            external={CONTACT.external}
-            tabIndex={visible ? 0 : -1}
-          >
-            <HugeiconsIcon
-              className="bottom-nav__cta-icon"
-              icon={Calendar03Icon}
-              size={16}
-              strokeWidth={1}
-            />
-            {CONTACT.label}
-          </ActionButton>
+          <div className="bottom-nav__links">
+            {SOCIAL.map(({ id, label, href, icon, tooltip, external }) => (
+              <ActionButton
+                key={id}
+                className="bottom-nav__icon bottom-nav__icon--social"
+                href={href}
+                external={external}
+                tooltip={tooltip}
+                aria-label={label}
+                tabIndex={visible ? 0 : -1}
+              >
+                <span className="bottom-nav__glyph">
+                  <HugeiconsIcon icon={icon} size={17} strokeWidth={1} />
+                </span>
+              </ActionButton>
+            ))}
+            <ActionButton
+              className="bottom-nav__cta"
+              href={CONTACT.href}
+              external={CONTACT.external}
+              tabIndex={visible ? 0 : -1}
+            >
+              <HugeiconsIcon
+                className="bottom-nav__cta-icon"
+                icon={Calendar03Icon}
+                size={15}
+                strokeWidth={1}
+              />
+              {CONTACT.label}
+            </ActionButton>
+          </div>
         </div>
       </div>
     </nav>
