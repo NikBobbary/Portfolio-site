@@ -42,7 +42,7 @@ const WORK = [
     id: "pairty",
     name: "Pairty",
     tagline: "Human venture capital network",
-    credit: "Product Designer",
+    credit: "Product Designer, partner with Focusoft HQ",
     shots: [
       {
         src: "/Screens/2400/Pairty-1.jpg",
@@ -63,12 +63,17 @@ const WORK = [
     id: "focusoft",
     name: "Focusoft",
     tagline: "AI & digital innovation studio",
-    credit: "Lead Designer",
+    credit: "Founding Designer",
     shots: [
       {
         src: "/Screens/2400/focusoft.jpg",
         width: 2400,
-        height: 1540,
+        height: 1539,
+      },
+      {
+        src: "/Screens/2400/focusoft-2.jpg",
+        width: 2400,
+        height: 1479,
       },
     ],
   },
@@ -78,67 +83,19 @@ const WORK = [
     tagline: "1-on-1 tutoring marketplace",
     credit: "Product Designer",
     shots: [
+      { src: "/Screens/2400/lessonpal-1.jpg", width: 8041, height: 8862 },
+      { src: "/Screens/2400/lessonpal-2.jpg", width: 8041, height: 5318 },
+      { src: "/Screens/2400/lessonpal-3.jpg", width: 8041, height: 4806 },
       {
-        src: "/Screens/2400/lessonpal-1.jpg",
-        width: 8041,
-        height: 4806,
-        decisions: [
-          {
-            x: "18%",
-            y: "28%",
-            text: "Role chips gate who can post, see, and escalate in-thread.",
-          },
-          {
-            x: "62%",
-            y: "54%",
-            text: "Threaded context replaces fragmented 1:1 support handoffs.",
-          },
-        ],
-      },
-      {
-        src: "/Screens/2400/lessonpal-2.jpg",
+        src: "/Screens/2400/lessonpal-4.jpg",
         width: 8041,
         height: 4806,
         tags: ["Role Systems", "Multi-Party"],
         note: "Who can post, see, and escalate in-thread.",
       },
-      { src: "/Screens/2400/lessonpal-3.jpg", width: 8041, height: 5159 },
-      { src: "/Screens/2400/lessonpal-4.jpg", width: 2400, height: 1587 },
-      {
-        src: "/Screens/2400/lessonpal-5.jpg",
-        width: 8041,
-        height: 4806,
-        decisions: [
-          {
-            x: "30%",
-            y: "36%",
-            text: "Status drives which reschedule actions are available.",
-          },
-          {
-            x: "70%",
-            y: "58%",
-            text: "Conflict checks block double-books before confirm.",
-          },
-        ],
-      },
-      {
-        src: "/Screens/2400/lessonpal-6.jpg",
-        width: 8041,
-        height: 8862,
-        decisions: [
-          {
-            x: "24%",
-            y: "32%",
-            text: "Subject discovery sits above the fold to start intent fast.",
-          },
-          {
-            x: "66%",
-            y: "62%",
-            text: "Reviews + Good Fit Guarantee reduce first-lesson risk.",
-          },
-        ],
-      },
-      { src: "/Screens/2400/lessonpal-7.jpg", width: 8041, height: 5318 },
+      { src: "/Screens/2400/lessonpal-5.jpg", width: 8041, height: 5159 },
+      { src: "/Screens/2400/lessonpal-6.jpg", width: 2400, height: 1587 },
+      { src: "/Screens/2400/lessonpal-7.jpg", width: 8041, height: 4806 },
     ],
   },
 ];
@@ -447,7 +404,7 @@ export default function App() {
               />
               {group.shots.map(
                 (
-                  { src, width, height, tags = [], note, decisions = [] },
+                  { src, width, height, tags = [], note },
                   shotIndex
                 ) => {
                   const index = shotOffset + shotIndex;
@@ -465,7 +422,6 @@ export default function App() {
                         }
                         allowLazy={bootDone}
                         onReady={index === 0 ? markCriticalReady : undefined}
-                        decisions={decisions}
                       />
                       {hasFoot ? (
                         <div className="work-frame-meta">
@@ -497,6 +453,30 @@ export default function App() {
           );
         })}
       </main>
+
+      <section
+        id="about"
+        className="like"
+        aria-labelledby="like-heading"
+      >
+        <h2 id="like-heading" className="like__title">
+          working with me
+        </h2>
+        <div className="like__copy">
+          <p>
+          I’m a generalist and a 0→1 designer. I’ve mostly worked with engineering-led teams, especially where the product is complex or the problem isn’t clearly defined yet.
+          </p>
+          <p>
+            I enjoy working closely with founders and teams, helping connect the dots between what we’re trying to solve and what we actually build. A lot of my work has also been around AI-led products, figuring out how these new tools can become useful products rather than just shiny features.
+          </p>
+          <p>
+          I work best in teams that care about understanding the problem properly, but also want to move fast and learn by doing. I like dynamic teams where people and roles overlap — it means I get to see more of the problem and contribute beyond just the design file.
+          </p>
+          <p>
+          And usually, while working on one problem, I end up finding a few more things worth fixing. Not because I want to expand the scope unnecessarily, but because solving one thing often reveals something else that matters.
+          </p>
+        </div>
+      </section>
 
       <section id="contact" className="contact" aria-labelledby="contact-heading">
         <div className="contact__box">
