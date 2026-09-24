@@ -1,8 +1,9 @@
 import {
   AtIcon,
+  Files02Icon,
+  GalleryVerticalIcon,
   GithubIcon,
   Home01Icon,
-  InstagramIcon,
   JokerIcon,
   Linkedin01Icon,
   Mail01Icon,
@@ -32,14 +33,6 @@ export const SOCIAL = [
     tooltip: "Send Email",
     href: "mailto:nikbobbary@gmail.com",
     icon: Mail01Icon,
-  },
-  {
-    id: "instagram",
-    label: "Instagram",
-    tooltip: "Instagram",
-    href: "https://instagram.com/nikbobbary",
-    icon: InstagramIcon,
-    external: true,
   },
 ];
 
@@ -80,3 +73,42 @@ export const BOTTOM_JUMPS = [
     icon: AtIcon,
   },
 ];
+
+export const WORK_BOTTOM_JUMPS = [
+  {
+    id: "home",
+    label: "Home",
+    tooltip: "Hero",
+    href: "#home",
+    icon: Home01Icon,
+  },
+  {
+    id: "cases",
+    label: "Cases",
+    tooltip: "Cases",
+    href: "#cases",
+    icon: Files02Icon,
+  },
+  {
+    id: "about",
+    label: "About",
+    tooltip: "About",
+    href: "#about",
+    icon: JokerIcon,
+  },
+  {
+    id: "snapshots",
+    label: "Snaps",
+    tooltip: "Snaps",
+    href: "#snapshots",
+    icon: GalleryVerticalIcon,
+  },
+  {
+    id: "contact",
+    label: "Contact",
+    tooltip: "Contact",
+    href: "#contact",
+    icon: AtIcon,
+  },
+];
+

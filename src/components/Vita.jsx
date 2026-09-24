@@ -5,23 +5,25 @@ const GROUPS = [
       {
         name: "Nesaasity",
         note: "building and designing",
+        href: "https://nesaasity.com/",
         year: "2026",
       },
       {
         name: "Pathfndr",
         note: "2M+ users · B2B Travel SaaS",
+        href: "https://www.pathfndr.io/",
         year: "2026",
       },
       {
         name: "Focusoft",
         note: "8 MVPs in Community, FinTech, AI",
-        href: "#focusoft",
+        href: "https://www.focusofthq.com/",
         year: "2024–2025",
       },
       {
         name: "Lessonpal",
         note: "EdTech · 1K - 10K+ users",
-        href: "#lessonpal",
+        href: "https://www.linkedin.com/company/lessonpal/",
         year: "2022–2024",
       },
     ],
@@ -32,12 +34,12 @@ const GROUPS = [
     items: [
       {
         cluster: [
-          { name: "Unplugd" },
-          { name: "DYO Cars", href: "#dyocar" },
-          { name: "Pathfndr" },
+          { name: "Unplugd", href: "https://unplugd.co/" },
+          { name: "DYO Cars", href: "https://dyocar.com/" },
+          { name: "Pathfndr", href: "https://www.pathfndr.io/" },
           { name: "HappyHustle" },
-          { name: "Pairty", href: "#pairty" },
-          { name: "RCFeed" }
+          { name: "Pairty", href: "https://www.pairty.com/" },
+          { name: "RCFeed", href: "https://www.rcfeed.com/" }
         ],
       },
     ],
@@ -49,6 +51,7 @@ const GROUPS = [
       {
         name: "IIT Kharagpur",
         note: "Mechanical Engineering, B.Tech. + M.Tech.",
+        href: "https://www.topuniversities.com/universities/indian-institute-technology-kharagpur-iit-kgp#p2-rankings",
         year: "2020–2025",
       },
     ],
@@ -60,8 +63,16 @@ function Name({ name, href }) {
     return <span className="vita__name">{name}</span>;
   }
 
+  const isExternal = href.startsWith("http");
+
   return (
-    <a className="vita__name vita__name--link" href={href}>
+    <a
+      className="vita__name vita__name--link"
+      href={href}
+      {...(isExternal
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {})}
+    >
       {name}
     </a>
   );
@@ -83,36 +94,69 @@ export default function Vita() {
             </h2>
           ) : null}
           <ul className="vita__list">
-            {group.items.map((item, index) => (
-              <li key={`${group.id}-${index}`} className="vita__item">
-                {item.cluster ? (
-                  <div className="vita__main">
-                    <p className="vita__cluster">
-                      {item.cluster.map((entry, entryIndex) => (
-                        <span key={entry.name}>
-                          {entryIndex > 0 ? (
-                            <span className="vita__sep" aria-hidden="true">
-                              ·
-                            </span>
-                          ) : null}
-                          <Name name={entry.name} href={entry.href} />
-                        </span>
-                      ))}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="vita__main">
-                    <Name name={item.name} href={item.href} />
-                    {item.note ? (
-                      <span className="vita__note">{item.note}</span>
-                    ) : null}
-                  </div>
-                )}
-                {item.year ? (
-                  <span className="vita__year">{item.year}</span>
-                ) : null}
-              </li>
-            ))}
+            {group.items.map((item, index) => {
+              if (item.cluster) {
+                return (
+                  <li key={`${group.id}-${index}`} className="vita__item">
+                    <div className="vita__main">
+                      <p className="vita__cluster">
+                        {item.cluster.map((entry, entryIndex) => (
+                          <span key={entry.name}>
+                            {entryIndex > 0 ? (
+                              <span className="vita__sep" aria-hidden="true">
+                                ·
+                              </span>
+                            ) : null}
+                            <Name name={entry.name} href={entry.href} />
+                          </span>
+                        ))}
+                      </p>
+                    </div>
+                  </li>
+                );
+              }
+
+              const isExternal = item.href?.startsWith("http");
+
+              return (
+                <li
+                  key={`${group.id}-${index}`}
+                  className={`vita__item${item.href ? " vita__item--linked" : ""}`}
+                >
+                  {item.href ? (
+                    <a
+                      className="vita__row-link"
+                      href={item.href}
+                      {...(isExternal
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
+                    >
+                      <div className="vita__main">
+                        <span className="vita__name">{item.name}</span>
+                        {item.note ? (
+                          <span className="vita__note">{item.note}</span>
+                        ) : null}
+                      </div>
+                      {item.year ? (
+                        <span className="vita__year">{item.year}</span>
+                      ) : null}
+                    </a>
+                  ) : (
+                    <>
+                      <div className="vita__main">
+                        <span className="vita__name">{item.name}</span>
+                        {item.note ? (
+                          <span className="vita__note">{item.note}</span>
+                        ) : null}
+                      </div>
+                      {item.year ? (
+                        <span className="vita__year">{item.year}</span>
+                      ) : null}
+                    </>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </section>
       ))}

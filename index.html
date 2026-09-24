@@ -3,13 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        try {
+          var h = window.location.hostname.toLowerCase();
+          var s = window.location.search;
+          var p = window.location.pathname.toLowerCase();
+          if (
+            h.startsWith("work.") ||
+            h === "work.nikbobbary.com" ||
+            s.indexOf("subdomain=work") !== -1 ||
+            s.indexOf("work=true") !== -1 ||
+            p === "/work" ||
+            p.indexOf("/work/") === 0
+          ) {
+            var robots = document.createElement("meta");
+            robots.name = "robots";
+            robots.content = "noindex, nofollow, noarchive";
+            document.head.appendChild(robots);
+
+            var googlebot = document.createElement("meta");
+            googlebot.name = "googlebot";
+            googlebot.content = "noindex, nofollow";
+            document.head.appendChild(googlebot);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <title>Nikitha Bobbary — Product Designer</title>
     <meta
       name="description"
       content="0→1 product designer focused on trust, identity, and communities — verification flows, role systems, and brand that holds it together."
     />
     <meta name="author" content="Nikitha Bobbary" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#171717" />
 
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />

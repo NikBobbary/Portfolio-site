@@ -3,19 +3,22 @@ import { useLocation } from "react-router-dom";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Calendar03Icon } from "@hugeicons/core-free-icons";
 import ActionButton from "./ActionButton.jsx";
-import { BOTTOM_JUMPS, CONTACT, SOCIAL } from "../data/nav.js";
+import { BOTTOM_JUMPS, CONTACT, SOCIAL, WORK_BOTTOM_JUMPS } from "../data/nav.js";
+import { isWorkDomain } from "../utils/domain.js";
 
 const SPY_LINE = 0.32;
-const SPY_IDS = BOTTOM_JUMPS.filter((item) => item.href.startsWith("#")).map(
-  (item) => item.id
-);
 
-function getActiveJump(pathname) {
+function getActiveJump(pathname, isWorkMode) {
   if (pathname.startsWith("/project/lore")) return "lore";
+
+  const jumps = isWorkMode ? WORK_BOTTOM_JUMPS : BOTTOM_JUMPS;
+  const spyIds = jumps
+    .filter((item) => item.href.startsWith("#"))
+    .map((item) => item.id);
 
   const line = window.innerHeight * SPY_LINE;
   let current = "home";
-  for (const id of SPY_IDS) {
+  for (const id of spyIds) {
     const node = document.getElementById(id);
     if (!node) continue;
     if (node.getBoundingClientRect().top <= line) current = id;
@@ -23,12 +26,14 @@ function getActiveJump(pathname) {
   return current;
 }
 
-export default function BottomNav({ visible }) {
+export default function BottomNav({ visible, isWork: propIsWork }) {
+  const isWork = propIsWork !== undefined ? propIsWork : isWorkDomain();
+  const jumps = isWork ? WORK_BOTTOM_JUMPS : BOTTOM_JUMPS;
   const { pathname } = useLocation();
-  const [active, setActive] = useState(() => getActiveJump(pathname));
+  const [active, setActive] = useState(() => getActiveJump(pathname, isWork));
 
   useEffect(() => {
-    const sync = () => setActive(getActiveJump(pathname));
+    const sync = () => setActive(getActiveJump(pathname, isWork));
     sync();
     window.addEventListener("scroll", sync, { passive: true });
     window.addEventListener("resize", sync);
@@ -36,7 +41,7 @@ export default function BottomNav({ visible }) {
       window.removeEventListener("scroll", sync);
       window.removeEventListener("resize", sync);
     };
-  }, [pathname]);
+  }, [pathname, isWork]);
 
   return (
     <nav
@@ -48,7 +53,7 @@ export default function BottomNav({ visible }) {
       <div className="bottom-nav__cluster">
         <div className="bottom-nav__pill">
           <div className="bottom-nav__links">
-            {BOTTOM_JUMPS.map(({ id, label, href, icon }) => {
+            {jumps.map(({ id, label, href, icon }) => {
               const isActive = active === id;
               return (
                 <ActionButton

@@ -1,0 +1,25 @@
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "work.nikbobbary.com"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/((?!assets/|Screens/|locale/|shimeji/|case-studies/|favicon|apple-touch|nikitha-avatar|footer-name|robots.txt).*).*",
+      "destination": "/index.html"
+    }
+  ]
+}

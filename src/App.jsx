@@ -13,6 +13,8 @@ import Shimeji from "./components/Shimeji.jsx";
 import Vita from "./components/Vita.jsx";
 import WorkFrame from "./components/WorkFrame.jsx";
 import WorkHeader from "./components/WorkHeader.jsx";
+import WorkGrid from "./components/WorkGrid.jsx";
+import { applyNoIndexMeta, isWorkDomain } from "./utils/domain.js";
 import { CONTACT, SOCIAL } from "./data/nav.js";
 
 const WORK = [
@@ -118,7 +120,15 @@ const DOMAIN_CHIPS = [
   "Identity Systems",
 ];
 
-export default function App() {
+export default function App({ isWorkView = false }) {
+  const [isWork] = useState(() => isWorkView || isWorkDomain());
+
+  useEffect(() => {
+    if (isWork) {
+      applyNoIndexMeta(true);
+    }
+  }, [isWork]);
+
   const topNavRef = useRef(null);
   const [bootDone, setBootDone] = useState(false);
   const [bootProgress, setBootProgress] = useState(0);
@@ -342,6 +352,117 @@ export default function App() {
     };
   }, []);
 
+  const aboutSection = (
+    <section
+      id="about"
+      className="like like--separator"
+      aria-labelledby="like-heading"
+    >
+      <h2 id="like-heading" className="like__title">
+        working with me
+      </h2>
+      <div className="like__portrait-wrap">
+        <img
+          src="/profile.jpg"
+          alt="Nikitha Bobbary"
+          className="like__portrait"
+          loading="eager"
+        />
+      </div>
+      <div className="like__copy">
+        <p>
+          I’m a generalist and a 0→1 designer. Most of my work has been with engineering-led teams, usually when the product is complicated, early, or still being figured out.
+        </p>
+        <p>
+          I like that stage. There’s usually no neat brief to work from, so I tend to get involved wherever the problem takes me, figuring out what’s worth solving, talking through it with founders and engineers, shaping the product, and getting into the details of how it actually works.
+        </p>
+        <p>
+          A lot of my curiosity lately has been around AI. Not so much the technology itself, but what happens when you try to turn it into a useful product. There’s a lot of room for genuinely new interactions, and a lot of room for things that are just features with AI attached.
+        </p>
+        <p>
+          I like moving fast, but I care a lot about craft. I can spend an unreasonable amount of time on something small if I think it matters. And I rarely stay inside the boundaries of a design task for very long. While working on one problem, I’ll usually find a few more worth fixing.
+        </p>
+        <p>
+          That’s probably the kind of designer I am: interested in the whole thing, not just the part that happens to have my name on it.
+        </p>
+      </div>
+    </section>
+  );
+
+  const snapshotsSection = (
+    <main id="snapshots">
+      {WORK.map((group, groupIndex) => {
+        const shotOffset = WORK.slice(0, groupIndex).reduce(
+          (count, item) => count + item.shots.length,
+          0
+        );
+
+        return (
+          <section
+            key={group.id}
+            id={group.id}
+            className="work-group"
+            aria-label={group.name}
+          >
+            <WorkHeader
+              name={group.name}
+              tagline={group.tagline}
+              credit={group.credit}
+              logo={group.logo}
+            />
+            {group.shots.map(
+              (
+                { src, width, height, tags = [], note },
+                shotIndex
+              ) => {
+                const index = shotOffset + shotIndex;
+                const hasFoot = Boolean(note) || tags.length > 0;
+
+                return (
+                  <div key={src} className="work-shot">
+                    <WorkFrame
+                      src={src}
+                      width={width}
+                      height={height}
+                      priority={
+                        index === 0 ||
+                        (criticalReady && index < WARM_AFTER_BOOT)
+                      }
+                      allowLazy={bootDone}
+                      onReady={index === 0 ? markCriticalReady : undefined}
+                    />
+                    {hasFoot ? (
+                      <div className="work-frame-meta">
+                        {note ? (
+                          <p className="work-frame-note">{note}</p>
+                        ) : null}
+                        {tags.length > 0 ? (
+                          <ul
+                            className="work-frame-tags"
+                            aria-label="Image tags"
+                          >
+                            {tags.map((tag, tagIndex) => (
+                              <li
+                                key={`${src}-tag-${tagIndex}`}
+                                className="work-frame-tag"
+                              >
+                                {tag}
+                              </li>
+                            ))}
+                          </ul>
+                        ) : null}
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              }
+            )}
+          </section>
+        );
+      })}
+    </main>
+  );
+
   return (
     <div className={intro ? "is-intro" : undefined}>
       <Boot done={bootDone} progress={bootProgress} />
@@ -350,142 +471,53 @@ export default function App() {
       <Shimeji ready={bootDone} />
       <header id="home" className="hero">
         <AppBar ref={topNavRef} />
-        <div className="hero__inner">
-          <div className="hero__stage">
-            <h1 className="hero__name">
-              <span className="hero__lead">
-                Hey! I&apos;m <HeroName />
-              </span>
-              a <HeroZeroOne /> from{" "}
-              <button
-                type="button"
-                className={`hero__place${localeOpen ? " is-open" : ""}`}
-                aria-expanded={localeOpen}
-                aria-pressed={localePinned}
-                aria-controls="locale-card"
-                onPointerEnter={() => setLocaleHover(true)}
-                onPointerLeave={() => setLocaleHover(false)}
-                onClick={pinLocale}
-              >
-                India
-                <span className="hero__flag" aria-hidden="true">
-                  <span className="hero__flag-glyph">🇮🇳</span>
+        <div className="hero__unit">
+          <div className="hero__inner">
+            <div className="hero__stage">
+              <h1 className="hero__name">
+                <span className="hero__lead">
+                  Hey! I&apos;m <HeroName />
                 </span>
-              </button>
-              .
-            </h1>
-            <p className="hero__dek">
-            Self-taught in design, trained as an engineer, and endlessly curious about people, art, and how things work.
-            </p>
+                a <HeroZeroOne /> from{" "}
+                <button
+                  type="button"
+                  className={`hero__place${localeOpen ? " is-open" : ""}`}
+                  aria-expanded={localeOpen}
+                  aria-pressed={localePinned}
+                  aria-controls="locale-card"
+                  onPointerEnter={() => setLocaleHover(true)}
+                  onPointerLeave={() => setLocaleHover(false)}
+                  onClick={pinLocale}
+                >
+                  India
+                  <span className="hero__flag" aria-hidden="true">
+                    <span className="hero__flag-glyph">🇮🇳</span>
+                  </span>
+                </button>
+                .
+              </h1>
+              <p className="hero__dek">
+              Self-taught in design, trained as an engineer, and endlessly curious about people, art, and how things work.
+              </p>
+            </div>
+            {localeOpen ? <LocaleCard /> : null}
           </div>
-          {localeOpen ? <LocaleCard /> : null}
+          <Vita />
         </div>
-        <Vita />
       </header>
 
-      <main id="snapshots">
-        {WORK.map((group, groupIndex) => {
-          const shotOffset = WORK.slice(0, groupIndex).reduce(
-            (count, item) => count + item.shots.length,
-            0
-          );
-
-          return (
-            <section
-              key={group.id}
-              id={group.id}
-              className="work-group"
-              aria-label={group.name}
-            >
-              <WorkHeader
-                name={group.name}
-                tagline={group.tagline}
-                credit={group.credit}
-                logo={group.logo}
-              />
-              {group.shots.map(
-                (
-                  { src, width, height, tags = [], note },
-                  shotIndex
-                ) => {
-                  const index = shotOffset + shotIndex;
-                  const hasFoot = Boolean(note) || tags.length > 0;
-
-                  return (
-                    <div key={src} className="work-shot">
-                      <WorkFrame
-                        src={src}
-                        width={width}
-                        height={height}
-                        priority={
-                          index === 0 ||
-                          (criticalReady && index < WARM_AFTER_BOOT)
-                        }
-                        allowLazy={bootDone}
-                        onReady={index === 0 ? markCriticalReady : undefined}
-                      />
-                      {hasFoot ? (
-                        <div className="work-frame-meta">
-                          {note ? (
-                            <p className="work-frame-note">{note}</p>
-                          ) : null}
-                          {tags.length > 0 ? (
-                            <ul
-                              className="work-frame-tags"
-                              aria-label="Image tags"
-                            >
-                              {tags.map((tag, tagIndex) => (
-                                <li
-                                  key={`${src}-tag-${tagIndex}`}
-                                  className="work-frame-tag"
-                                >
-                                  {tag}
-                                </li>
-                              ))}
-                            </ul>
-                          ) : null}
-                        </div>
-                      ) : null}
-                    </div>
-                  );
-                }
-              )}
-            </section>
-          );
-        })}
-      </main>
-
-      <section
-        id="about"
-        className="like"
-        aria-labelledby="like-heading"
-      >
-        <h2 id="like-heading" className="like__title">
-          working with me
-        </h2>
-        <div className="like__copy">
-          <p>
-            I’m a generalist and a 0→1 designer, mostly working with engineering-led teams where the product is{" "}
-            <em className="like__em">complex or the problem isn’t clearly defined yet</em>.
-          </p>
-          <p>
-            The interesting part is{" "}
-            <em className="like__em">connecting the dots between what needs solving and what actually gets built</em>.
-            That usually means working closely with founders and engineers, and more recently, figuring out how AI-led products can become{" "}
-            <em className="like__em">genuinely useful rather than just shiny features</em>.
-          </p>
-          <p>
-            The best environments are teams that care about{" "}
-            <em className="like__em">understanding the problem properly</em>,
-            but also want to move fast and learn by doing. Dynamic teams where roles overlap tend to work well too — there’s more context to pick up, and more ways to contribute beyond the design file.
-          </p>
-          <p>
-            And while solving one problem, there’s usually{" "}
-            <em className="like__em">another one hiding nearby</em>.
-            That’s often where the interesting work starts.
-          </p>
-        </div>
-      </section>
+      {isWork ? (
+        <>
+          <WorkGrid />
+          {aboutSection}
+          {snapshotsSection}
+        </>
+      ) : (
+        <>
+          {snapshotsSection}
+          {aboutSection}
+        </>
+      )}
 
       <section id="contact" className="contact" aria-labelledby="contact-heading">
         <div className="contact__box">
@@ -538,7 +570,7 @@ export default function App() {
         </div>
       </section>
 
-      <BottomNav visible={bottomNavVisible} />
+      <BottomNav visible={bottomNavVisible} isWork={isWork} />
     </div>
   );
 }
