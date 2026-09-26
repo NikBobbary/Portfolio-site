@@ -1,15 +1,26 @@
-export function isWorkDomain() {
+export function isWorkSubdomain() {
   if (typeof window === "undefined") return false;
 
   const hostname = window.location.hostname.toLowerCase();
   const search = new URLSearchParams(window.location.search);
-  const pathname = window.location.pathname.toLowerCase();
 
   return (
     hostname.startsWith("work.") ||
     hostname === "work.nikbobbary.com" ||
-    search.get("subdomain") === "work" ||
+    search.get("subdomain") === "work"
+  );
+}
+
+export function isWorkDomain() {
+  if (typeof window === "undefined") return false;
+
+  const search = new URLSearchParams(window.location.search);
+  const pathname = window.location.pathname.toLowerCase();
+
+  return (
+    isWorkSubdomain() ||
     search.get("work") === "true" ||
+    search.has("work") ||
     pathname === "/work" ||
     pathname.startsWith("/work/")
   );

@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { WORK_CASE_STUDIES } from "../data/workCases.js";
-import { isWorkDomain } from "../utils/domain.js";
+import { isWorkSubdomain } from "../utils/domain.js";
 
 export default function WorkGrid() {
-  const isWork = isWorkDomain();
+  const isSubdomain = isWorkSubdomain();
 
   return (
     <section
@@ -20,7 +20,7 @@ export default function WorkGrid() {
 
         <div className="work-grid">
           {WORK_CASE_STUDIES.map(({ id, slug, title, categories, image, width, height, alt }) => {
-            const cardHref = isWork ? `/${slug || id}` : `/work/${slug || id}`;
+            const cardHref = isSubdomain ? `/${slug || id}` : `/work/${slug || id}`;
 
             return (
               <article key={id} className="work-card">
@@ -59,7 +59,7 @@ export default function WorkGrid() {
                   <div className="work-card__meta">
                     <h3 className="work-card__title">{title}</h3>
                     <p className="work-card__tags">
-                      {categories.join(" · ")}
+                      {(categories || []).join(" · ")}
                     </p>
                   </div>
                 </Link>
