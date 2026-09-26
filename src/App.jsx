@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { HugeiconsIcon } from "@hugeicons/react";
 import ActionButton from "./components/ActionButton.jsx";
 import AppBar from "./components/AppBar.jsx";
@@ -121,7 +122,8 @@ const DOMAIN_CHIPS = [
 ];
 
 export default function App({ isWorkView = false }) {
-  const [isWork] = useState(() => isWorkView || isWorkDomain());
+  const location = useLocation();
+  const isWork = isWorkView || isWorkDomain();
 
   useEffect(() => {
     if (isWork) {
