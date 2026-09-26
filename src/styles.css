@@ -1,5 +1,5 @@
 :root {
-  --bg: #171717;
+  --bg: #000000;
   --padding: 1.5rem;
   --fog: #c8c4bc;
   --font: "Google Sans Flex", sans-serif;
@@ -26,7 +26,7 @@ html {
 html,
 body,
 #root {
-  background: var(--bg, #171717);
+  background: var(--bg, #000000);
   color: var(--fog);
   min-height: 100%;
   font-family: var(--font);
@@ -88,7 +88,7 @@ body {
   align-items: end;
   justify-items: center;
   padding-bottom: env(safe-area-inset-bottom);
-  background: var(--bg, #171717);
+  background: var(--bg, #000000);
   color: #fff;
   overflow: hidden;
   pointer-events: auto;
@@ -619,7 +619,7 @@ body {
   width: 100%;
   padding:
     clamp(6rem, 18vw, 20rem) clamp(1.5rem, 5vw, 4.75rem);
-  background: var(--bg, #171717);
+  background: var(--bg, #000000);
 }
 
 .like__title {
@@ -750,7 +750,7 @@ body {
   width: 100%;
   min-height: 80vh;
   min-height: 80dvh;
-  background: var(--bg, #171717);
+  background: var(--bg, #000000);
   padding:
     clamp(1rem, 2.5vw, 1.75rem) clamp(1rem, 2.5vw, 1.75rem) max(1rem, env(safe-area-inset-bottom, 0px));
 }
@@ -927,7 +927,7 @@ body {
   min-height: 100vh;
   min-height: 100svh;
   min-height: var(--hero-min, 100svh);
-  background: var(--bg, #171717);
+  background: var(--bg, #000000);
   overflow-anchor: none;
   padding: calc(var(--appbar-h) + 1.25rem) 0 2rem;
 }
@@ -1542,7 +1542,7 @@ main#snapshots {
   gap: 0;
   padding: 0 var(--padding) var(--padding);
   width: 100%;
-  background: var(--bg, #171717);
+  background: var(--bg, #000000);
 }
 
 .work-group {
@@ -2023,7 +2023,7 @@ main#snapshots {
 .story-page {
   --story-toc-w: 16rem;
   min-height: 100%;
-  background: var(--bg, #171717);
+  background: var(--bg, #000000);
   color: var(--fog);
 }
 
@@ -2950,7 +2950,7 @@ main#snapshots {
 .work-grid-section {
   width: 100%;
   padding: clamp(3rem, 6vh, 5rem) var(--padding) clamp(2.5rem, 5vh, 4rem);
-  background: var(--bg, #171717);
+  background: var(--bg, #000000);
   box-sizing: border-box;
 }
 
@@ -2971,7 +2971,7 @@ main#snapshots {
   padding: clamp(8rem, 18vh, 15rem) clamp(1.5rem, 5vw, 4.75rem);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: radial-gradient(ellipse 90% 70% at 50% 50%, rgba(255, 255, 255, 0.018) 0%, rgba(0, 0, 0, 0) 100%), var(--bg, #171717);
+  background: radial-gradient(ellipse 90% 70% at 50% 50%, rgba(255, 255, 255, 0.018) 0%, rgba(0, 0, 0, 0) 100%), var(--bg, #000000);
 }
 
 .like--separator::before {
@@ -3238,7 +3238,7 @@ main#snapshots {
 
 /* —— Case Study Detail Page (work.nikbobbary.com/~) —— */
 .case-detail-page {
-  background: var(--bg, #171717);
+  background: var(--bg, #000000);
   min-height: 100vh;
   min-height: 100svh;
   color: var(--fog);
@@ -3253,7 +3253,7 @@ main#snapshots {
   z-index: 100;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  background: rgba(23, 23, 23, 0.85);
+  background: rgba(0, 0, 0, 0.85);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 

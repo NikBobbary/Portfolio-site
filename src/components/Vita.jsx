@@ -1,30 +1,33 @@
 const GROUPS = [
   {
-    id: "work",
+    id: "currently",
+    label: "Currently",
     items: [
       {
         name: "Nesaasity",
         note: "building and designing",
         href: "https://nesaasity.com/",
-        year: "2026",
       },
+    ],
+  },
+  {
+    id: "previously",
+    label: "Previously",
+    items: [
       {
         name: "Pathfndr",
-        note: "2M+ users · B2B Travel SaaS",
+        note: "B2B Travel · 2M+ users",
         href: "https://www.pathfndr.io/",
-        year: "2026",
       },
       {
         name: "Focusoft",
-        note: "8 MVPs in Community, FinTech, AI",
+        note: "Sole Designer · 8 SaaS products in Community, FinTech, AI",
         href: "https://www.focusofthq.com/",
-        year: "2024–2025",
       },
       {
         name: "Lessonpal",
-        note: "EdTech · 1K - 10K+ users",
+        note: "EdTech · 1K → 10K+ users",
         href: "https://www.linkedin.com/company/lessonpal/",
-        year: "2022–2024",
       },
     ],
   },
@@ -52,7 +55,6 @@ const GROUPS = [
         name: "IIT Kharagpur",
         note: "Mechanical Engineering, B.Tech. + M.Tech.",
         href: "https://www.topuniversities.com/universities/indian-institute-technology-kharagpur-iit-kgp#p2-rankings",
-        year: "2020–2025",
       },
     ],
   },
@@ -137,22 +139,14 @@ export default function Vita() {
                           <span className="vita__note">{item.note}</span>
                         ) : null}
                       </div>
-                      {item.year ? (
-                        <span className="vita__year">{item.year}</span>
-                      ) : null}
                     </a>
                   ) : (
-                    <>
-                      <div className="vita__main">
-                        <span className="vita__name">{item.name}</span>
-                        {item.note ? (
-                          <span className="vita__note">{item.note}</span>
-                        ) : null}
-                      </div>
-                      {item.year ? (
-                        <span className="vita__year">{item.year}</span>
+                    <div className="vita__main">
+                      <span className="vita__name">{item.name}</span>
+                      {item.note ? (
+                        <span className="vita__note">{item.note}</span>
                       ) : null}
-                    </>
+                    </div>
                   )}
                 </li>
               );
