@@ -72,6 +72,11 @@ export default function LessonpalSections() {
             </div>
           </div>
 
+          {/* 1 column: Gap with vertical divider line */}
+          <div className="lp-section--problem__divider-col" aria-hidden="true">
+            <div className="lp-section--problem__line" />
+          </div>
+
           <div className="lp-section--problem__right">
             <h3 className="lp-section--problem__kicker cs-h3">
               Things don't always go <em>as planned</em>.
@@ -91,6 +96,29 @@ export default function LessonpalSections() {
                 </strong>
                 .
               </p>
+            </div>
+
+            <div className="lp-section--problem__relay">
+              <h3 className="lp-section--problem__relay-title cs-h3">
+                A simple change became a relay.
+              </h3>
+              <div className="lp-section--problem__relay-grid">
+                <div className="lp-section--problem__relay-col">
+                  <p className="cs-body">
+                    You can't make your lesson, so you reach out to support.
+                  </p>
+                </div>
+                <div className="lp-section--problem__relay-col">
+                  <p className="cs-body">
+                    Support contacts the tutor, then waits for their response.
+                  </p>
+                </div>
+                <div className="lp-section--problem__relay-col">
+                  <p className="cs-body">
+                    The answer travels back and forth before anything changes.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

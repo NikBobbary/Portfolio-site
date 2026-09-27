@@ -13,45 +13,45 @@
   --cs-font-serif: "Source Serif 4", Georgia, serif;
   --cs-font-mono: "Google Sans Code Variable", "Google Sans Code", "Google Sans Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* 1. Title: Google Sans, 72px, Regular, Line height: 90px, Letter spacing: 0% */
+  /* 1. Title: Google Sans, fluid 38px -> 72px, Line height: 1.22 */
   --cs-title-font: var(--cs-font-sans);
-  --cs-title-size: 72px;
-  --cs-title-lh: 90px;
+  --cs-title-size: clamp(2.375rem, 4.8vw, 4.5rem);
+  --cs-title-lh: 1.22;
   --cs-title-ls: 0;
   --cs-title-weight: 400;
 
-  /* 2. Heading 1: Google Sans, 64px, Regular, Line height: 125% (80px), Letter spacing: 0% */
+  /* 2. Heading 1: Google Sans, fluid 34px -> 64px, Line height: 1.22 */
   --cs-h1-font: var(--cs-font-sans);
-  --cs-h1-size: 64px;
-  --cs-h1-lh: 1.25;
+  --cs-h1-size: clamp(2.125rem, 4.2vw, 4rem);
+  --cs-h1-lh: 1.22;
   --cs-h1-ls: 0;
   --cs-h1-weight: 300;
 
-  /* 3. Heading 2: Google Sans, 42px, Regular, Line height: 53px, Letter spacing: 0% */
+  /* 3. Heading 2: Google Sans, fluid 26px -> 42px, Line height: 1.25 */
   --cs-h2-font: var(--cs-font-sans);
-  --cs-h2-size: 42px;
-  --cs-h2-lh: 53px;
+  --cs-h2-size: clamp(1.625rem, 2.8vw, 2.625rem);
+  --cs-h2-lh: 1.25;
   --cs-h2-ls: 0;
   --cs-h2-weight: 300;
 
-  /* 4. Heading 3: Google Sans, 32px, Regular, Line height: 40px, Letter spacing: 0% */
+  /* 4. Heading 3: Google Sans, fluid 22px -> 32px, Line height: 1.25 */
   --cs-h3-font: var(--cs-font-sans);
-  --cs-h3-size: 32px;
-  --cs-h3-lh: 40px;
+  --cs-h3-size: clamp(1.375rem, 2vw, 2rem);
+  --cs-h3-lh: 1.25;
   --cs-h3-ls: 0;
   --cs-h3-weight: 400;
 
-  /* 5. Body: Source Serif 4, 24px, Regular, Line height: 33px, Letter spacing: 2% */
+  /* 5. Body: Source Serif 4, fluid 17px -> 20px, Line height: 1.38 */
   --cs-body-font: var(--cs-font-serif);
-  --cs-body-size: 24px;
-  --cs-body-lh: 33px;
+  --cs-body-size: clamp(1.0625rem, 1.2vw, 1.25rem);
+  --cs-body-lh: 1.4;
   --cs-body-ls: 0.04em;
   --cs-body-weight: 300;
 
-  /* 6. Code2: Google Sans Code, 14px, Regular, Line height: 18px, Letter spacing: 0% */
+  /* 6. Code2: Google Sans Code, fluid 12px -> 14px, Line height: 1.35 */
   --cs-code2-font: var(--cs-font-mono);
-  --cs-code2-size: 14px;
-  --cs-code2-lh: 18px;
+  --cs-code2-size: clamp(0.75rem, 0.9vw, 0.875rem);
+  --cs-code2-lh: 1.35;
   --cs-code2-ls: 0;
   --cs-code2-weight: 400;
 
@@ -3570,7 +3570,8 @@ main#snapshots {
 }
 
 /* 1 column: Gap with vertical divider line */
-.lp-section--intro__divider-col {
+.lp-section--intro__divider-col,
+.lp-section--problem__divider-col {
   grid-column: span 1;
   display: flex;
   align-items: stretch;
@@ -3578,7 +3579,22 @@ main#snapshots {
   box-sizing: border-box;
 }
 
-.lp-section--intro__line {
+.lp-section--problem__divider-col {
+  position: relative;
+}
+
+.lp-section--problem__divider-col::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  right: calc(-1 * var(--cs-grid-gutter, 32px));
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.lp-section--intro__line,
+.lp-section--problem__line {
   width: 1px;
   height: 100%;
   background: rgba(255, 255, 255, 0.12);
@@ -3650,6 +3666,7 @@ main#snapshots {
 /* Section 2: Problem (12-column grid: 6 cols left + 6 cols right) */
 .lp-section--problem {
   width: 100%;
+  border-bottom: none;
 }
 
 .lp-section--problem__container {
@@ -3660,7 +3677,7 @@ main#snapshots {
   width: 100%;
   box-sizing: border-box;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: stretch;
 }
 
 .lp-section--problem__left {
@@ -3669,7 +3686,7 @@ main#snapshots {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 32px;
+  justify-content: space-between;
   padding-top: 88px;
   box-sizing: border-box;
 }
@@ -3682,17 +3699,19 @@ main#snapshots {
 }
 
 .lp-section--problem__seesaw-wrap {
-  align-self: flex-end;
+  width: 100%;
+  margin-top: auto;
   line-height: 0;
   display: flex;
   justify-content: flex-end;
 }
 
 .lp-lego-seesaw {
+  width: 100%;
+  max-width: 100%;
   height: auto;
   display: block;
   object-fit: contain;
-  margin-bottom: -1px;
 }
 
 .lp-section--problem__right {
@@ -3701,8 +3720,9 @@ main#snapshots {
   display: flex;
   flex-direction: column;
   padding-top: 88px;
-  padding-bottom: 44px;
+  padding-bottom: 88px;
   box-sizing: border-box;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .lp-section--problem__kicker {
@@ -3718,6 +3738,7 @@ main#snapshots {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  max-width: 500px;
 }
 
 .lp-section--problem__body p {
@@ -3728,6 +3749,36 @@ main#snapshots {
 .lp-section--problem__body strong em,
 .lp-section--problem__body em strong {
   font-style: italic;
+}
+
+.lp-section--problem__relay {
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lp-section--problem__relay-title {
+  color: #ffffff;
+  margin: 0 0 28px 0;
+}
+
+.lp-section--problem__relay-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--cs-grid-gutter, 32px);
+  row-gap: 1.5rem;
+}
+
+.lp-section--problem__relay-col p {
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+}
+
+@media (max-width: 680px) {
+  .lp-section--problem__relay-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 
 /* Responsive */
@@ -3758,13 +3809,19 @@ main#snapshots {
     padding: 2.5rem 0 1.5rem;
   }
 
-  .lp-section--intro__divider-col {
+  .lp-section--intro__divider-col,
+  .lp-section--problem__divider-col {
     width: 100%;
     height: 1px;
     margin: 0;
   }
 
-  .lp-section--intro__line {
+  .lp-section--problem__divider-col::after {
+    display: none;
+  }
+
+  .lp-section--intro__line,
+  .lp-section--problem__line {
     width: 100%;
     height: 1px;
   }
@@ -3807,7 +3864,7 @@ main#snapshots {
   }
 
   .lp-section--problem__seesaw-wrap {
-    grid-column: span 3;
+    width: 100%;
     order: 3;
     margin-top: 2.5rem;
     align-self: center;
@@ -3817,6 +3874,10 @@ main#snapshots {
     width: 100%;
     padding-top: 1.5rem;
     padding-bottom: 2rem;
+  }
+
+  .lp-section--problem__relay {
+    margin-top: 3rem;
   }
 }
 
