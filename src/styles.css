@@ -3700,7 +3700,6 @@ main#snapshots {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  align-self: start;
   padding-top: 88px;
   padding-bottom: 44px;
   box-sizing: border-box;
