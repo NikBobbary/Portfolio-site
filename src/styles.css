@@ -3659,6 +3659,7 @@ main#snapshots {
   width: 100%;
   box-sizing: border-box;
   justify-content: space-between;
+  align-items: flex-end;
 }
 
 .lp-section--problem__left {
