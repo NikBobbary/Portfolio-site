@@ -3601,6 +3601,7 @@ main#snapshots {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  padding-bottom: 200px;
 }
 
 .lp-section--intro__title {
@@ -3699,6 +3700,7 @@ main#snapshots {
   min-width: 0;
   display: flex;
   flex-direction: column;
+  align-self: start;
   padding-top: 88px;
   padding-bottom: 44px;
   box-sizing: border-box;
