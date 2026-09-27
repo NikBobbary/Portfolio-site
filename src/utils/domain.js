@@ -5,6 +5,8 @@ export function isWorkSubdomain() {
   const search = new URLSearchParams(window.location.search);
 
   return (
+    hostname === "localhost" ||
+    hostname === "127.0.0.1" ||
     hostname.startsWith("work.") ||
     hostname === "work.nikbobbary.com" ||
     search.get("subdomain") === "work"
@@ -12,18 +14,13 @@ export function isWorkSubdomain() {
 }
 
 export function isWorkDomain() {
-  if (typeof window === "undefined") return false;
+  return isWorkSubdomain();
+}
 
-  const search = new URLSearchParams(window.location.search);
-  const pathname = window.location.pathname.toLowerCase();
-
-  return (
-    isWorkSubdomain() ||
-    search.get("work") === "true" ||
-    search.has("work") ||
-    pathname === "/work" ||
-    pathname.startsWith("/work/")
-  );
+export function redirectToMain() {
+  if (typeof window === "undefined") return;
+  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") return;
+  window.location.replace("https://nikbobbary.com");
 }
 
 export function applyNoIndexMeta(enabled = true) {
