@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
 import { WORK_CASE_STUDIES } from "../data/workCases.js";
-import { isWorkSubdomain } from "../utils/domain.js";
 
 export default function WorkGrid() {
-  const isSubdomain = isWorkSubdomain();
-
   return (
     <section
       id="cases"
@@ -20,7 +17,7 @@ export default function WorkGrid() {
 
         <div className="work-grid">
           {WORK_CASE_STUDIES.map(({ id, slug, title, categories, image, width, height, alt }) => {
-            const cardHref = isSubdomain ? `/${slug || id}` : `/work/${slug || id}`;
+            const cardHref = `/${slug || id}`;
 
             return (
               <article key={id} className="work-card">

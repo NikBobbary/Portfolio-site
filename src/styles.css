@@ -7,6 +7,58 @@
   --image-radius: clamp(0.75rem, 2.2vw, 1.75rem);
   --cursor-size: clamp(1rem, 0.9vw, 2rem);
   --content-pad: clamp(1.25rem, 4vw, 3rem);
+
+  /* —— Case Studies Typography System —— */
+  --cs-font-sans: "Google Sans Flex", "Google Sans", sans-serif;
+  --cs-font-serif: "Source Serif 4", Georgia, serif;
+  --cs-font-mono: "Google Sans Code Variable", "Google Sans Code", "Google Sans Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* 1. Title: Google Sans, fluid 38px -> 72px, Line height: 1.22 */
+  --cs-title-font: var(--cs-font-sans);
+  --cs-title-size: clamp(2.375rem, 4.8vw, 4.5rem);
+  --cs-title-lh: 1.22;
+  --cs-title-ls: 0;
+  --cs-title-weight: 400;
+
+  /* 2. Heading 1: Google Sans, fluid 34px -> 64px, Line height: 1.22 */
+  --cs-h1-font: var(--cs-font-sans);
+  --cs-h1-size: clamp(2.125rem, 4.2vw, 4rem);
+  --cs-h1-lh: 1.22;
+  --cs-h1-ls: 0;
+  --cs-h1-weight: 300;
+
+  /* 3. Heading 2: Google Sans, fluid 26px -> 42px, Line height: 1.25 */
+  --cs-h2-font: var(--cs-font-sans);
+  --cs-h2-size: clamp(1.625rem, 2.8vw, 2.625rem);
+  --cs-h2-lh: 1.25;
+  --cs-h2-ls: 0;
+  --cs-h2-weight: 300;
+
+  /* 4. Heading 3: Google Sans, fluid 22px -> 32px, Line height: 1.25 */
+  --cs-h3-font: var(--cs-font-sans);
+  --cs-h3-size: clamp(1.375rem, 2vw, 2rem);
+  --cs-h3-lh: 1.25;
+  --cs-h3-ls: 0;
+  --cs-h3-weight: 400;
+
+  /* 5. Body: Source Serif 4, fluid 17px -> 20px, Line height: 1.38 */
+  --cs-body-font: var(--cs-font-serif);
+  --cs-body-size: clamp(1.0625rem, 1.2vw, 1.25rem);
+  --cs-body-lh: 1.4;
+  --cs-body-ls: 0.04em;
+  --cs-body-weight: 300;
+
+  /* 6. Code2: Google Sans Code, fluid 12px -> 14px, Line height: 1.35 */
+  --cs-code2-font: var(--cs-font-mono);
+  --cs-code2-size: clamp(0.75rem, 0.9vw, 0.875rem);
+  --cs-code2-lh: 1.35;
+  --cs-code2-ls: 0;
+  --cs-code2-weight: 400;
+
+  /* —— Case Studies Grid System (12-column layout, 56px margin, 32px gutter) —— */
+  --cs-grid-margin: 56px;
+  --cs-grid-gutter: 32px;
+  --cs-grid-cols: 12;
 }
 
 *,
@@ -1363,6 +1415,7 @@ body {
 }
 
 @media (max-width: 820px) {
+
   .appbar__cta-icon,
   .case-detail-nav__cta-icon {
     display: none;
@@ -3029,7 +3082,7 @@ main#snapshots {
   color: #ffffff;
 }
 
-.like--separator + main#snapshots .work-group:first-child .work-header {
+.like--separator+main#snapshots .work-group:first-child .work-header {
   padding-top: clamp(6rem, 14vh, 9rem);
 }
 
@@ -3228,6 +3281,7 @@ main#snapshots {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .work-card__media,
   .work-card__image,
   .work-card__action,
@@ -3270,7 +3324,7 @@ main#snapshots {
   gap: 1rem;
   height: 100%;
   width: 100%;
-  padding: 0 var(--content-pad);
+  padding: 0 var(--cs-grid-margin, 56px);
   box-sizing: border-box;
 }
 
@@ -3332,37 +3386,101 @@ main#snapshots {
   }
 }
 
-/* —— Case Study Hero Unit —— */
+/* —— Case Studies Typography System —— */
+.cs-title {
+  font-family: var(--cs-title-font);
+  font-size: var(--cs-title-size);
+  line-height: var(--cs-title-lh);
+  letter-spacing: var(--cs-title-ls);
+  font-weight: var(--cs-title-weight);
+  text-align: left;
+}
+
+.cs-h1,
+.cs-heading-1 {
+  font-family: var(--cs-h1-font);
+  font-size: var(--cs-h1-size);
+  line-height: var(--cs-h1-lh);
+  letter-spacing: var(--cs-h1-ls);
+  font-weight: var(--cs-h1-weight);
+  text-align: left;
+}
+
+.cs-h2,
+.cs-heading-2 {
+  font-family: var(--cs-h2-font);
+  font-size: var(--cs-h2-size);
+  line-height: var(--cs-h2-lh);
+  letter-spacing: var(--cs-h2-ls);
+  font-weight: var(--cs-h2-weight);
+  text-align: left;
+}
+
+.cs-h3,
+.cs-heading-3 {
+  font-family: var(--cs-h3-font);
+  font-size: var(--cs-h3-size);
+  line-height: var(--cs-h3-lh);
+  letter-spacing: var(--cs-h3-ls);
+  font-weight: var(--cs-h3-weight);
+  text-align: left;
+}
+
+.cs-body {
+  font-family: var(--cs-body-font);
+  font-size: var(--cs-body-size);
+  line-height: var(--cs-body-lh);
+  letter-spacing: var(--cs-body-ls);
+  font-weight: var(--cs-body-weight);
+  text-align: left;
+}
+
+.cs-code2 {
+  font-family: var(--cs-code2-font);
+  font-size: var(--cs-code2-size);
+  line-height: var(--cs-code2-lh);
+  letter-spacing: var(--cs-code2-ls);
+  font-weight: var(--cs-code2-weight);
+  text-align: left;
+}
+
+/* —— Case Study Hero Unit (12-column grid: 7 cols title, 2 cols gap, 3 cols details) —— */
 .case-hero {
   box-sizing: border-box;
   width: 100%;
-  padding: 84px var(--content-pad);
-  display: flex;
-  justify-content: space-between;
+  padding: 84px var(--cs-grid-margin, 56px) 180px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--cs-grid-gutter, 32px);
   align-items: flex-end;
-  gap: 3rem;
 }
 
 .case-hero__title {
-  max-width: 600px;
-  font-family: var(--font);
-  font-size: 48px;
-  font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
+  grid-column: span 7;
+  max-width: 100%;
+  font-family: var(--cs-title-font);
+  font-size: var(--cs-title-size);
+  font-weight: var(--cs-title-weight);
+  line-height: var(--cs-title-lh);
+  letter-spacing: var(--cs-title-ls);
   color: #ffffff;
   margin: 0;
   text-wrap: pretty;
+  text-align: left;
 }
 
 .case-hero__details {
+  grid-column: 10 / span 3;
   display: flex;
   flex-direction: column;
-  min-width: 250px;
-  font-family: "Google Sans Code Variable", "Google Sans Code", "Google Sans Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 14px;
+  min-width: 0;
+  width: 100%;
+  font-family: var(--cs-code2-font);
+  font-size: var(--cs-code2-size);
+  font-weight: var(--cs-code2-weight);
+  line-height: var(--cs-code2-lh);
+  letter-spacing: var(--cs-code2-ls);
   color: rgba(255, 255, 255, 0.72);
-  line-height: 1.25;
 }
 
 .case-hero__detail-item {
@@ -3375,16 +3493,20 @@ main#snapshots {
   padding-top: 0;
 }
 
-@media (max-width: 820px) {
+@media (max-width: 960px) {
   .case-hero {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 2.5rem;
+    padding: 60px var(--cs-grid-margin, 56px);
   }
 
   .case-hero__title {
+    width: 100%;
     max-width: 100%;
-    font-size: clamp(2rem, 6.5vw, 48px);
+    font-size: var(--cs-title-size);
+    line-height: var(--cs-title-lh);
   }
 
   .case-hero__details {
@@ -3394,5 +3516,384 @@ main#snapshots {
 
   .case-hero__detail-item {
     white-space: normal;
+  }
+}
+
+/* —— Lessonpal Case Study Sections —— */
+.lp-case-study {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: clamp(4rem, 8vw, 7rem);
+}
+
+.lp-section {
+  width: 100%;
+  box-sizing: border-box;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Section 1: Intro (12-column grid: 3 cols sticker, 1 col gap/divider, 8 cols text+logo) */
+.lp-section--intro {
+  width: 100%;
+}
+
+.lp-section--intro__container {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--cs-grid-gutter, 32px);
+  padding: 0 var(--cs-grid-margin, 56px);
+  width: 100%;
+  box-sizing: border-box;
+  align-items: stretch;
+}
+
+/* 3 columns: Sticker bust (0.25fr / 3 of 12) */
+.lp-section--intro__sticker {
+  grid-column: span 3;
+  width: 100%;
+  justify-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 4vw, 3.5rem) 0;
+  box-sizing: border-box;
+}
+
+.lp-sticker-bust {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* 1 column: Gap with vertical divider line */
+.lp-section--intro__divider-col,
+.lp-section--problem__divider-col {
+  grid-column: span 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.lp-section--problem__divider-col {
+  position: relative;
+}
+
+.lp-section--problem__divider-col::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  right: calc(-1 * var(--cs-grid-gutter, 32px));
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.lp-section--intro__line,
+.lp-section--problem__line {
+  width: 1px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* 8 columns: Text + Logo container (8/12 part) */
+.lp-section--intro__text-logo {
+  grid-column: span 8;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  column-gap: var(--cs-grid-gutter, 32px);
+  padding: clamp(2.5rem, 4.5vw, 4rem) 0;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+/* 5 columns: Text within Text + Logo */
+.lp-section--intro__text {
+  grid-column: span 5;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-bottom: 200px;
+}
+
+.lp-section--intro__title {
+  color: #ffffff;
+  margin: 0;
+}
+
+.lp-section--intro__desc {
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+}
+
+/* 1 column: Gap within Text + Logo */
+.lp-section--intro__inner-gap {
+  grid-column: span 1;
+}
+
+/* 2 columns: Logo within Text + Logo */
+.lp-section--intro__logo-wrap {
+  grid-column: span 2;
+  width: 100%;
+  justify-self: stretch;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  align-self: flex-end;
+  line-height: 0;
+}
+
+.lp-logo-badge {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  display: block;
+  object-fit: contain;
+}
+
+/* Spacer between Section 1 & Section 2 */
+.lp-section-spacer {
+  height: clamp(4.5rem, 9.5vw, 7.5rem);
+  width: 100%;
+}
+
+/* Section 2: Problem (12-column grid: 6 cols left + 6 cols right) */
+.lp-section--problem {
+  width: 100%;
+  border-bottom: none;
+}
+
+.lp-section--problem__container {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--cs-grid-gutter, 32px);
+  padding: 0 var(--cs-grid-margin, 56px);
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.lp-section--problem__left {
+  grid-column: span 5;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: 88px;
+  box-sizing: border-box;
+}
+
+.lp-section--problem__title {
+  width: 100%;
+  text-align: left;
+  color: #ffffff;
+  margin: 0;
+}
+
+.lp-section--problem__seesaw-wrap {
+  width: 100%;
+  margin-top: auto;
+  line-height: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.lp-lego-seesaw {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.lp-section--problem__right {
+  grid-column: 7 / span 6;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: 88px;
+  padding-bottom: 88px;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.lp-section--problem__kicker {
+  color: #ffffff;
+  margin: 0 0 1.75rem 0;
+}
+
+.lp-section--problem__kicker em {
+  font-style: italic;
+}
+
+.lp-section--problem__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 500px;
+}
+
+.lp-section--problem__body p {
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+}
+
+.lp-section--problem__body strong em,
+.lp-section--problem__body em strong {
+  font-style: italic;
+}
+
+.lp-section--problem__relay {
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lp-section--problem__relay-title {
+  color: #ffffff;
+  margin: 0 0 28px 0;
+}
+
+.lp-section--problem__relay-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--cs-grid-gutter, 32px);
+  row-gap: 1.5rem;
+}
+
+.lp-section--problem__relay-col p {
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+}
+
+@media (max-width: 680px) {
+  .lp-section--problem__relay-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  :root {
+    --cs-grid-margin: 32px;
+    --cs-grid-gutter: 20px;
+    --cs-title-size: clamp(2.5rem, 8vw, 54px);
+    --cs-title-lh: 1.2;
+    --cs-h1-size: clamp(2.15rem, 6.5vw, 44px);
+    --cs-h1-lh: 1.22;
+    --cs-h2-size: clamp(1.65rem, 5vw, 34px);
+    --cs-h2-lh: 1.25;
+    --cs-h3-size: clamp(1.35rem, 4vw, 26px);
+    --cs-h3-lh: 1.25;
+    --cs-body-size: clamp(1.125rem, 3vw, 20px);
+    --cs-body-lh: 1.45;
+  }
+
+  .lp-section--intro__container {
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--cs-grid-margin);
+  }
+
+  .lp-section--intro__sticker {
+    width: 100%;
+    padding: 2.5rem 0 1.5rem;
+  }
+
+  .lp-section--intro__divider-col,
+  .lp-section--problem__divider-col {
+    width: 100%;
+    height: 1px;
+    margin: 0;
+  }
+
+  .lp-section--problem__divider-col::after {
+    display: none;
+  }
+
+  .lp-section--intro__line,
+  .lp-section--problem__line {
+    width: 100%;
+    height: 1px;
+  }
+
+  .lp-section--intro__text-logo {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 0 2.5rem;
+  }
+
+  .lp-section--intro__text {
+    width: 100%;
+  }
+
+  .lp-section--intro__inner-gap {
+    display: none;
+  }
+
+  .lp-section--intro__logo-wrap {
+    align-self: flex-end;
+  }
+
+  .lp-section--problem__container {
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--cs-grid-margin);
+  }
+
+  .lp-section--problem__left {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    padding-top: 2.5rem;
+  }
+
+  .lp-section--problem__title {
+    margin-bottom: 2rem;
+  }
+
+  .lp-section--problem__seesaw-wrap {
+    width: 100%;
+    order: 3;
+    margin-top: 2.5rem;
+    align-self: center;
+  }
+
+  .lp-section--problem__right {
+    width: 100%;
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+  }
+
+  .lp-section--problem__relay {
+    margin-top: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --cs-grid-margin: 20px;
+    --cs-grid-gutter: 12px;
+    --cs-title-size: clamp(2rem, 8.5vw, 40px);
+    --cs-title-lh: 1.18;
+    --cs-h1-size: clamp(1.85rem, 7.5vw, 36px);
+    --cs-h1-lh: 1.2;
+    --cs-h2-size: clamp(1.4rem, 5.5vw, 28px);
+    --cs-h2-lh: 1.25;
+    --cs-h3-size: 22px;
+    --cs-h3-lh: 1.28;
+    --cs-body-size: 18px;
+    --cs-body-lh: 1.5;
   }
 }

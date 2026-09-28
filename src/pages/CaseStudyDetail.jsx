@@ -6,7 +6,8 @@ import ActionButton from "../components/ActionButton.jsx";
 import Cursor from "../components/Cursor.jsx";
 import { CONTACT, SOCIAL } from "../data/nav.js";
 import { WORK_CASE_STUDIES } from "../data/workCases.js";
-import { applyNoIndexMeta, isWorkSubdomain } from "../utils/domain.js";
+import { applyNoIndexMeta, isWorkSubdomain, redirectToMain } from "../utils/domain.js";
+import LessonpalSections from "../components/LessonpalSections.jsx";
 
 export default function CaseStudyDetail() {
   const { slug } = useParams();
@@ -23,12 +24,16 @@ export default function CaseStudyDetail() {
     (item) => item.id.toLowerCase() === cleanSlug || item.slug.toLowerCase() === cleanSlug
   );
 
-  const caseStudy = caseIndex !== -1 ? WORK_CASE_STUDIES[caseIndex] : WORK_CASE_STUDIES[0];
+  const caseStudy = caseIndex !== -1 ? WORK_CASE_STUDIES[caseIndex] : null;
 
-  const isSubdomain = isWorkSubdomain();
-  const workHref = isSubdomain ? "/" : "/work";
+  const workHref = "/";
 
   useEffect(() => {
+    if (!caseStudy) {
+      redirectToMain();
+      return;
+    }
+
     // Ensure subdomain noindex protection is active
     applyNoIndexMeta(true);
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -36,6 +41,10 @@ export default function CaseStudyDetail() {
       document.title = `${caseStudy.title} — Nikitha Bobbary`;
     }
   }, [caseStudy]);
+
+  if (!caseStudy) {
+    return null;
+  }
 
   return (
     <div className="case-detail-page">
@@ -91,10 +100,10 @@ export default function CaseStudyDetail() {
       </header>
 
       <section className="case-hero">
-        <h1 className="case-hero__title">
+        <h1 className="case-hero__title cs-title">
           {caseStudy.heroTitle || caseStudy.title}
         </h1>
-        <div className="case-hero__details">
+        <div className="case-hero__details cs-code2">
           {(caseStudy.details || [
             caseStudy.role,
             caseStudy.year,
@@ -107,6 +116,8 @@ export default function CaseStudyDetail() {
           ))}
         </div>
       </section>
+
+      {caseStudy.id === "lessonpal" && <LessonpalSections />}
     </div>
   );
 }

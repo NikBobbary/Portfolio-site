@@ -8,14 +8,10 @@
         try {
           var h = window.location.hostname.toLowerCase();
           var s = window.location.search;
-          var p = window.location.pathname.toLowerCase();
           if (
             h.startsWith("work.") ||
             h === "work.nikbobbary.com" ||
-            s.indexOf("subdomain=work") !== -1 ||
-            s.indexOf("work=true") !== -1 ||
-            p === "/work" ||
-            p.indexOf("/work/") === 0
+            s.indexOf("subdomain=work") !== -1
           ) {
             var robots = document.createElement("meta");
             robots.name = "robots";
