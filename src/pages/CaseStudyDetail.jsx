@@ -8,6 +8,8 @@ import { CONTACT, SOCIAL } from "../data/nav.js";
 import { WORK_CASE_STUDIES } from "../data/workCases.js";
 import { applyNoIndexMeta, isWorkSubdomain, redirectToMain } from "../utils/domain.js";
 import LessonpalSections from "../components/LessonpalSections.jsx";
+import DyocarSections from "../components/DyocarSections.jsx";
+import PairtySections from "../components/PairtySections.jsx";
 
 export default function CaseStudyDetail() {
   const { slug } = useParams();
@@ -118,6 +120,8 @@ export default function CaseStudyDetail() {
       </section>
 
       {caseStudy.id === "lessonpal" && <LessonpalSections />}
+      {caseStudy.id === "dyocar" && <DyocarSections />}
+      {caseStudy.id === "pairty" && <PairtySections />}
     </div>
   );
 }
