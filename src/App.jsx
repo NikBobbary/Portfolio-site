@@ -121,9 +121,9 @@ const DOMAIN_CHIPS = [
   "Identity Systems",
 ];
 
-export default function App({ isWorkView = false }) {
+export default function App({ isWorkView }) {
   const location = useLocation();
-  const isWork = isWorkView || isWorkDomain();
+  const isWork = typeof isWorkView === "boolean" ? isWorkView : isWorkDomain();
 
   useEffect(() => {
     if (isWork) {
@@ -373,13 +373,13 @@ export default function App({ isWorkView = false }) {
       </div>
       <div className="like__copy">
         <p>
-          I’m a generalist and a 0→1 designer. Most of my work has been with engineering-led teams, usually when the product is complicated, early, or still being figured out.
+          I’m a generalist and a 0→1 designer. Most of my work has been with engineering-led teams, usually when the product is complicated, early, or still being figured out. A few of those products changed direction or didn’t make it, but working at that stage has taught me how to build without much certainty.
         </p>
         <p>
-          I like that stage. There’s usually no neat brief to work from, so I tend to get involved wherever the problem takes me, figuring out what’s worth solving, talking through it with founders and engineers, shaping the product, and getting into the details of how it actually works.
+          There’s rarely a neat brief to work from, so I tend to go wherever the problem takes me: figuring out what’s worth solving, working through it with founders and engineers, shaping the product, and getting into the details of how it actually works.
         </p>
         <p>
-          A lot of my curiosity lately has been around AI. Not so much the technology itself, but what happens when you try to turn it into a useful product. There’s a lot of room for genuinely new interactions, and a lot of room for things that are just features with AI attached.
+          Lately, I’ve been particularly curious about AI. Not so much the technology itself, but what happens when you try to turn it into a genuinely useful product. There’s plenty of room for new interactions, and just as much room for things that are just features with AI attached.
         </p>
         <p>
           I like moving fast, but I care a lot about craft. I can spend an unreasonable amount of time on something small if I think it matters. And I rarely stay inside the boundaries of a design task for very long. While working on one problem, I’ll usually find a few more worth fixing.

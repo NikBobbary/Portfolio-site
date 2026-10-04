@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" width="120" height="120">
+  <defs>
+    <linearGradient id="shield-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="54" fill="#0B132B" stroke="#3B82F6" stroke-width="2.5" stroke-dasharray="6 3"/>
+  <path d="M60 24 L86 36 V62 C86 78 74 92 60 96 C46 92 34 78 34 62 V36 Z" fill="url(#shield-grad)" opacity="0.35" stroke="#60A5FA" stroke-width="2.5"/>
+  <path d="M52 58 L58 64 L70 50" stroke="#FCD34D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="60" y="84" text-anchor="middle" font-family="'Google Sans Flex', -apple-system, sans-serif" font-size="9" font-weight="700" letter-spacing="1px" fill="#FCD34D">4-MSG ESCROW</text>
+</svg>
