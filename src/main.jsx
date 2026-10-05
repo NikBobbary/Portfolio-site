@@ -1,6 +1,7 @@
 import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import App from "./App.jsx";
 import Reveal from "./components/Reveal.jsx";
 import CaseStudyDetail from "./pages/CaseStudyDetail.jsx";
@@ -65,6 +66,7 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <Reveal />
       <RootRoutes />
+      <Analytics />
     </BrowserRouter>
   </StrictMode>
 );
