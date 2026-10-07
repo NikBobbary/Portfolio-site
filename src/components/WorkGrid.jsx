@@ -1,65 +1,86 @@
 import { Link } from "react-router-dom";
 import { WORK_CASE_STUDIES } from "../data/workCases.js";
+import ScreenMockup from "./ScreenMockup.jsx";
+
+const ACCENT_MAP = {
+  lessonpal: "amber",
+  dyocar: "emerald",
+  pairty: "indigo",
+};
 
 export default function WorkGrid() {
   return (
     <section
       id="cases"
-      className="work-grid-section"
-      aria-labelledby="cases-heading"
+      className="work-vertical-section work-grid-section"
+      aria-label="Case Studies"
     >
-      <div className="work-grid-section__inner">
-        <div className="work-grid-header">
-          <h2 id="cases-heading" className="work-grid-header__title">
-            Case Studies
-          </h2>
-        </div>
-
-        <div className="work-grid">
-          {WORK_CASE_STUDIES.map(({ id, slug, title, categories, image, width, height, alt }) => {
+      <div className="work-vertical-section__inner">
+        <div className="cases-list">
+          {WORK_CASE_STUDIES.map((caseStudy) => {
+            const {
+              id,
+              slug,
+              title,
+              heroTitle,
+              summary,
+              highlights,
+              image,
+              width,
+              height,
+              alt,
+            } = caseStudy;
             const cardHref = `/${slug || id}`;
+            const accent = ACCENT_MAP[id] || "neutral";
+            const displayTitle = heroTitle || title;
 
             return (
-              <article key={id} className="work-card">
-                <Link
-                  to={cardHref}
-                  className="work-card__link"
-                  aria-label={`View case study: ${title}`}
-                >
-                  <div className="work-card__media">
-                    <img
+              <article key={id} className={`case-card case-card--${accent}`}>
+                {/* Left Column: Content */}
+                <div className="case-card__content">
+                  {/* Single flex container for Title, Summary & Highlights */}
+                  <div className="case-card__text-group">
+                    <h3 className="case-card__title">
+                      <Link to={cardHref} className="case-card__title-link">
+                        {displayTitle}
+                      </Link>
+                    </h3>
+
+                    {/* Case Study Intro/Content */}
+                    {summary ? (
+                      <p className="case-card__summary">{summary}</p>
+                    ) : null}
+
+                    {/* Scannable Highlights/Pillars */}
+                    {highlights && highlights.length > 0 ? (
+                      <ul className="case-card__highlights" aria-label="Key highlights">
+                        {highlights.map((highlight, hIdx) => (
+                          <li key={hIdx} className="case-card__highlight-item">
+                            <span className="case-card__highlight-dash" aria-hidden="true">—</span>
+                            <span>{highlight}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+                </div>
+
+                {/* Right Column: Image / Device Screen Mockup */}
+                <div className="case-card__media">
+                  <Link
+                    to={cardHref}
+                    className="case-card__mockup-link"
+                    aria-label={`View ${title} case study`}
+                  >
+                    <ScreenMockup
                       src={image}
-                      alt={alt || title}
+                      alt={alt || `${displayTitle} screen mockup`}
                       width={width}
                       height={height}
-                      className="work-card__image"
-                      loading="lazy"
-                      decoding="async"
+                      accent={accent}
                     />
-                    <div className="work-card__action" aria-hidden="true">
-                      <svg
-                        className="work-card__action-icon"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M7 17L17 7M17 7H7M17 7V17" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  <div className="work-card__meta">
-                    <h3 className="work-card__title">{title}</h3>
-                    <p className="work-card__tags">
-                      {(categories || []).join(" · ")}
-                    </p>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               </article>
             );
           })}

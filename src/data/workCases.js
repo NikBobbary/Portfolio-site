@@ -15,13 +15,18 @@ export const WORK_CASE_STUDIES = [
       "1-on-1 tutor marketplace",
     ],
     categories: ["Edtech SaaS", "Marketplace"],
-    image: "/Screens/2400/lessonpal-1.jpg",
-    width: 8041,
-    height: 8862,
-    alt: "Lessonpal Case Study",
+    image: "/Screens/2400/lessonpal-home-screen.jpg",
+    width: 1992,
+    height: 1030,
+    alt: "Streamlining Lessonpal's Rescheduling Workflow",
     href: "/lessonpal",
     summary:
-      "Lessonpal is a leading 1-on-1 online tutoring marketplace connecting students with vetted educators.",
+      "Lessonpal is a 1-on-1 tutoring marketplace connecting K–12 students with affordable, quality education worldwide.",
+    highlights: [
+      "Lower commission rates for tutors",
+      "Simple tutor onboarding",
+      "Easy tutor matching for students",
+    ],
     challenge:
       "Tutors and parents faced excessive manual back-and-forth when rescheduling sessions across conflicting time zones.",
     approach:
@@ -53,13 +58,18 @@ export const WORK_CASE_STUDIES = [
       "Hyper-personalized car rental",
     ],
     categories: ["Mobility & Fleet Tech", "Marketplace"],
-    image: "/Screens/2400/dyocar-1.jpg",
-    width: 8041,
-    height: 5882,
-    alt: "Dyocar Case Study",
+    image: "/Screens/2400/dyocar-screen.jpg",
+    width: 2014,
+    height: 1438,
+    alt: "Re-architecting Car Rental Around Speed, Autonomy & Operations",
     href: "/dyocar",
     summary:
-      "Dyocar is a next-generation mobility platform combining consumer car rental discovery with an internal fleet command center.",
+      "Dyocar is an on-demand self-drive car rental platform built from 0→1 in Bengaluru. We paired a consumer discovery app with an operational command center to eliminate the friction and ambiguity that plagues urban car rentals.",
+    highlights: [
+      "15-minute guaranteed booking confirmation SLA",
+      "Neighborhood walk-in hub savings vs doorstep delivery",
+      "Dynamic in-cabin personalization (aroma, child seats, dashcams)",
+    ],
     challenge:
       "Traditional car rental suffered from massive post-booking friction: opaque pricing, manual KYC drop-offs, and disjointed hub logistics.",
     approach:
@@ -94,10 +104,15 @@ export const WORK_CASE_STUDIES = [
     image: "/Screens/2400/Pairty-1.jpg",
     width: 12062,
     height: 6812,
-    alt: "Pairty Case Study",
+    alt: "Designing Skin-in-the-Game Professional Networking & Escrow Consultations",
     href: "/pairty",
     summary:
-      "Pairty is an exclusive human venture capital network pairing early-stage founders with domain advisors through verified credentials and escrow-backed consultations.",
+      "Pairty is an exclusive networking and advisory platform designed in partnership with Focusoft HQ to eliminate the noise of cold outreach. By pairing strict identity verification with escrow-backed consultations, Pairty gives founders direct access to vetted operators while respecting advisor time.",
+    highlights: [
+      "Two-tier KYC gating (Phone OTP + Biometric audit)",
+      "Escrow consultations with guaranteed 4-message reciprocity",
+      "Dual-rail liquidity (Instant checkout + native PTY tokens)",
+    ],
     challenge:
       "Cold outreach on open social networks suffers from an 88% ghosting rate, unverified claims, and uncompensated cognitive burden on industry leaders.",
     approach:
@@ -114,4 +129,3 @@ export const WORK_CASE_STUDIES = [
     ],
   },
 ];
-

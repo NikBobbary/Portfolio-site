@@ -52,6 +52,13 @@ export const BOTTOM_JUMPS = [
     icon: Home01Icon,
   },
   {
+    id: "cases",
+    label: "Cases",
+    tooltip: "Cases",
+    href: "#cases",
+    icon: Files02Icon,
+  },
+  {
     id: "snapshots",
     label: "Works",
     tooltip: "Works",

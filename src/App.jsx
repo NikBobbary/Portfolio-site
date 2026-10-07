@@ -414,11 +414,11 @@ export default function App({ isWorkView }) {
             />
             {group.shots.map(
               (
-                { src, width, height, tags = [], note },
+                { src, width, height, note },
                 shotIndex
               ) => {
                 const index = shotOffset + shotIndex;
-                const hasFoot = Boolean(note) || tags.length > 0;
+                const hasFoot = Boolean(note);
 
                 return (
                   <div key={src} className="work-shot">
@@ -437,21 +437,6 @@ export default function App({ isWorkView }) {
                       <div className="work-frame-meta">
                         {note ? (
                           <p className="work-frame-note">{note}</p>
-                        ) : null}
-                        {tags.length > 0 ? (
-                          <ul
-                            className="work-frame-tags"
-                            aria-label="Image tags"
-                          >
-                            {tags.map((tag, tagIndex) => (
-                              <li
-                                key={`${src}-tag-${tagIndex}`}
-                                className="work-frame-tag"
-                              >
-                                {tag}
-                              </li>
-                            ))}
-                          </ul>
                         ) : null}
                       </div>
                     ) : null}
@@ -516,6 +501,7 @@ export default function App({ isWorkView }) {
         </>
       ) : (
         <>
+          <WorkGrid />
           {snapshotsSection}
           {aboutSection}
         </>
