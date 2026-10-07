@@ -29,8 +29,8 @@ function RootRoutes() {
   const isWork = isWorkSubdomain();
   const isLocal = isLocalhost();
 
-  if (isWork) {
-    // work.nikbobbary.com landing:
+  if (isWork || isLocal) {
+    // work.nikbobbary.com landing / local development:
     // hero -> cases -> about -> snapshots -> footer
     return (
       <Routes>
