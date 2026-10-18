@@ -104,7 +104,7 @@ export default function CaseStudies() {
       <div ref={pinRef} className="cases__pin">
         <hr className="work-index" />
         <h2 id="cases-heading" className="cases__title">
-          Case studies
+          Works
         </h2>
         <div
           ref={viewportRef}
