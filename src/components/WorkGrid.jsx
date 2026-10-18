@@ -24,7 +24,6 @@ export default function WorkGrid() {
               title,
               heroTitle,
               summary,
-              highlights,
               image,
               width,
               height,
@@ -35,43 +34,24 @@ export default function WorkGrid() {
             const displayTitle = heroTitle || title;
 
             return (
-              <article key={id} className={`case-card case-card--${accent}`}>
-                {/* Left Column: Content */}
-                <div className="case-card__content">
-                  {/* Single flex container for Title, Summary & Highlights */}
-                  <div className="case-card__text-group">
-                    <h3 className="case-card__title">
-                      <Link to={cardHref} className="case-card__title-link">
-                        {displayTitle}
-                      </Link>
-                    </h3>
-
-                    {/* Case Study Intro/Content */}
-                    {summary ? (
-                      <p className="case-card__summary">{summary}</p>
-                    ) : null}
-
-                    {/* Scannable Highlights/Pillars */}
-                    {highlights && highlights.length > 0 ? (
-                      <ul className="case-card__highlights" aria-label="Key highlights">
-                        {highlights.map((highlight, hIdx) => (
-                          <li key={hIdx} className="case-card__highlight-item">
-                            <span className="case-card__highlight-dash" aria-hidden="true">—</span>
-                            <span>{highlight}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </div>
+              <Link
+                key={id}
+                to={cardHref}
+                className={`case-card case-card--${accent}`}
+                aria-label={`View ${displayTitle} case study`}
+              >
+                {/* Column 1 (Left): Title (Top-Aligned) */}
+                <div className="case-card__title-col">
+                  <h3 className="case-card__title">
+                    <span className="case-card__title-link">
+                      {displayTitle}
+                    </span>
+                  </h3>
                 </div>
 
-                {/* Right Column: Image / Device Screen Mockup */}
+                {/* Column 2 (Middle): Image / Device Screen Mockup */}
                 <div className="case-card__media">
-                  <Link
-                    to={cardHref}
-                    className="case-card__mockup-link"
-                    aria-label={`View ${title} case study`}
-                  >
+                  <div className="case-card__mockup-link">
                     <ScreenMockup
                       src={image}
                       alt={alt || `${displayTitle} screen mockup`}
@@ -79,9 +59,35 @@ export default function WorkGrid() {
                       height={height}
                       accent={accent}
                     />
-                  </Link>
+                  </div>
                 </div>
-              </article>
+
+                {/* Column 3 (Right): Summary Paragraph & CTA (Bottom-Aligned) */}
+                <div className="case-card__summary-col">
+                  {summary ? (
+                    <p className="case-card__summary">{summary}</p>
+                  ) : null}
+                  <div className="case-card__cta-row">
+                    <span className="case-card__cta-btn">
+                      View case study
+                      <svg
+                        className="case-card__cta-btn-icon"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M7 17L17 7M17 7H7M17 7V17" />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </Link>
             );
           })}
         </div>
