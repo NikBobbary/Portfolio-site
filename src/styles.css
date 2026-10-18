@@ -670,7 +670,7 @@ body {
   align-items: baseline;
   width: 100%;
   padding:
-    clamp(6rem, 18vw, 20rem) clamp(1.5rem, 5vw, 4.75rem);
+    clamp(6rem, 18vw, 20rem) var(--padding);
   background: var(--bg, #000000);
 }
 
@@ -695,7 +695,7 @@ body {
   grid-column: 1;
   grid-row: 1;
   align-self: end;
-  justify-self: end;
+  justify-self: start;
   margin-top: clamp(3rem, 6vh, 5.5rem);
   width: clamp(21.97rem, 30.42vw, 29.58rem);
   aspect-ratio: 3 / 4;
@@ -3022,7 +3022,7 @@ main#snapshots {
   row-gap: clamp(1.75rem, 3.5vh, 2.75rem);
   align-items: baseline;
   align-content: center;
-  padding: clamp(8rem, 18vh, 15rem) clamp(1.5rem, 5vw, 4.75rem);
+  padding: clamp(8rem, 18vh, 15rem) var(--padding);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background: radial-gradient(ellipse 90% 70% at 50% 50%, rgba(255, 255, 255, 0.018) 0%, rgba(0, 0, 0, 0) 100%), var(--bg, #000000);
@@ -3051,6 +3051,10 @@ main#snapshots {
   letter-spacing: -0.025em;
   color: #ffffff;
   white-space: nowrap;
+}
+
+.like--separator .like__portrait-wrap {
+  justify-self: start;
 }
 
 .like--separator .like__copy {
@@ -3092,7 +3096,7 @@ main#snapshots {
     flex-direction: column;
     align-items: stretch;
     row-gap: 2.25rem;
-    padding: clamp(6rem, 14vh, 9rem) clamp(1.25rem, 4vw, 3rem);
+    padding: clamp(6rem, 14vh, 9rem) var(--padding);
     min-height: auto;
   }
 
@@ -3181,21 +3185,24 @@ main#snapshots {
 .cases-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(4.5rem, 8.5vh, 7.5rem);
+  gap: clamp(6.75rem, 12.75vh, 11.25rem);
   width: 100%;
 }
 
-/* —— Single Vertical Case Card (Content Left, Image Right) —— */
+/* —— Single Vertical Case Card (3-Column Layout: Title Left (Top), Media Middle, Summary Right (Bottom)) —— */
 .case-card {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.35fr);
-  column-gap: clamp(2.5rem, 5vw, 5.5rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr) minmax(0, 1fr);
+  column-gap: clamp(1.75rem, 3.5vw, 3.5rem);
   row-gap: 2.5rem;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
   position: relative;
-  padding-bottom: clamp(4rem, 8vh, 6.5rem);
+  padding-bottom: clamp(6rem, 12vh, 9.75rem);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 .case-card:last-child {
@@ -3203,31 +3210,28 @@ main#snapshots {
   padding-bottom: 0;
 }
 
-/* Left Column: Content */
-.case-card__content {
+/* Left Column: Title (Top-Aligned) */
+.case-card__title-col {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  align-self: start;
   width: 100%;
-}
-
-/* Single Flex Container for Title, Summary & Highlights */
-.case-card__text-group {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.1rem, 2vh, 1.45rem);
-  width: 100%;
+  text-align: left;
+  padding: clamp(1.5rem, 2.8vw, 2.75rem) 0;
+  box-sizing: border-box;
 }
 
 .case-card__title {
   margin: 0;
   font-family: var(--font);
-  font-size: clamp(1.4rem, 2.2vw, 2.05rem);
+  font-size: clamp(1.35rem, 2vw, 1.95rem);
   font-weight: 300;
   letter-spacing: -0.025em;
-  line-height: 1.24;
+  line-height: 1.25;
   color: #ffffff;
   text-wrap: pretty;
+  text-align: left;
 }
 
 .case-card__title-link {
@@ -3235,6 +3239,7 @@ main#snapshots {
   font-weight: 300;
   text-decoration: none;
   transition: color 0.2s ease;
+  text-align: left;
 }
 
 .case-card__title-link:hover,
@@ -3251,6 +3256,19 @@ main#snapshots {
   letter-spacing: -0.01em;
 }
 
+/* Right Column: Summary & CTA (Bottom-Aligned, Text Left-Aligned) */
+.case-card__summary-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-self: end;
+  width: 100%;
+  text-align: left;
+  padding: clamp(1.5rem, 2.8vw, 2.75rem) 0;
+  box-sizing: border-box;
+  gap: clamp(1.1rem, 2vh, 1.5rem);
+}
+
 .case-card__summary {
   margin: 0;
   font-family: var(--font);
@@ -3260,6 +3278,7 @@ main#snapshots {
   letter-spacing: -0.005em;
   color: rgba(255, 255, 255, 0.5);
   text-wrap: pretty;
+  text-align: left;
 }
 
 /* Scannable Takeaways / Highlights */
@@ -3324,50 +3343,56 @@ main#snapshots {
   letter-spacing: 0.01em;
 }
 
-/* CTA Button on Left */
+/* CTA Button on Right (Below Summary) */
 .case-card__cta-row {
-  margin-top: 0.35rem;
+  display: flex;
+  width: 100%;
 }
 
 .case-card__cta-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  padding: 0.65rem 1.3rem;
+  padding: 0.65rem 1.35rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   font-family: var(--font);
   font-size: 0.8125rem;
   font-weight: 300;
   letter-spacing: 0.01em;
   text-decoration: none;
+  width: fit-content;
+  box-sizing: border-box;
   transition:
     background-color 0.25s ease,
     border-color 0.25s ease,
     color 0.25s ease,
     transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.25s ease;
-  width: fit-content;
 }
 
+.case-card:hover .case-card__cta-btn,
+.case-card:focus-visible .case-card__cta-btn,
 .case-card__cta-btn:hover {
   background: #ffffff;
   color: #000000;
   border-color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.16);
-}
-
-.case-card__cta-btn:hover .case-card__cta-btn-icon {
-  transform: translate(2px, -2px);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.18);
 }
 
 .case-card__cta-btn-icon {
   display: block;
   flex-shrink: 0;
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.case-card:hover .case-card__cta-btn-icon,
+.case-card:focus-visible .case-card__cta-btn-icon,
+.case-card__cta-btn:hover .case-card__cta-btn-icon {
+  transform: translate(2px, -2px);
 }
 
 /* Right Column: Media */
@@ -3604,17 +3629,29 @@ main#snapshots {
 @media (max-width: 1024px) {
   .case-card {
     grid-template-columns: 1fr;
-    row-gap: 2.25rem;
-    padding-bottom: clamp(3rem, 6vh, 4.5rem);
+    row-gap: 2rem;
+    padding-bottom: clamp(4.5rem, 9vh, 6.75rem);
     align-items: start;
   }
 
-  .case-card__content {
-    max-width: 100%;
+  .case-card__title-col {
+    width: 100%;
+    align-self: start;
+    order: 1;
+    padding: 0;
   }
 
   .case-card__media {
     width: 100%;
+    align-self: center;
+    order: 2;
+  }
+
+  .case-card__summary-col {
+    width: 100%;
+    align-self: start;
+    order: 3;
+    padding: 0;
   }
 }
 
