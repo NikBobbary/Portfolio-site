@@ -112,14 +112,6 @@ const MIN_BOOT_MS = 2000;
 const BOOT_HOLD_MS = 640;
 const BOOT_SLIDE_MS = 920;
 
-/** Domains aligned to shipped work — and commercially strong. */
-const DOMAIN_CHIPS = [
-  "AI SaaS",
-  "B2B Platforms",
-  "Marketplaces",
-  "EdTech",
-  "Identity Systems",
-];
 
 export default function App({ isWorkView }) {
   const location = useLocation();
@@ -510,12 +502,16 @@ export default function App({ isWorkView }) {
         <div className="contact__box">
           <div className="contact__stage">
             <div className="contact__inner">
+              <span className="contact__kicker">
+                <span className="contact__kicker-line" aria-hidden="true" />
+                Collaboration
+              </span>
               <h2 id="contact-heading" className="contact__title">
                 Let’s build something people can rely on
               </h2>
               <div className="contact__actions">
                 <ActionButton
-                  className="hero__cta hero__cta--primary"
+                  className="hero__cta hero__cta--primary contact__primary-btn"
                   href={CONTACT.href}
                   external={CONTACT.external}
                   tooltip={CONTACT.tooltip}
@@ -540,13 +536,48 @@ export default function App({ isWorkView }) {
                 </div>
               </div>
             </div>
-            <ul className="contact__chips" aria-label="Domains of interest">
-              {DOMAIN_CHIPS.map((chip) => (
-                <li key={chip} className="contact__chip">
-                  {chip}
-                </li>
-              ))}
-            </ul>
+            <div className="contact__extra">
+              <a
+                className="contact__studio-card"
+                href="https://nesaasity.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit Nesaasity - Design and Development Studio"
+              >
+                <div className="contact__studio-header">
+                  <span className="contact__studio-badge">
+                    <span className="contact__studio-dot" aria-hidden="true" />
+                    design &amp; dev studio
+                  </span>
+                  <span className="contact__studio-arrow" aria-hidden="true">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M7 17L17 7M17 7H7M17 7V17" />
+                    </svg>
+                  </span>
+                </div>
+                <div className="contact__studio-body">
+                  <h3 className="contact__studio-name">nesaasity</h3>
+                  <p className="contact__studio-desc">
+                    0 → 1 MVP engineering, high-voltage UI/UX, and AI-native products.
+                  </p>
+                </div>
+                <div className="contact__studio-footer">
+                  <span className="contact__studio-link-text">
+                    Visit studio
+                    <span className="contact__studio-link-chevron" aria-hidden="true">→</span>
+                  </span>
+                </div>
+              </a>
+            </div>
           </div>
           <FooterName />
         </div>
@@ -554,6 +585,33 @@ export default function App({ isWorkView }) {
           <p className="contact__copyright">
             © {new Date().getFullYear()} Nikitha Bobbary
           </p>
+          <div className="contact__legal-meta">
+            <span className="contact__status-badge">
+              <span className="contact__status-dot" aria-hidden="true" />
+              Available for select 0 → 1 projects
+            </span>
+            <button
+              type="button"
+              className="contact__back-top"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              aria-label="Back to top"
+            >
+              Back to top
+              <svg
+                width="11"
+                height="11"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 19V5M5 12l7-7 7 7" />
+              </svg>
+            </button>
+          </div>
         </div>
       </section>
 
