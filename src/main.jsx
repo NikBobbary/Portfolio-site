@@ -7,7 +7,6 @@ import Reveal from "./components/Reveal.jsx";
 import CaseStudyDetail from "./pages/CaseStudyDetail.jsx";
 import ProjectLore from "./pages/ProjectLore.jsx";
 import { isLocalhost, isWorkSubdomain, redirectToMain, redirectToWork } from "./utils/domain.js";
-import { Analytics } from "@vercel/analytics/react";
 import "./styles.css";
 
 function NotFoundRedirect() {
