@@ -2,12 +2,52 @@ import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
+import Lenis from "lenis";
+import "lenis/dist/lenis.css";
 import App from "./App.jsx";
 import Reveal from "./components/Reveal.jsx";
+import StageGL from "./components/StageGL.jsx";
 import CaseStudyDetail from "./pages/CaseStudyDetail.jsx";
 import ProjectLore from "./pages/ProjectLore.jsx";
 import { isLocalhost, isWorkSubdomain, redirectToMain, redirectToWork } from "./utils/domain.js";
 import "./styles.css";
+
+// Initialize Lenis smooth scroll instance with autoRaf: true
+export const lenis = new Lenis({
+  autoRaf: true,
+});
+
+let isScrollTriggerSynced = false;
+
+// Synchronize Lenis scrolling with GSAP ScrollTrigger if applicable
+export function syncScrollTrigger(customScrollTrigger) {
+  if (isScrollTriggerSynced) return true;
+  const st =
+    customScrollTrigger ||
+    (typeof window !== "undefined" &&
+      (window.ScrollTrigger || (window.gsap && window.gsap.ScrollTrigger)));
+
+  if (st && typeof st.update === "function") {
+    lenis.on("scroll", st.update);
+    isScrollTriggerSynced = true;
+    return true;
+  }
+  return false;
+}
+
+if (typeof window !== "undefined") {
+  window.lenis = lenis;
+
+  if (!syncScrollTrigger()) {
+    window.addEventListener("DOMContentLoaded", () => syncScrollTrigger(), {
+      once: true,
+    });
+    window.addEventListener("load", () => syncScrollTrigger(), {
+      once: true,
+    });
+  }
+}
+
 
 function NotFoundRedirect() {
   useEffect(() => {
@@ -64,6 +104,7 @@ function RootRoutes() {
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
+      <StageGL />
       <Reveal />
       <RootRoutes />
       <Analytics />

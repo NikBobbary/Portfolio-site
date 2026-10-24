@@ -49,12 +49,12 @@ export default function WorkGrid() {
                   </h3>
                 </div>
 
-                {/* Column 2 (Middle): Image / Device Screen Mockup */}
+                {/* Column 2 (Middle): Case Study Preview Image */}
                 <div className="case-card__media">
                   <div className="case-card__mockup-link">
                     <ScreenMockup
                       src={image}
-                      alt={alt || `${displayTitle} screen mockup`}
+                      alt={alt || `${displayTitle} preview`}
                       width={width}
                       height={height}
                       accent={accent}

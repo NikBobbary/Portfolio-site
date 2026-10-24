@@ -38,7 +38,11 @@ export default function CaseStudyDetail() {
 
     // Ensure subdomain noindex protection is active
     applyNoIndexMeta(true);
-    window.scrollTo({ top: 0, behavior: "instant" });
+    if (window.lenis) {
+      window.lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
     if (caseStudy?.title) {
       document.title = `${caseStudy.title} — Nikitha Bobbary`;
     }

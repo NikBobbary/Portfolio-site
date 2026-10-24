@@ -75,6 +75,11 @@ html {
   scroll-padding-top: 1.5rem;
 }
 
+html.lenis,
+html.lenis body {
+  scroll-behavior: auto !important;
+}
+
 html,
 body,
 #root {
@@ -86,6 +91,40 @@ body,
 
 body {
   overflow-x: hidden;
+}
+
+
+
+.stage-gl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* While WebGL is actively drawing the curved mesh, hide the 2D element */
+.is-gl-rendered {
+  opacity: 0 !important;
+}
+
+/* Allow interactive footer brand hover flashlight to be visible when hovered */
+.contact__brand.is-lit .contact__brand-svg.is-gl-rendered {
+  opacity: 1 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wheel-item {
+    transform: none !important;
+  }
+  .stage-gl {
+    display: none !important;
+  }
+  .is-gl-rendered {
+    opacity: 1 !important;
+  }
 }
 
 .reveal {
@@ -3662,25 +3701,25 @@ main#snapshots {
   width: 100%;
   text-decoration: none;
   outline: none;
-  border-radius: clamp(20px, 2.8vw, 32px);
+  border-radius: clamp(14px, 1.8vw, 22px);
   cursor: pointer;
+  overflow: hidden;
 }
 
-/* —— Screen Mockup Canvas (Presentation Stage) —— */
+/* —— Case Study Card Image (Bezel-less Clean Presentation) —— */
 .screen-mockup-canvas {
   position: relative;
   width: 100%;
-  border-radius: clamp(20px, 2.8vw, 32px);
+  aspect-ratio: 16 / 10;
+  border-radius: clamp(14px, 1.8vw, 22px);
   background: #0c0d12;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: clamp(1.25rem, 2.5vw, 2.5rem) clamp(1rem, 2vw, 2rem);
+  padding: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
   box-sizing: border-box;
   box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.6),
+    0 20px 50px -15px rgba(0, 0, 0, 0.7),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
   transition:
     border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
@@ -3688,115 +3727,16 @@ main#snapshots {
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Ambient glow tailored for dark theme */
-.screen-mockup-glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 85% 65% at 50% 50%,
-    rgba(255, 255, 255, 0.035) 0%,
-    rgba(0, 0, 0, 0) 75%
-  );
-}
-
 .screen-mockup-canvas--amber {
-  background: radial-gradient(
-      115% 115% at 50% 25%,
-      rgba(245, 158, 11, 0.045) 0%,
-      rgba(245, 158, 11, 0.008) 50%,
-      rgba(0, 0, 0, 0.6) 100%
-    ),
-    #0c0d12;
-}
-
-.screen-mockup-canvas--amber .screen-mockup-glow {
-  background: radial-gradient(
-    ellipse 85% 65% at 50% 50%,
-    rgba(245, 158, 11, 0.07) 0%,
-    rgba(0, 0, 0, 0) 70%
-  );
+  border-color: rgba(245, 158, 11, 0.16);
 }
 
 .screen-mockup-canvas--emerald {
-  background: radial-gradient(
-      115% 115% at 50% 25%,
-      rgba(16, 185, 129, 0.045) 0%,
-      rgba(16, 185, 129, 0.008) 50%,
-      rgba(0, 0, 0, 0.6) 100%
-    ),
-    #0c0d12;
-}
-
-.screen-mockup-canvas--emerald .screen-mockup-glow {
-  background: radial-gradient(
-    ellipse 85% 65% at 50% 50%,
-    rgba(16, 185, 129, 0.075) 0%,
-    rgba(0, 0, 0, 0) 70%
-  );
+  border-color: rgba(16, 185, 129, 0.16);
 }
 
 .screen-mockup-canvas--indigo {
-  background: radial-gradient(
-      115% 115% at 50% 25%,
-      rgba(99, 102, 241, 0.055) 0%,
-      rgba(99, 102, 241, 0.01) 50%,
-      rgba(0, 0, 0, 0.6) 100%
-    ),
-    #0c0d12;
-}
-
-.screen-mockup-canvas--indigo .screen-mockup-glow {
-  background: radial-gradient(
-    ellipse 85% 65% at 50% 50%,
-    rgba(99, 102, 241, 0.085) 0%,
-    rgba(0, 0, 0, 0) 70%
-  );
-}
-
-/* —— Device Hardware Frame (Tablet / Display Mockup) —— */
-.screen-mockup-device {
-  position: relative;
-  width: 100%;
-  max-width: 1040px;
-  background: #15161c;
-  border: 1.5px solid rgba(255, 255, 255, 0.16);
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.95),
-    0 30px 75px -20px rgba(0, 0, 0, 0.9),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  border-radius: clamp(18px, 2.6vw, 30px);
-  padding: clamp(10px, 1.25vw, 15px);
-  box-sizing: border-box;
-  transition:
-    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Centered Front Camera / Sensor Dot */
-.screen-mockup-camera {
-  position: absolute;
-  top: clamp(4px, 0.5vw, 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #23252d;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.85);
-  pointer-events: none;
-}
-
-/* Inner Screen Display Viewport */
-.screen-mockup-screen {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10.2;
-  border-radius: clamp(12px, 1.8vw, 18px);
-  overflow: hidden;
-  background: #ffffff;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+  border-color: rgba(99, 102, 241, 0.16);
 }
 
 .screen-mockup-image {
@@ -3808,75 +3748,34 @@ main#snapshots {
   transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Subtle Specular Sheen on Screen Glass */
-.screen-mockup-sheen {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.05) 0%,
-    rgba(255, 255, 255, 0) 25%
-  );
-}
-
-/* Floating Action Pill on Mockup */
-.case-card__action-badge {
-  position: absolute;
-  bottom: clamp(1.25rem, 2.5vw, 2.25rem);
-  right: clamp(1.25rem, 2.5vw, 2.25rem);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.65rem 1.15rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.95);
-  color: #000000;
-  font-family: var(--font);
-  font-size: 0.8125rem;
-  font-weight: 300;
-  letter-spacing: -0.01em;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-  opacity: 0;
-  transform: translateY(6px) scale(0.96);
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 5;
-}
-
-.case-card__action-icon {
-  display: block;
-  flex-shrink: 0;
-}
-
 /* —— Hover & Interactive States —— */
 .case-card:hover .screen-mockup-canvas,
 .case-card__mockup-link:focus-visible .screen-mockup-canvas {
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.22);
   box-shadow:
-    0 32px 85px -15px rgba(0, 0, 0, 0.75),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    0 30px 75px -15px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  transform: translateY(-3px);
 }
 
-.case-card:hover .screen-mockup-device,
-.case-card__mockup-link:focus-visible .screen-mockup-device {
-  transform: translateY(-3px) scale(1.008);
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.95),
-    0 38px 90px -20px rgba(0, 0, 0, 0.95),
-    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+.case-card.case-card--amber:hover .screen-mockup-canvas,
+.case-card.case-card--amber .case-card__mockup-link:focus-visible .screen-mockup-canvas {
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+.case-card.case-card--emerald:hover .screen-mockup-canvas,
+.case-card.case-card--emerald .case-card__mockup-link:focus-visible .screen-mockup-canvas {
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.case-card.case-card--indigo:hover .screen-mockup-canvas,
+.case-card.case-card--indigo .case-card__mockup-link:focus-visible .screen-mockup-canvas {
+  border-color: rgba(99, 102, 241, 0.35);
 }
 
 .case-card:hover .screen-mockup-image,
 .case-card__mockup-link:focus-visible .screen-mockup-image {
-  transform: scale(1.02);
-}
-
-.case-card:hover .case-card__action-badge,
-.case-card__mockup-link:focus-visible .case-card__action-badge {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: scale(1.025);
 }
 
 /* —— Responsive Layout —— */
@@ -3910,46 +3809,17 @@ main#snapshots {
 }
 
 @media (max-width: 640px) {
+  .case-card__mockup-link,
   .screen-mockup-canvas {
-    padding: 1.15rem 0.75rem;
-    border-radius: 18px;
-  }
-
-  .screen-mockup-device {
-    padding: 8px;
-    border-radius: 16px;
-  }
-
-  .screen-mockup-screen {
-    border-radius: 10px;
-  }
-
-  .case-card__action-badge {
-    opacity: 0.95;
-    transform: none;
-    bottom: 0.85rem;
-    right: 0.85rem;
-    padding: 0.5rem 0.85rem;
-    font-size: 0.8125rem;
+    border-radius: 12px;
+    padding: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .screen-mockup-canvas,
-  .screen-mockup-device,
   .screen-mockup-image,
-  .case-card__action-badge,
   .case-card__cta-btn {
-    transition: none !important;
-    transform: none !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .screen-mockup-canvas,
-  .screen-mockup-device,
-  .screen-mockup-image,
-  .case-card__action-badge {
     transition: none !important;
     transform: none !important;
   }
