@@ -192,7 +192,11 @@ export default function ProjectLore() {
     setTocOpen(false);
     const target = document.getElementById(id);
     if (!target) return;
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (window.lenis) {
+      window.lenis.scrollTo(target);
+    } else {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
     window.history.replaceState(null, "", `#${id}`);
     setActiveId(id);
   }, []);

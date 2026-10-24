@@ -6,7 +6,6 @@ const SELECTOR = [
   "h3",
   ".work-header",
   ".cases__name",
-  ".contact__brand",
   "img",
 ].join(", ");
 
@@ -24,6 +23,15 @@ const SKIP = [
   ".work-header__logo",
   ".locale-card__pin",
   ".locale-card__pin-ring",
+  ".screen-mockup-image",
+  "#about",
+  "#about *",
+  ".like",
+  ".like *",
+  "#contact",
+  "#contact *",
+  ".contact",
+  ".contact *",
 ].join(", ");
 
 function whenReady(el, go) {

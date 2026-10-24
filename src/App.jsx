@@ -593,7 +593,13 @@ export default function App({ isWorkView }) {
             <button
               type="button"
               className="contact__back-top"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onClick={() => {
+                if (window.lenis) {
+                  window.lenis.scrollTo(0);
+                } else {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
               aria-label="Back to top"
             >
               Back to top
