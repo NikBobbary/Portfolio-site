@@ -1,6 +1,6 @@
-export default function WorkHeader({ name, tagline, credit, logo }) {
+export default function WorkHeader({ id, name, tagline, credit, logo }) {
   return (
-    <header className="work-header">
+    <header id={id} className="work-header">
       <div className="work-header__lead">
         {logo ? (
           <img

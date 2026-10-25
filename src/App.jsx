@@ -310,6 +310,52 @@ export default function App({ isWorkView }) {
   }, [bootDone]);
 
   useEffect(() => {
+    if (!bootDone) return;
+
+    const scrollToHash = () => {
+      const rawHash = window.location.hash.replace(/^#/, "");
+      if (!rawHash) return;
+
+      const target =
+        document.getElementById(rawHash) ||
+        document.getElementById(rawHash.toLowerCase());
+
+      if (target) {
+        if (window.lenis) {
+          window.lenis.scrollTo(target, { duration: 1.2 });
+        } else {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    };
+
+    const timer = window.setTimeout(scrollToHash, BOOT_SLIDE_MS);
+    return () => window.clearTimeout(timer);
+  }, [bootDone]);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const rawHash = window.location.hash.replace(/^#/, "");
+      if (!rawHash) return;
+
+      const target =
+        document.getElementById(rawHash) ||
+        document.getElementById(rawHash.toLowerCase());
+
+      if (target) {
+        if (window.lenis) {
+          window.lenis.scrollTo(target);
+        } else {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  useEffect(() => {
     const topNav = topNavRef.current;
     const contact = document.getElementById("contact");
     if (!topNav || !("IntersectionObserver" in window)) return;
@@ -394,11 +440,11 @@ export default function App({ isWorkView }) {
         return (
           <section
             key={group.id}
-            id={group.id}
             className="work-group"
             aria-label={group.name}
           >
             <WorkHeader
+              id={group.id}
               name={group.name}
               tagline={group.tagline}
               credit={group.credit}
