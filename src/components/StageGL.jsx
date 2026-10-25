@@ -51,7 +51,7 @@ vec2 foldAt(float s, float a, float r) {
 }
 
 void main() {
-  vUV = (aUV - 0.5) * uCover + 0.5;
+  vUV = vec2((aUV.x - 0.5) * uCover.x + 0.5, aUV.y * uCover.y);
   vQuad = aUV;
 
   vec2 p = uRect.xy + aUV * uRect.zw;
@@ -67,15 +67,17 @@ void main() {
   float x = abs(dx) > uXFlat ? cx + sign(dx) * (uXFlat + fx.x) : p.x;
   z += (abs(dx) > uXFlat ? fx.y : 0.0) * uXDir;
 
-  vec2 eye = vec2(cx, uRes.y * 0.5);
-  
+  // Horizontal perspective narrowing as vertices curve into depth
   float k = uPersp / max(uPersp - z, uPersp * 0.25);
-  vec2 sp = eye + (vec2(x, y) - eye) * k;
+  float sx = cx + (x - cx) * k;
+
+  // Vertical position follows the physical cylinder curvature y without artificial center-eye upward pull
+  float sy = y;
 
   vFade = 1.0 - smoothstep(uFade.x, uFade.y, abs(z));
 
   float depth = clamp(0.5 - z / 12000.0, 0.0, 0.999);
-  gl_Position = vec4(sp.x / uRes.x * 2.0 - 1.0, 1.0 - sp.y / uRes.y * 2.0, depth, 1.0);
+  gl_Position = vec4(sx / uRes.x * 2.0 - 1.0, 1.0 - sy / uRes.y * 2.0, depth, 1.0);
 }`;
 
 const FRAGMENT_SHADER = `#version 300 es
@@ -344,25 +346,25 @@ export default function StageGL() {
       const vh = window.innerHeight;
       const vw = window.innerWidth;
 
-      // Global cylinder fold parameters
-      const foldZone = vh * 0.22; // roughly 20-22vh from bottom
-      const foldAngle = 38 * (Math.PI / 180); // 38 deg
-      const foldRound = 240;
-      const xFlat = Math.max(vw * 0.44, 380);
+      // Global cylinder fold parameters matching Sasha Martynchuk's calibration
+      const foldZone = Math.min(300, vh * 0.28);
+      const foldAngle = 32 * (Math.PI / 180); // 32 deg
+      const foldRound = 220;
+      const xFlat = Math.max(vw * 0.52, 600);
 
       gl.uniform2f(uniforms.uRes, canvas.width, canvas.height);
       gl.uniform1f(uniforms.uZone, foldZone * dpr);
       gl.uniform1f(uniforms.uAngle, foldAngle);
       gl.uniform1f(uniforms.uRound, foldRound * dpr);
       gl.uniform1f(uniforms.uDir, 1.0);
-      gl.uniform1f(uniforms.uPersp, 900.0 * dpr);
+      gl.uniform1f(uniforms.uPersp, 1500.0 * dpr); // 1500 for natural, undistorted projection
 
       // Horizontal subtle curve on the sides
       gl.uniform1f(uniforms.uXFlat, xFlat * dpr);
-      gl.uniform1f(uniforms.uXAngle, 12 * (Math.PI / 180));
-      gl.uniform1f(uniforms.uXRound, 400.0 * dpr);
+      gl.uniform1f(uniforms.uXAngle, 0.0);
+      gl.uniform1f(uniforms.uXRound, 420.0 * dpr);
       gl.uniform1f(uniforms.uXDir, 1.0);
-      gl.uniform2f(uniforms.uFade, 140.0 * dpr, 680.0 * dpr);
+      gl.uniform2f(uniforms.uFade, 20.0 * dpr, 120.0 * dpr);
 
       gl.bindVertexArray(mesh.vao);
       gl.activeTexture(gl.TEXTURE0);
@@ -373,7 +375,7 @@ export default function StageGL() {
 
       for (let i = 0; i < elements.length; i++) {
         const el = elements[i];
-        const rect = el.getBoundingClientRect();
+        const rect = (el.closest(".work-frame-wrap") || el).getBoundingClientRect();
 
         // Cull if outside viewport
         if (rect.bottom < -50 || rect.top > vh + 100) continue;
@@ -457,8 +459,13 @@ export default function StageGL() {
 
     window.addEventListener("load", requestTick, { passive: true, capture: true });
 
+    const onLenisScroll = () => {
+      // Lenis runs inside its own requestAnimationFrame, so render directly to avoid 1-frame scroll lag
+      render();
+    };
+
     if (window.lenis) {
-      window.lenis.on("scroll", requestTick);
+      window.lenis.on("scroll", onLenisScroll);
     }
     window.addEventListener("scroll", requestTick, { passive: true });
     window.addEventListener("resize", requestTick, { passive: true });
@@ -467,7 +474,7 @@ export default function StageGL() {
       mo.disconnect();
       window.removeEventListener("load", requestTick, { capture: true });
       if (window.lenis) {
-        window.lenis.off("scroll", requestTick);
+        window.lenis.off("scroll", onLenisScroll);
       }
       window.removeEventListener("scroll", requestTick);
       window.removeEventListener("resize", requestTick);
