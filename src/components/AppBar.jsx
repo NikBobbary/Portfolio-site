@@ -1,10 +1,13 @@
 import { forwardRef } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Calendar03Icon } from "@hugeicons/core-free-icons";
+import { Copy01Icon, Tick01Icon } from "@hugeicons/core-free-icons";
 import ActionButton from "./ActionButton.jsx";
 import { CONTACT, SOCIAL } from "../data/nav.js";
+import { useCopyEmail } from "../utils/useCopyEmail.js";
 
 const AppBar = forwardRef(function AppBar(_, ref) {
+  const { copied, copy } = useCopyEmail();
+
   return (
     <nav ref={ref} className="appbar" aria-label="Primary">
       <div className="appbar__social">
@@ -23,17 +26,17 @@ const AppBar = forwardRef(function AppBar(_, ref) {
         ))}
       </div>
       <ActionButton
-        className="appbar__cta"
-        href={CONTACT.href}
-        external={CONTACT.external}
+        className={`appbar__cta${copied ? " is-copied" : ""}`}
+        onClick={copy}
+        aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
       >
         <HugeiconsIcon
           className="appbar__cta-icon"
-          icon={Calendar03Icon}
+          icon={copied ? Tick01Icon : Copy01Icon}
           size={16}
           strokeWidth={1.5}
         />
-        {CONTACT.label}
+        {copied ? "Copied!" : CONTACT.label}
       </ActionButton>
     </nav>
   );

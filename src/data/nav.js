@@ -1,12 +1,12 @@
 import {
   AtIcon,
+  Calendar03Icon,
   Files02Icon,
   GalleryVerticalIcon,
   GithubIcon,
   Home01Icon,
   JokerIcon,
   Linkedin01Icon,
-  Mail01Icon,
   WorkIcon,
 } from "@hugeicons/core-free-icons";
 
@@ -28,19 +28,20 @@ export const SOCIAL = [
     external: true,
   },
   {
-    id: "email",
-    label: "Email",
-    tooltip: "Send Email",
-    href: "mailto:nikbobbary@gmail.com",
-    icon: Mail01Icon,
+    id: "cal",
+    label: "Book a slot",
+    tooltip: "Book a slot",
+    href: "https://cal.com/nikbobbary",
+    icon: Calendar03Icon,
+    external: true,
   },
 ];
 
 export const CONTACT = {
-  label: "Book a call",
-  tooltip: "cal.com",
-  href: "https://cal.com/nikbobbary",
-  external: true,
+  label: "Copy email",
+  email: "nikbobbary@gmail.com",
+  href: "mailto:nikbobbary@gmail.com",
+  calHref: "https://cal.com/nikbobbary",
 };
 
 export const BOTTOM_JUMPS = [

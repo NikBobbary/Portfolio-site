@@ -1,3 +1,23 @@
+export function isPlaySubdomain() {
+  if (typeof window === "undefined") return false;
+
+  const hostname = window.location.hostname.toLowerCase();
+  const search = new URLSearchParams(window.location.search);
+
+  if (
+    search.get("subdomain") === "play" ||
+    search.get("domain") === "play" ||
+    search.get("play") === "true"
+  ) {
+    return true;
+  }
+
+  return (
+    hostname === "play.nikbobbary.com" ||
+    hostname.startsWith("play.")
+  );
+}
+
 export function isWorkSubdomain() {
   if (typeof window === "undefined") return false;
 
@@ -30,7 +50,11 @@ export function isWorkSubdomain() {
 export function isLocalhost() {
   if (typeof window === "undefined") return false;
   const hostname = window.location.hostname.toLowerCase();
-  return hostname === "localhost" || hostname === "127.0.0.1";
+  return (
+    hostname === "localhost" ||
+    hostname === "127.0.0.1" ||
+    hostname.endsWith(".localhost")
+  );
 }
 
 export function isWorkDomain() {
@@ -47,6 +71,12 @@ export function redirectToWork() {
   if (typeof window === "undefined") return;
   if (isLocalhost()) return;
   window.location.replace("https://work.nikbobbary.com");
+}
+
+export function redirectToPlay() {
+  if (typeof window === "undefined") return;
+  if (isLocalhost()) return;
+  window.location.replace("https://play.nikbobbary.com");
 }
 
 export function applyNoIndexMeta(enabled = true) {

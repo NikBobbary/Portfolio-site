@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Calendar03Icon } from "@hugeicons/core-free-icons";
+import { Copy01Icon, Tick01Icon } from "@hugeicons/core-free-icons";
 import ActionButton from "./ActionButton.jsx";
 import { BOTTOM_JUMPS, CONTACT, SOCIAL, WORK_BOTTOM_JUMPS } from "../data/nav.js";
 import { isWorkDomain } from "../utils/domain.js";
+import { useCopyEmail } from "../utils/useCopyEmail.js";
 
 const SPY_LINE = 0.32;
 
@@ -31,6 +32,7 @@ export default function BottomNav({ visible, isWork: propIsWork }) {
   const jumps = isWork ? WORK_BOTTOM_JUMPS : BOTTOM_JUMPS;
   const { pathname } = useLocation();
   const [active, setActive] = useState(() => getActiveJump(pathname, isWork));
+  const { copied, copy } = useCopyEmail();
 
   useEffect(() => {
     const sync = () => setActive(getActiveJump(pathname, isWork));
@@ -93,18 +95,18 @@ export default function BottomNav({ visible, isWork: propIsWork }) {
               </ActionButton>
             ))}
             <ActionButton
-              className="bottom-nav__cta"
-              href={CONTACT.href}
-              external={CONTACT.external}
+              className={`bottom-nav__cta${copied ? " is-copied" : ""}`}
+              onClick={copy}
               tabIndex={visible ? 0 : -1}
+              aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
             >
               <HugeiconsIcon
                 className="bottom-nav__cta-icon"
-                icon={Calendar03Icon}
+                icon={copied ? Tick01Icon : Copy01Icon}
                 size={15}
                 strokeWidth={1}
               />
-              {CONTACT.label}
+              {copied ? "Copied!" : CONTACT.label}
             </ActionButton>
           </div>
         </div>
