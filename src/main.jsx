@@ -9,12 +9,14 @@ import Reveal from "./components/Reveal.jsx";
 import StageGL from "./components/StageGL.jsx";
 import CaseStudyDetail from "./pages/CaseStudyDetail.jsx";
 import ProjectLore from "./pages/ProjectLore.jsx";
+import ArcTransition from "./components/ArcTransition.jsx";
 const PlayWarp = lazy(() => import("./pages/PlayWarp.jsx"));
 import {
   isLocalhost,
   isPlaySubdomain,
   isWorkSubdomain,
   redirectToMain,
+  redirectToPlay,
   redirectToWork,
 } from "./utils/domain.js";
 import "./styles.css";
@@ -71,6 +73,13 @@ function WorkRedirect() {
   return null;
 }
 
+function PlayRedirect() {
+  if (typeof window !== "undefined") {
+    redirectToPlay();
+  }
+  return null;
+}
+
 function RootRoutes() {
   const isPlay = isPlaySubdomain();
   const isWork = isWorkSubdomain();
@@ -89,6 +98,9 @@ function RootRoutes() {
           }
         />
         <Route path="/play" element={<Navigate to="/" replace />} />
+        <Route path="/play/*" element={<Navigate to="/" replace />} />
+        <Route path="/~play" element={<Navigate to="/" replace />} />
+        <Route path="/~/play" element={<Navigate to="/" replace />} />
         <Route
           path="*"
           element={
@@ -108,14 +120,10 @@ function RootRoutes() {
       <Routes>
         <Route path="/" element={<App isWorkView={true} />} />
         <Route path="/work" element={<Navigate to="/" replace />} />
-        <Route
-          path="/play"
-          element={
-            <Suspense fallback={null}>
-              <PlayWarp />
-            </Suspense>
-          }
-        />
+        <Route path="/play" element={<PlayRedirect />} />
+        <Route path="/play/*" element={<PlayRedirect />} />
+        <Route path="/~play" element={<PlayRedirect />} />
+        <Route path="/~/play" element={<PlayRedirect />} />
         <Route path="/:slug" element={<CaseStudyDetail />} />
         <Route path="/work/:slug" element={<CaseStudyDetail />} />
         <Route path="/case/:slug" element={<CaseStudyDetail />} />
@@ -131,14 +139,10 @@ function RootRoutes() {
   return (
     <Routes>
       <Route path="/" element={<App isWorkView={false} />} />
-      <Route
-        path="/play"
-        element={
-          <Suspense fallback={null}>
-            <PlayWarp />
-          </Suspense>
-        }
-      />
+      <Route path="/play" element={<PlayRedirect />} />
+      <Route path="/play/*" element={<PlayRedirect />} />
+      <Route path="/~play" element={<PlayRedirect />} />
+      <Route path="/~/play" element={<PlayRedirect />} />
       <Route path="/work" element={isLocal ? <App isWorkView={true} /> : <WorkRedirect />} />
       <Route path="/:slug" element={isLocal ? <CaseStudyDetail /> : <NotFoundRedirect />} />
       <Route path="/work/:slug" element={isLocal ? <CaseStudyDetail /> : <WorkRedirect />} />
@@ -151,14 +155,13 @@ function RootRoutes() {
 
 function AppShell() {
   const isPlay = isPlaySubdomain();
-  const location = useLocation();
-  const isPlayActive = isPlay || location.pathname === "/play";
 
   return (
     <>
-      {!isPlayActive && <StageGL />}
-      {!isPlayActive && <Reveal />}
+      {!isPlay && <StageGL />}
+      {!isPlay && <Reveal />}
       <RootRoutes />
+      {!isPlay && <ArcTransition />}
       <Analytics />
     </>
   );

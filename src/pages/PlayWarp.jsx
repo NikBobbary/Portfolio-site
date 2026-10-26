@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { PLAY_ITEMS } from "../data/playItems.js";
 import AsciiBackground from "../components/AsciiBackground.jsx";
+import BottomNav from "../components/BottomNav.jsx";
+import { getWorkUrl } from "../utils/domain.js";
+import { Home01Icon } from "@hugeicons/core-free-icons";
 import "./PlayWarp.css";
 
 // 4-Sided Spherical Fold Vertex Shader
@@ -613,6 +616,17 @@ export default function PlayWarp() {
 
       {/* Full-Bleed 4-Sided Spherical Fold Infinite Grid */}
       <canvas ref={canvasRef} className="play-canvas-wrap" />
+
+      {/* Bottom Nav: Home button pill (left) leading to work.nikbobbary.com, Socials pill (right) */}
+      <BottomNav
+        visible={!activeItem}
+        socialsOnly={true}
+        showHome={true}
+        homeHref={getWorkUrl()}
+        homeIcon={Home01Icon}
+        homeTooltip="work.nikbobbary.com"
+        homeAriaLabel="Home — work.nikbobbary.com"
+      />
 
       {/* Pure Media Modal (Click anywhere to close) */}
       {activeItem && (

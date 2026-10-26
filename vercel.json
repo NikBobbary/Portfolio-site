@@ -1,4 +1,26 @@
 {
+  "redirects": [
+    {
+      "source": "/play",
+      "destination": "https://play.nikbobbary.com",
+      "permanent": false
+    },
+    {
+      "source": "/play/:path*",
+      "destination": "https://play.nikbobbary.com",
+      "permanent": false
+    },
+    {
+      "source": "/~play",
+      "destination": "https://play.nikbobbary.com",
+      "permanent": false
+    },
+    {
+      "source": "/~/play",
+      "destination": "https://play.nikbobbary.com",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

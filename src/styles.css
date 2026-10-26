@@ -532,6 +532,8 @@ body {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  touch-action: manipulation;
+  user-select: none;
   opacity: 0;
   transform: translateY(0.85rem);
   transition:
@@ -1197,6 +1199,8 @@ body {
   border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
 }
+
+
 
 .contact__brand {
   position: relative;
@@ -3840,6 +3844,8 @@ main#snapshots {
   display: flex;
   flex-direction: column;
   padding-top: var(--appbar-h);
+  padding-bottom: clamp(5rem, 10vw, 7rem);
+  position: relative;
 }
 
 .case-detail-nav {
@@ -3854,6 +3860,24 @@ main#snapshots {
   -webkit-backdrop-filter: blur(16px);
   background: rgba(0, 0, 0, 0.85);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transform: translateY(0);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
+  will-change: transform;
+}
+
+.case-detail-nav.is-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.case-detail-bottom-sentinel {
+  width: 100%;
+  height: 80px;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .case-detail-nav__inner {

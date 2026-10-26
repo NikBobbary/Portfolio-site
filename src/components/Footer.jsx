@@ -4,6 +4,7 @@ import ActionButton from "./ActionButton.jsx";
 import FooterName from "./FooterName.jsx";
 import { CONTACT, SOCIAL } from "../data/nav.js";
 import { useCopyEmail } from "../utils/useCopyEmail.js";
+import PlayProgressBar from "./PlayProgressBar.jsx";
 
 export default function Footer() {
   const { copied, copy } = useCopyEmail();
@@ -136,6 +137,7 @@ export default function Footer() {
           </button>
         </div>
       </div>
+      <PlayProgressBar />
     </section>
   );
 }

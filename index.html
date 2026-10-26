@@ -8,6 +8,20 @@
         try {
           var h = window.location.hostname.toLowerCase();
           var s = window.location.search;
+          var p = window.location.pathname.toLowerCase().replace(/\/+$/, "");
+
+          // Instant pre-boot redirect: if accessing /play or ~play on any non-play domain (e.g. work.~/play)
+          var isPlay = h.indexOf("play.") === 0 || s.indexOf("subdomain=play") !== -1;
+          if (!isPlay && (p === "/play" || p === "/~play" || p === "/~/play" || p.indexOf("/play/") === 0)) {
+            if (h === "localhost" || h.indexOf(".localhost") !== -1) {
+              var port = window.location.port ? ":" + window.location.port : "";
+              window.location.replace(window.location.protocol + "//play.localhost" + port + "/");
+            } else {
+              window.location.replace("https://play.nikbobbary.com/");
+            }
+            return;
+          }
+
           if (
             h.startsWith("work.") ||
             h === "work.nikbobbary.com" ||
