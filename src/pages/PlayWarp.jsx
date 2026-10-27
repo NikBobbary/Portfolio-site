@@ -305,6 +305,10 @@ export default function PlayWarp() {
         gl.bindTexture(gl.TEXTURE_2D, null);
       };
 
+      img.onerror = (e) => {
+        console.error("[PlayWarp] Failed to load image texture:", item.src, e);
+      };
+
       return tex;
     };
 
