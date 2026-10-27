@@ -1,0 +1,51 @@
+/* ==========================================================================
+   Arc Transition — Fluid, soft, deliberate upward-to-inverted arc curtain
+   ========================================================================== */
+
+.arc-transition-portal {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  pointer-events: none;
+  overflow: hidden;
+  user-select: none;
+  will-change: opacity;
+}
+
+.arc-transition-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Deep obsidian veil that sweeps up and wipes into the play page */
+.arc-transition-curtain {
+  fill: #08090c;
+  shape-rendering: geometricPrecision;
+}
+
+/* Atmospheric cyan/white ambient glow beneath the leading edge */
+.arc-transition-glow {
+  fill: none;
+  stroke: rgba(56, 189, 248, 0.45);
+  stroke-width: 7px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.65));
+}
+
+/* Crisp, luminous, fluid leading line */
+.arc-transition-line {
+  fill: none;
+  stroke: rgba(248, 250, 252, 0.98);
+  stroke-width: 2.2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.85));
+}

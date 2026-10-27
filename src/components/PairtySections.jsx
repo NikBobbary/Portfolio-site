@@ -226,105 +226,100 @@ export default function PairtySections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 3: THE STRATEGIC SHIFT (ARCHITECTURE OF SKIN IN THE GAME)
-          2-Column Asymmetrical Grid (12 cols: 7 left / 5 right)
+          SECTION 3: THE STRATEGIC SHIFT (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--strategy" id="section-strategy">
-        <div className="lp-section__container lp-grid-12 grid-cols-12">
-          {/* Left Column: Col-Span 7 */}
-          <div className="lp-col-7 col-span-7 lp-strategy__left">
-            <h2 className="lp-strategy__headline cs-h2">
+      <section className="lp-section cs-flow-section" id="section-strategy">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
               Engineering Skin in the Game
             </h2>
 
-            <p className="lp-strategy__paragraph cs-body">
+            <p className="cs-flow-body cs-body">
               Instead of designing another superficial swipe feed, we treated professional access
               like a financial clearinghouse. We architected a closed-loop system where discovery
               is curated, identity is non-negotiable, and advisory consultations are governed by
               programmatic escrow contracts.
             </p>
 
-            {/* Image Container: System Architecture Flow */}
-            <div className="lp-strategy__media-wrap">
-              <ImagePlaceholder
-                name="pairty system user flow architecture"
-                alt="Pairty end-to-end user flow architecture showing verification, matching, messaging, and token payment rails"
-                caption="System Architecture: User journey mapping from biometric KYC gating, connection triage, and escrow messaging to PTY token balance redemption."
-                badge="Platform Architecture: Complete System Flow"
-                aspectRatio="16 / 10"
-                fallbackType="wireframe"
-                src="/Screens/1400/Pairty-3.jpg"
-                annotations={[
-                  {
-                    id: 1,
-                    x: "24%",
-                    y: "32%",
-                    tag: "Trust Gate",
-                    title: "Two-Tier Verification Gate",
-                    text: "Mandatory phone verification + optional verified detail tiers before users can initiate outbound consultations.",
-                  },
-                  {
-                    id: 2,
-                    x: "54%",
-                    y: "28%",
-                    tag: "Escrow Protocol",
-                    title: "Consultation Escrow Lock",
-                    text: "Locks advisor fee ($120) upon message dispatch; funds are held in reserve until 4-message exchange completes.",
-                  },
-                  {
-                    id: 3,
-                    x: "82%",
-                    y: "40%",
-                    tag: "PTY Liquidity",
-                    title: "Dual-Rail Token Dashboard",
-                    text: "Enables instant micro-tipping, token top-ups, and automated redemption into connected bank accounts.",
-                  },
-                  {
-                    id: 4,
-                    x: "24%",
-                    y: "76%",
-                    tag: "Bilateral Controls",
-                    title: "Mutual Connection vs Paid Inbound",
-                    text: "Separates organic mutual matches from one-way paid priority consultations to prevent spam.",
-                  },
-                ]}
-              />
+            <p className="cs-flow-body cs-body">
+              If sending a message carries zero cost, inboxes will naturally devolve into spam.
+              Conversely, if reaching out requires skin in the game, only the most motivated,
+              well-prepared founders will initiate contact.
+            </p>
+
+            {/* Editorial Pull Quote */}
+            <div className="cs-flow-quote cs-flow-quote--pairty">
+              <span className="cs-flow-quote__mark" aria-hidden="true">“</span>
+              <p className="cs-flow-quote__text">
+                When access carries verifiable skin in the game and a guaranteed standard of delivery, ghosting drops to zero.
+              </p>
             </div>
 
-            <p className="lp-strategy__paragraph cs-body">
+            {/* Strategic Verdict / Pivot */}
+            <div className="cs-flow-verdict cs-flow-verdict--pairty">
+              <div className="cs-flow-verdict__indicator" />
+              <p className="cs-flow-verdict__text cs-body">
+                By introducing the <strong>4-Message Reciprocity Contract</strong>, we gave both
+                parties complete psychological safety: founders know their funds will auto-refund
+                if the advisor doesn&rsquo;t deliver, while advisors are fairly compensated for
+                their intellectual capital without commitment dread.
+              </p>
+            </div>
+          </div>
+
+          {/* Expansive Media Showcase */}
+          <div className="cs-flow-media">
+            <ImagePlaceholder
+              name="pairty system user flow architecture"
+              alt="Pairty end-to-end user flow architecture showing verification, matching, messaging, and token payment rails"
+              caption="System Architecture: User journey mapping from biometric KYC gating, connection triage, and escrow messaging to PTY token balance redemption."
+              badge="Platform Architecture: Complete System Flow"
+              aspectRatio="16 / 10"
+              fallbackType="wireframe"
+              src="/Screens/1400/Pairty-3.jpg"
+              annotations={[
+                {
+                  id: 1,
+                  x: "24%",
+                  y: "32%",
+                  tag: "Trust Gate",
+                  title: "Two-Tier Verification Gate",
+                  text: "Mandatory phone verification + optional verified detail tiers before users can initiate outbound consultations.",
+                },
+                {
+                  id: 2,
+                  x: "54%",
+                  y: "28%",
+                  tag: "Escrow Protocol",
+                  title: "Consultation Escrow Lock",
+                  text: "Locks advisor fee ($120) upon message dispatch; funds are held in reserve until 4-message exchange completes.",
+                },
+                {
+                  id: 3,
+                  x: "82%",
+                  y: "40%",
+                  tag: "PTY Liquidity",
+                  title: "Dual-Rail Token Dashboard",
+                  text: "Enables instant micro-tipping, token top-ups, and automated redemption into connected bank accounts.",
+                },
+                {
+                  id: 4,
+                  x: "24%",
+                  y: "76%",
+                  tag: "Bilateral Controls",
+                  title: "Mutual Connection vs Paid Inbound",
+                  text: "Separates organic mutual matches from one-way paid priority consultations to prevent spam.",
+                },
+              ]}
+            />
+          </div>
+
+          <div className="cs-flow-prose">
+            <p className="cs-flow-body cs-body">
               By embedding financial reciprocity directly into the communication protocol, we
               transformed unsolicited inbound messages into high-signal, high-commitment advisory sessions.
             </p>
-          </div>
-
-          {/* Right Column: Col-Span 5 - Highlight Card */}
-          <div className="lp-col-5 col-span-5 lp-strategy__right">
-            <div className="lp-highlight-card">
-              <p className="lp-highlight-card__body cs-body">
-                If sending a message carries zero cost, inboxes will naturally devolve into spam.
-                Conversely, if reaching out requires skin in the game, only the most motivated,
-                well-prepared founders will initiate contact.
-              </p>
-
-              {/* Callout Highlight Box */}
-              <div className="lp-callout-box py-callout-box">
-                <span className="lp-callout-box__quotemark">“</span>
-                <p className="lp-callout-box__quote">
-                  When access carries verifiable skin in the game and a guaranteed standard of delivery, ghosting drops to zero.
-                </p>
-              </div>
-
-              {/* Verdict Box */}
-              <div className="lp-verdict-box py-verdict-box">
-                <div className="lp-verdict-box__indicator py-verdict-indicator" />
-                <p className="lp-verdict-box__text cs-body">
-                  By introducing the <strong>4-Message Reciprocity Contract</strong>, we gave both
-                  parties complete psychological safety: founders know their funds will auto-refund
-                  if the advisor doesn&rsquo;t deliver, while advisors are fairly compensated for
-                  their intellectual capital without commitment dread.
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -333,30 +328,28 @@ export default function PairtySections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 4: VERIFIED IDENTITY SYSTEM & TRUST GATING (KYC)
-          2-Column Grid (12 cols: 4 left / 8 right)
+          SECTION 4: VERIFIED IDENTITY SYSTEM & TRUST GATING (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--solution" id="section-identity">
-        <div className="lp-section__container lp-grid-12 grid-cols-12">
-          {/* Left Column: Col-Span 4 - Principles */}
-          <div className="lp-col-4 col-span-4 lp-solution__left">
-            <h2 className="lp-solution__headline cs-h2">
+      <section className="lp-section cs-flow-section" id="section-identity">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
               Eliminating Imposters at the Gate
             </h2>
 
-            <p className="lp-solution__desc cs-body">
+            <p className="cs-flow-body cs-body">
               Prestige cannot be maintained if bad actors can spin up burner profiles. We engineered
               a progressive identity verification funnel that balances seamless onboarding with
               institutional-grade compliance.
             </p>
 
-            {/* Key Takeaway Box */}
-            <div className="lp-takeaway-card py-takeaway-card">
-              <div className="lp-takeaway-card__header">
-                <span className="lp-takeaway-card__icon">🛡️</span>
-                <span className="lp-takeaway-card__label cs-code2">Identity Architecture</span>
+            {/* Key Principle Insight */}
+            <div className="cs-flow-insight cs-flow-insight--pairty">
+              <div className="cs-flow-insight__header">
+                <span className="cs-flow-insight__icon">🛡️</span>
+                <span className="cs-flow-insight__label cs-code2">Identity Architecture</span>
               </div>
-              <p className="lp-takeaway-card__text cs-body">
+              <p className="cs-flow-insight__text cs-body">
                 Two-tier verification (SMS OTP + Driving License/Passport audit) filtered out 99.2%
                 of fraudulent accounts while preserving an 86% onboarding completion rate among
                 target tech executives and founders.
@@ -364,8 +357,8 @@ export default function PairtySections() {
             </div>
           </div>
 
-          {/* Right Column: Col-Span 8 - Showcase */}
-          <div className="lp-col-8 col-span-8 lp-solution__right">
+          {/* Expansive Showcase Frame */}
+          <div className="cs-flow-media">
             <div className="lp-showcase-frame">
               <ImagePlaceholder
                 name="pairty verification and kyc gate"
@@ -411,13 +404,38 @@ export default function PairtySections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 5: CURATED DISCOVERY & THE METALLIC VIP CREDENTIAL
-          2-Column Grid (12 cols: 8 left / 4 right)
+          SECTION 5: CURATED DISCOVERY & VIP CREDENTIAL (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--discovery" id="section-discovery">
-        <div className="lp-section__container lp-grid-12 grid-cols-12">
-          {/* Left Column: Col-Span 8 - Showcase */}
-          <div className="lp-col-8 col-span-8 lp-solution__right">
+      <section className="lp-section cs-flow-section" id="section-discovery">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
+              Prestige, agency, and clarity
+            </h2>
+
+            <p className="cs-flow-body cs-body">
+              Pairty blends the frictionless speed of mobile gesture interactions with the tactile
+              elegance of a private member&rsquo;s club. Instead of generic text lists, every profile
+              is framed with high-fidelity visual hierarchy, verified pedigree badges, and clear
+              engagement parameters.
+            </p>
+
+            {/* Key Principle Insight */}
+            <div className="cs-flow-insight cs-flow-insight--pairty">
+              <div className="cs-flow-insight__header">
+                <span className="cs-flow-insight__icon">💎</span>
+                <span className="cs-flow-insight__label cs-code2">Design Tenet</span>
+              </div>
+              <p className="cs-flow-insight__text cs-body">
+                The gold metallic membership card is more than an aesthetic asset. It serves as a
+                cryptographic anchor of identity and mutual respect, reminding members that access
+                in Pairty is earned and protected.
+              </p>
+            </div>
+          </div>
+
+          {/* Expansive Showcase Frame */}
+          <div className="cs-flow-media">
             <div className="lp-showcase-frame">
               <ImagePlaceholder
                 name="pairty discovery and member credentials"
@@ -464,32 +482,6 @@ export default function PairtySections() {
               />
             </div>
           </div>
-
-          {/* Right Column: Col-Span 4 - Narrative */}
-          <div className="lp-col-4 col-span-4 lp-solution__left">
-            <h2 className="lp-solution__headline cs-h2">
-              Prestige, agency, and clarity
-            </h2>
-
-            <p className="lp-solution__desc cs-body">
-              Pairty blends the frictionless speed of mobile gesture interactions with the tactile
-              elegance of a private member&rsquo;s club. Instead of generic text lists, every profile
-              is framed with high-fidelity visual hierarchy, verified pedigree badges, and clear
-              engagement parameters.
-            </p>
-
-            <div className="lp-takeaway-card py-takeaway-card">
-              <div className="lp-takeaway-card__header">
-                <span className="lp-takeaway-card__icon">💎</span>
-                <span className="lp-takeaway-card__label cs-code2">Design Tenet</span>
-              </div>
-              <p className="lp-takeaway-card__text cs-body">
-                The gold metallic membership card is more than an aesthetic asset. It serves as a
-                cryptographic anchor of identity and mutual respect, reminding members that access
-                in Pairty is earned and protected.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -497,24 +489,24 @@ export default function PairtySections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 6: ESCROW CONSULTATION & INTERACTIVE SIMULATOR
-          2-Column Balanced Modular Grid (grid-cols-2 / 6 cols each)
+          SECTION 6: ESCROW CONSULTATION & SIMULATOR (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--edge-cases" id="section-escrow">
-        <div className="lp-section__container lp-grid-balanced grid-cols-2">
-          {/* Left Card: Interactive Escrow Simulator */}
-          <div className="lp-card lp-card--modular lp-edge-card">
-            <h2 className="lp-card__headline cs-h2">
+      <section className="lp-section cs-flow-section" id="section-escrow">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
               The 4-Message Reciprocity Simulator
             </h2>
 
-            <p className="lp-card__text cs-body">
+            <p className="cs-flow-body cs-body">
               How does Pairty prevent bad-faith behavior in paid chats? Test the interactive protocol:
               select a consultation rate, review the escrow hold, and simulate advancing through
               the 4 message exchanges that unlock funds to the advisor.
             </p>
+          </div>
 
-            {/* Interactive Widget */}
+          {/* Interactive Escrow Simulator in Single Flow */}
+          <div className="cs-flow-feature">
             <div className="py-escrow-widget">
               <div className="py-escrow-widget__header">
                 <div className="py-escrow-widget__status">
@@ -646,44 +638,44 @@ export default function PairtySections() {
             </div>
           </div>
 
-          {/* Right Card: The Reciprocity Architecture Narrative */}
-          <div className="lp-card lp-card--modular lp-edge-card">
-            <h2 className="lp-card__headline cs-h2">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2" style={{ marginTop: "1rem" }}>
               Why 4 Messages? Solving the Delivery Gap
             </h2>
 
-            <div className="lp-edge-narrative">
-              <p className="lp-card__text cs-body">
-                Existing advisory marketplaces frequently collapse due to mismatched expectations.
-                If an advisor receives money upfront and responds with a single-word reply like
-                &ldquo;Thanks for reaching out,&rdquo; the paying founder feels robbed. If a platform
-                mandates an open-ended dialogue, advisors get dragged into endless consulting without compensation.
+            <p className="cs-flow-body cs-body">
+              Existing advisory marketplaces frequently collapse due to mismatched expectations.
+              If an advisor receives money upfront and responds with a single-word reply like
+              &ldquo;Thanks for reaching out,&rdquo; the paying founder feels robbed. If a platform
+              mandates an open-ended dialogue, advisors get dragged into endless consulting without compensation.
+            </p>
+
+            <p className="cs-flow-body cs-body">
+              Pairty&rsquo;s <strong>4-Message Threshold</strong> was calibrated through user research
+              with top founders and angels. It provides the exact structure needed for:
+            </p>
+
+            <ul className="py-reciprocity-list cs-body">
+              <li>
+                <strong>1. Context Framing:</strong> Founder provides problem statement, metrics, and targeted question.
+              </li>
+              <li>
+                <strong>2. Diagnostic Insight:</strong> Advisor shares strategic perspective and challenges assumptions.
+              </li>
+              <li>
+                <strong>3. Clarification &amp; Data:</strong> Founder submits specifics to stress-test the advice.
+              </li>
+              <li>
+                <strong>4. Actionable Next Steps:</strong> Advisor delivers intro templates, tactical execution blueprint, and closing takeaways.
+              </li>
+            </ul>
+
+            <div className="py-escrow-callout">
+              <span className="py-escrow-callout__icon">⚖️</span>
+              <p className="cs-body">
+                If 4 message exchanges are not completed within the session, or if the advisor
+                is unresponsive within 24 hours, the full fee is automatically refunded.
               </p>
-              <p className="lp-card__text cs-body">
-                Pairty&rsquo;s <strong>4-Message Threshold</strong> was calibrated through user research
-                with top founders and angels. It provides the exact structure needed for:
-              </p>
-              <ul className="py-reciprocity-list cs-body">
-                <li>
-                  <strong>1. Context Framing:</strong> Founder provides problem statement, metrics, and targeted question.
-                </li>
-                <li>
-                  <strong>2. Diagnostic Insight:</strong> Advisor shares strategic perspective and challenges assumptions.
-                </li>
-                <li>
-                  <strong>3. Clarification &amp; Data:</strong> Founder submits specifics to stress-test the advice.
-                </li>
-                <li>
-                  <strong>4. Actionable Next Steps:</strong> Advisor delivers intro templates, tactical execution blueprint, and closing takeaways.
-                </li>
-              </ul>
-              <div className="py-escrow-callout">
-                <span className="py-escrow-callout__icon">⚖️</span>
-                <p className="cs-body">
-                  If 4 message exchanges are not completed within the session, or if the advisor
-                  is unresponsive within 24 hours, the full fee is automatically refunded.
-                </p>
-              </div>
             </div>
           </div>
         </div>
@@ -693,18 +685,16 @@ export default function PairtySections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 7: TOKENOMICS & DUAL-RAIL LIQUIDITY (PTY TOKENS)
-          2-Column Asymmetric Grid (12 cols: 5 left / 7 right)
+          SECTION 7: TOKENOMICS & DUAL-RAIL LIQUIDITY (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--design-system" id="section-tokenomics">
-        <div className="lp-section__container lp-grid-12 grid-cols-12">
-          {/* Left Column: Col-Span 5 */}
-          <div className="lp-col-5 col-span-5 lp-strategy__right">
-            <h2 className="lp-strategy__headline cs-h2">
+      <section className="lp-section cs-flow-section" id="section-tokenomics">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
               Dual-Rail Payment Architecture
             </h2>
 
-            <p className="lp-strategy__paragraph cs-body">
+            <p className="cs-flow-body cs-body">
               Cross-border founders and international operators face punishing credit card interchange
               fees on small advisory messages. To solve this, Pairty pairs standard Stripe/Apple Pay
               fiat rails with native <strong>PTY Tokens</strong> for instantaneous, zero-overhead settlement.
@@ -726,8 +716,8 @@ export default function PairtySections() {
             </div>
           </div>
 
-          {/* Right Column: Col-Span 7 */}
-          <div className="lp-col-7 col-span-7 lp-strategy__left">
+          {/* Expansive Architecture Showcase Frame */}
+          <div className="cs-flow-media">
             <div className="py-architecture-card">
               <h3 className="py-architecture-title cs-h3">
                 Lifecycle of an Escrow Consultation

@@ -74,7 +74,7 @@ void main() {
   // Vertical position follows the physical cylinder curvature y without artificial center-eye upward pull
   float sy = y;
 
-  vFade = 1.0 - smoothstep(uFade.x, uFade.y, abs(z));
+  vFade = 1.0;
 
   float depth = clamp(0.5 - z / 12000.0, 0.0, 0.999);
   gl_Position = vec4(sx / uRes.x * 2.0 - 1.0, 1.0 - sy / uRes.y * 2.0, depth, 1.0);
@@ -364,7 +364,7 @@ export default function StageGL() {
       gl.uniform1f(uniforms.uXAngle, 0.0);
       gl.uniform1f(uniforms.uXRound, 420.0 * dpr);
       gl.uniform1f(uniforms.uXDir, 1.0);
-      gl.uniform2f(uniforms.uFade, 20.0 * dpr, 120.0 * dpr);
+      gl.uniform2f(uniforms.uFade, 999999.0 * dpr, 999999.0 * dpr);
 
       gl.bindVertexArray(mesh.vao);
       gl.activeTexture(gl.TEXTURE0);
@@ -423,7 +423,7 @@ export default function StageGL() {
         if (el.classList.contains("like__portrait") || el.tagName === "svg" || el.classList.contains("contact__brand-svg")) {
           radius = 0.0;
         } else if (el.classList.contains("screen-mockup-image")) {
-          radius = 14.0 * dpr;
+          radius = 8.0 * dpr;
         }
         gl.uniform1f(uniforms.uRadius, radius);
         gl.uniform1f(uniforms.uAlpha, 1.0);

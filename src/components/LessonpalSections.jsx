@@ -169,71 +169,66 @@ export default function LessonpalSections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 2: THE SHIFT IN STRATEGY
-          2-Column Asymmetrical Grid (12 cols: 7 left / 5 right)
+          SECTION 2: THE SHIFT IN STRATEGY (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--strategy" id="section-strategy">
-        <div className="lp-section__container lp-grid-12 grid-cols-12">
-          {/* Left Column: Col-Span 7 */}
-          <div className="lp-col-7 col-span-7 lp-strategy__left">
-            <h2 className="lp-strategy__headline cs-h2">
+      <section className="lp-section cs-flow-section" id="section-strategy">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
               Redefining the Bottleneck
             </h2>
 
-            <p className="lp-strategy__paragraph cs-body">
+            <p className="cs-flow-body cs-body">
               The brief seemed simple: make rescheduling easier for Support. So I dug into
               the existing flow first—support conversations, booking and lesson states,
               where rescheduling was breaking, and the edge cases around it.
             </p>
 
-            {/* Image Container: Placeholder box for <screenshots> */}
-            <div className="lp-strategy__media-wrap">
-              <ImagePlaceholder
-                name="screenshots"
-                alt="Support conversations audit and rescheduling flow breakdown"
-                caption="Support triage transcripts & early flow audit mapping manual escalation bottlenecks"
-                badge="Audit: Support Conversations"
-                aspectRatio="16 / 9"
-                fallbackType="screenshots"
-                src="/Screens/1400/lessonpal-4.jpg"
-              />
+            <p className="cs-flow-body cs-body">
+              My first approach was to let Support reschedule lessons themselves. That
+              removed the dev dependency and made the process faster. But users still
+              had to go through Support. We had just moved the bottleneck.
+            </p>
+
+            {/* Editorial Pull Quote */}
+            <div className="cs-flow-quote">
+              <span className="cs-flow-quote__mark" aria-hidden="true">“</span>
+              <p className="cs-flow-quote__text">
+                That made me look at the process again: could we remove the need for Support altogether?
+              </p>
             </div>
 
-            <p className="lp-strategy__paragraph cs-body">
+            {/* Strategic Verdict / Pivot */}
+            <div className="cs-flow-verdict">
+              <div className="cs-flow-verdict__indicator" />
+              <p className="cs-flow-verdict__text cs-body">
+                The problem changed. It wasn’t that Support needed a better rescheduling
+                tool. Users needed control over rescheduling their own lessons. That changed
+                the direction of the product—from making Support faster to removing Support
+                from the normal path altogether.
+              </p>
+            </div>
+          </div>
+
+          {/* Expansive Media Showcase */}
+          <div className="cs-flow-media">
+            <ImagePlaceholder
+              name="screenshots"
+              alt="Support conversations audit and rescheduling flow breakdown"
+              caption="Support triage transcripts & early flow audit mapping manual escalation bottlenecks"
+              badge="Audit: Support Conversations"
+              aspectRatio="16 / 9"
+              fallbackType="screenshots"
+              src="/Screens/1400/lessonpal-4.jpg"
+            />
+          </div>
+
+          <div className="cs-flow-prose">
+            <p className="cs-flow-body cs-body">
               Pretty quickly, it became clear this wasn’t just a missing feature.
               Rescheduling touched student and tutor availability, lesson states, and who
               was responsible for each change.
             </p>
-          </div>
-
-          {/* Right Column: Col-Span 5 - Highlight Card */}
-          <div className="lp-col-5 col-span-5 lp-strategy__right">
-            <div className="lp-highlight-card">
-              <p className="lp-highlight-card__body cs-body">
-                My first approach was to let Support reschedule lessons themselves. That
-                removed the dev dependency and made the process faster. But users still
-                had to go through Support. We had just moved the bottleneck.
-              </p>
-
-              {/* Callout Highlight Box (Large Typography with Accent Border/Text) */}
-              <div className="lp-callout-box">
-                <span className="lp-callout-box__quotemark">“</span>
-                <p className="lp-callout-box__quote">
-                  That made me look at the process again: could we remove the need for Support altogether?
-                </p>
-              </div>
-
-              {/* Quote / Verdict Text */}
-              <div className="lp-verdict-box">
-                <div className="lp-verdict-box__indicator" />
-                <p className="lp-verdict-box__text cs-body">
-                  The problem changed. It wasn’t that Support needed a better rescheduling
-                  tool. Users needed control over rescheduling their own lessons. That changed
-                  the direction of the product—from making Support faster to removing Support
-                  from the normal path altogether.
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -242,39 +237,37 @@ export default function LessonpalSections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 3: CORE SOLUTION & DEFAULT LOGIC
-          2-Column Grid (12 cols: 4 left / 8 right)
+          SECTION 3: CORE SOLUTION & DEFAULT LOGIC (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--solution" id="section-core-solution">
-        <div className="lp-section__container lp-grid-12 grid-cols-12">
-          {/* Left Column: Col-Span 4 - System Logic Overview */}
-          <div className="lp-col-4 col-span-4 lp-solution__left">
-            <h2 className="lp-solution__headline cs-h2">
+      <section className="lp-section cs-flow-section" id="section-core-solution">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
               We used tutor availability as the default
             </h2>
 
-            <p className="lp-solution__desc cs-body">
+            <p className="cs-flow-body cs-body">
               Students could reschedule directly from the tutor’s existing availability.
               Since that information already existed, there was no reason to collect student
               availability too. Tutors could still make exceptions and offer a different
               time when needed.
             </p>
 
-            {/* Key Takeaway Box */}
-            <div className="lp-takeaway-card">
-              <div className="lp-takeaway-card__header">
-                <span className="lp-takeaway-card__icon">⚡</span>
-                <span className="lp-takeaway-card__label cs-code2">Key Principle</span>
+            {/* Key Principle Insight */}
+            <div className="cs-flow-insight">
+              <div className="cs-flow-insight__header">
+                <span className="cs-flow-insight__icon">⚡</span>
+                <span className="cs-flow-insight__label cs-code2">Key Principle</span>
               </div>
-              <p className="lp-takeaway-card__text cs-body">
+              <p className="cs-flow-insight__text cs-body">
                 This kept the scheduling model simple: use what the system knows, instead
                 of collecting more information just in case.
               </p>
             </div>
           </div>
 
-          {/* Right Column: Col-Span 8 - Primary UI Showcase */}
-          <div className="lp-col-8 col-span-8 lp-solution__right">
+          {/* Expansive Hi-Fi Showcase */}
+          <div className="cs-flow-media">
             <div className="lp-showcase-frame">
               <ImagePlaceholder
                 name="hifi design#1"
@@ -320,25 +313,25 @@ export default function LessonpalSections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 4: EDGE CASES & COORDINATION VS SYSTEM STATES
-          2-Column Balanced Modular Grid (grid-cols-2 / 6 cols each)
+          SECTION 4: EDGE CASES & COORDINATION (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--edge-cases" id="section-edge-cases">
-        <div className="lp-section__container lp-grid-balanced grid-cols-2">
-          {/* Left Card: Edge Cases & Boundaries */}
-          <div className="lp-card lp-card--modular lp-edge-card">
-            <h2 className="lp-card__headline cs-h2">
+      <section className="lp-section cs-flow-section" id="section-edge-cases">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
               Not every problem needed another system state
             </h2>
 
-            <p className="lp-card__text cs-body">
+            <p className="cs-flow-body cs-body">
               There were real edge cases to handle — a lesson being scheduled after its
               start time, a slot already being booked, overlapping bookings, and other timing
               conflicts. But a tutor rescheduling without knowing the student’s availability
               was different. It was a coordination gap, not an edge case.
             </p>
+          </div>
 
-            {/* Feature Highlight Component: Mini Alert Notification Preview */}
+          {/* Interactive Feature Alert Preview */}
+          <div className="cs-flow-feature">
             <div className="lp-alert-preview">
               <div className="lp-alert-preview__bar">
                 <div className="lp-alert-preview__badge">
@@ -370,35 +363,32 @@ export default function LessonpalSections() {
             </div>
           </div>
 
-          {/* Right Card: Incentive Model & UI */}
-          <div className="lp-card lp-card--modular lp-edge-card">
-            <div className="lp-edge-narrative">
-              <p className="lp-card__text cs-body">
-                Adding mandatory student confirmation would turn that gap into a dependency:
-                tutor proposes → student responds → reschedule waits. Instead, I suggested
-                a small alert on the website prompting the tutor to reach out to the student
-                with a scheduling link.
-              </p>
+          <div className="cs-flow-prose">
+            <p className="cs-flow-body cs-body">
+              Adding mandatory student confirmation would turn that gap into a dependency:
+              tutor proposes → student responds → reschedule waits. Instead, I suggested
+              a small alert on the website prompting the tutor to reach out to the student
+              with a scheduling link.
+            </p>
 
-              <p className="lp-card__text cs-body">
-                Tutors also only got paid when a lesson was completed. If a lesson wasn’t
-                delivered, the student could mark it as such and the tutor wouldn’t get paid.
-                So the system handled what it knew, and prompted people to coordinate when it didn’t.
-              </p>
-            </div>
+            <p className="cs-flow-body cs-body">
+              Tutors also only got paid when a lesson was completed. If a lesson wasn’t
+              delivered, the student could mark it as such and the tutor wouldn’t get paid.
+              So the system handled what it knew, and prompted people to coordinate when it didn’t.
+            </p>
+          </div>
 
-            {/* Image Container: Asset container for <hifi design#2> */}
-            <div className="lp-edge-media">
-              <ImagePlaceholder
-                name="hifi design#2"
-                alt="Tutor coordination alert and incentive verification interface"
-                caption="In-app coordination trigger: System manages validated states while human incentive guides offline agreements"
-                badge="Hi-Fi Desktop UI #2: Coordination Trigger"
-                aspectRatio="16 / 10"
-                fallbackType="hifi-2"
-                src="/Screens/1400/lessonpal-5.jpg"
-              />
-            </div>
+          {/* Expansive Hi-Fi Showcase */}
+          <div className="cs-flow-media">
+            <ImagePlaceholder
+              name="hifi design#2"
+              alt="Tutor coordination alert and incentive verification interface"
+              caption="In-app coordination trigger: System manages validated states while human incentive guides offline agreements"
+              badge="Hi-Fi Desktop UI #2: Coordination Trigger"
+              aspectRatio="16 / 10"
+              fallbackType="hifi-2"
+              src="/Screens/1400/lessonpal-5.jpg"
+            />
           </div>
         </div>
       </section>

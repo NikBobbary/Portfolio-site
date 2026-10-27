@@ -1,0 +1,166 @@
+/* ==========================================================================
+   PlayProgressBar — Tactile Scroll-Through Gateway to Play
+   ========================================================================== */
+
+.play-progress-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 3.5rem auto 1.5rem;
+  padding: 1rem 1.5rem 3rem;
+  width: fit-content;
+  user-select: none;
+  cursor: pointer;
+  outline: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.play-progress-gate:focus-visible {
+  outline: 2px solid rgba(56, 189, 248, 0.6);
+  outline-offset: 4px;
+  border-radius: 999px;
+}
+
+.play-progress-gate__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.95rem 1.5rem;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.play-progress-gate:hover .play-progress-gate__card,
+.play-progress-gate.is-hovered .play-progress-gate__card {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 14px 36px -8px rgba(0, 0, 0, 0.65), 0 0 16px rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
+}
+
+.play-progress-gate.is-completed .play-progress-gate__card {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 28px rgba(255, 255, 255, 0.35);
+}
+
+/* Header: Label & Count */
+.play-progress-gate__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.play-progress-gate__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.play-progress-gate__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #38bdf8;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.8);
+  animation: playDotPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes playDotPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+.play-progress-gate__count {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Track & Fill Bar */
+.play-progress-gate__track {
+  width: 200px;
+  max-width: 65vw;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.play-progress-gate__fill {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.7), #ffffff);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+  transform-origin: 0% 50%;
+  will-change: transform;
+  border-radius: 999px;
+  transition: transform 0.08s ease-out;
+}
+
+.play-progress-gate.is-completed .play-progress-gate__fill {
+  box-shadow: 0 0 16px #ffffff;
+}
+
+/* Footer: Hint & Arrow */
+.play-progress-gate__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.play-progress-gate__hint {
+  font-weight: 400;
+}
+
+.play-progress-gate__arrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+@media (max-width: 640px) {
+  .play-progress-gate {
+    margin-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .play-progress-gate__card {
+    padding: 0.85rem 1.25rem;
+  }
+  .play-progress-gate__track {
+    width: 170px;
+  }
+}

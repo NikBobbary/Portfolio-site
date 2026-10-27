@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Cursor from "../components/Cursor.jsx";
+import Footer from "../components/Footer.jsx";
 import StoryToc from "../components/StoryToc.jsx";
 import { LORE_META, LORE_SECTIONS } from "../data/projectLore.js";
 
@@ -290,6 +291,7 @@ export default function ProjectLore() {
           ))}
         </main>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -206,104 +206,99 @@ export default function DyocarSections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 3: THE SHIFT IN STRATEGY (COMMAND CENTER & ASYNC TRIAGE)
-          2-Column Asymmetrical Grid (12 cols: 7 left / 5 right)
+          SECTION 3: THE SHIFT IN STRATEGY (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--strategy" id="section-strategy">
-        <div className="lp-section__container lp-grid-12 grid-cols-12">
-          {/* Left Column: Col-Span 7 */}
-          <div className="lp-col-7 col-span-7 lp-strategy__left">
-            <h2 className="lp-strategy__headline cs-h2">
+      <section className="lp-section cs-flow-section" id="section-strategy">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
               Redefining the Operations Engine
             </h2>
 
-            <p className="lp-strategy__paragraph cs-body">
+            <p className="cs-flow-body cs-body">
               The initial brief was to optimize the customer booking form. But shadowing hub dispatchers
               at the Indiranagar and Koramangala hubs revealed the true bottleneck: operations was
               drowning in chaotic, asynchronous signals across WhatsApp groups and paper checklists.
             </p>
 
-            {/* Image Container: Desk Command Center */}
-            <div className="lp-strategy__media-wrap">
-              <ImagePlaceholder
-                name="dyocar desk command center"
-                alt="Dyocar internal dispatch command center dashboard"
-                caption="Internal Command Center: Real-time SLA timers, automated KYC skip triage, and one-click car class swaps."
-                badge="Internal Ops Tool: Real-Time Triage Desk"
-                aspectRatio="16 / 10"
-                fallbackType="hifi-1"
-                src="/Screens/1400/dyocar-1.jpg"
-                annotations={[
-                  {
-                    id: 1,
-                    x: "24%",
-                    y: "28%",
-                    tag: "SLA Queue Triage",
-                    title: "11m / 15m Threshold Warning",
-                    text: "Flags bookings nearing the 15-minute customer SLA threshold to prevent cancellations.",
-                  },
-                  {
-                    id: 2,
-                    x: "82%",
-                    y: "26%",
-                    tag: "Async Verification",
-                    title: "DigiLocker KYC Skip Recovery",
-                    text: "Allows customers to complete checkout first, then automatically sends a tokenized WhatsApp verification link.",
-                  },
-                  {
-                    id: 3,
-                    x: "78%",
-                    y: "71%",
-                    tag: "Inventory Swaps",
-                    title: "1-Click Same-Class Vehicle Swap",
-                    text: "Enables instant car substitution within the same hub without voiding the booking contract.",
-                  },
-                  {
-                    id: 4,
-                    x: "56%",
-                    y: "43%",
-                    tag: "Contextual Tags",
-                    title: "Operational Micro-State Indicators",
-                    text: "Unambiguous visual tokens distinguish between SLOT_STALE, HUB_DOWN, First Trip, and Add-on Out.",
-                  },
-                ]}
-              />
+            <p className="cs-flow-body cs-body">
+              If the desk team takes 40 minutes to review a driver's license and assign a car,
+              no amount of smooth consumer animations will fix the user's anxiety.
+            </p>
+
+            {/* Editorial Pull Quote */}
+            <div className="cs-flow-quote cs-flow-quote--dyocar">
+              <span className="cs-flow-quote__mark" aria-hidden="true">“</span>
+              <p className="cs-flow-quote__text">
+                We stopped optimizing the checkout form and started optimizing the time-to-guarantee.
+              </p>
             </div>
 
-            <p className="lp-strategy__paragraph cs-body">
+            {/* Strategic Verdict / Pivot */}
+            <div className="cs-flow-verdict cs-flow-verdict--dyocar">
+              <div className="cs-flow-verdict__indicator" />
+              <p className="cs-flow-verdict__text cs-body">
+                By decoupling vehicle reservation from document verification, we allowed users
+                to lock their preferred car in seconds. Government DigiLocker and driving license
+                audits ran asynchronously in parallel, driving the average confirmation SLA down
+                from 45 minutes to under 4 minutes.
+              </p>
+            </div>
+          </div>
+
+          {/* Expansive Media Showcase */}
+          <div className="cs-flow-media">
+            <ImagePlaceholder
+              name="dyocar desk command center"
+              alt="Dyocar internal dispatch command center dashboard"
+              caption="Internal Command Center: Real-time SLA timers, automated KYC skip triage, and one-click car class swaps."
+              badge="Internal Ops Tool: Real-Time Triage Desk"
+              aspectRatio="16 / 10"
+              fallbackType="hifi-1"
+              src="/Screens/1400/dyocar-1.jpg"
+              annotations={[
+                {
+                  id: 1,
+                  x: "24%",
+                  y: "28%",
+                  tag: "SLA Queue Triage",
+                  title: "11m / 15m Threshold Warning",
+                  text: "Flags bookings nearing the 15-minute customer SLA threshold to prevent cancellations.",
+                },
+                {
+                  id: 2,
+                  x: "82%",
+                  y: "26%",
+                  tag: "Async Verification",
+                  title: "DigiLocker KYC Skip Recovery",
+                  text: "Allows customers to complete checkout first, then automatically sends a tokenized WhatsApp verification link.",
+                },
+                {
+                  id: 3,
+                  x: "78%",
+                  y: "71%",
+                  tag: "Inventory Swaps",
+                  title: "1-Click Same-Class Vehicle Swap",
+                  text: "Enables instant car substitution within the same hub without voiding the booking contract.",
+                },
+                {
+                  id: 4,
+                  x: "56%",
+                  y: "43%",
+                  tag: "Contextual Tags",
+                  title: "Operational Micro-State Indicators",
+                  text: "Unambiguous visual tokens distinguish between SLOT_STALE, HUB_DOWN, First Trip, and Add-on Out.",
+                },
+              ]}
+            />
+          </div>
+
+          <div className="cs-flow-prose">
+            <p className="cs-flow-body cs-body">
               We stopped treating operations as an administrative back-office and redesigned the
               triage center like a high-frequency trading terminal: dense, keyboard-friendly, with
               immediate single-click recovery workflows.
             </p>
-          </div>
-
-          {/* Right Column: Col-Span 5 - Highlight Card */}
-          <div className="lp-col-5 col-span-5 lp-strategy__right">
-            <div className="lp-highlight-card">
-              <p className="lp-highlight-card__body cs-body">
-                If the desk team takes 40 minutes to review a driver's license and assign a car,
-                no amount of smooth consumer animations will fix the user's anxiety.
-              </p>
-
-              {/* Callout Highlight Box */}
-              <div className="lp-callout-box">
-                <span className="lp-callout-box__quotemark">“</span>
-                <p className="lp-callout-box__quote">
-                  We stopped optimizing the checkout form and started optimizing the time-to-guarantee.
-                </p>
-              </div>
-
-              {/* Verdict Box */}
-              <div className="lp-verdict-box">
-                <div className="lp-verdict-box__indicator" />
-                <p className="lp-verdict-box__text cs-body">
-                  By decoupling vehicle reservation from document verification, we allowed users
-                  to lock their preferred car in seconds. Government DigiLocker and driving license
-                  audits ran asynchronously in parallel, driving the average confirmation SLA down
-                  from 45 minutes to under 4 minutes.
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -312,39 +307,37 @@ export default function DyocarSections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 4: CONSUMER DISCOVERY & WALK-IN INCENTIVES
-          2-Column Grid (12 cols: 4 left / 8 right)
+          SECTION 4: CONSUMER DISCOVERY & WALK-IN INCENTIVES (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--solution" id="section-discovery">
-        <div className="lp-section__container lp-grid-12 grid-cols-12">
-          {/* Left Column: Col-Span 4 - Principles */}
-          <div className="lp-col-4 col-span-4 lp-solution__left">
-            <h2 className="lp-solution__headline cs-h2">
+      <section className="lp-section cs-flow-section" id="section-discovery">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
               Incentivizing the Walk-in Hub
             </h2>
 
-            <p className="lp-solution__desc cs-body">
+            <p className="cs-flow-body cs-body">
               In Bengaluru traffic, doorstep vehicle delivery often incurs 60–90 minute road delays
               and high logistics costs. Rather than forcing expensive delivery, we gave users
               clear transparent agency: pick up at a nearby hub to save money, or choose doorstep
               delivery at a scheduled time.
             </p>
 
-            {/* Key Takeaway Box */}
-            <div className="lp-takeaway-card">
-              <div className="lp-takeaway-card__header">
-                <span className="lp-takeaway-card__icon">📍</span>
-                <span className="lp-takeaway-card__label cs-code2">Incentive Architecture</span>
+            {/* Key Principle Insight */}
+            <div className="cs-flow-insight cs-flow-insight--dyocar">
+              <div className="cs-flow-insight__header">
+                <span className="cs-flow-insight__icon">📍</span>
+                <span className="cs-flow-insight__label cs-code2">Incentive Architecture</span>
               </div>
-              <p className="lp-takeaway-card__text cs-body">
+              <p className="cs-flow-insight__text cs-body">
                 Displaying upfront walk-in discounts (e.g. "Save ₹32") shifted 41% of demand to
                 self-pickup hubs, cutting fleet transit overhead while giving users instant car access.
               </p>
             </div>
           </div>
 
-          {/* Right Column: Col-Span 8 - Showcase */}
-          <div className="lp-col-8 col-span-8 lp-solution__right">
+          {/* Expansive Showcase Frame */}
+          <div className="cs-flow-media">
             <div className="lp-showcase-frame">
               <ImagePlaceholder
                 name="consumer discovery and map hub"
@@ -390,13 +383,37 @@ export default function DyocarSections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 5: FLEET BROWSING & THE DOORSTEP TOGGLE
-          2-Column Grid (12 cols: 8 left / 4 right)
+          SECTION 5: FLEET BROWSING & THE DOORSTEP TOGGLE (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--fleet" id="section-fleet">
-        <div className="lp-section__container lp-grid-12 grid-cols-12">
-          {/* Left Column: Col-Span 8 - Showcase */}
-          <div className="lp-col-8 col-span-8 lp-solution__right">
+      <section className="lp-section cs-flow-section" id="section-fleet">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
+              Clarity over complexity
+            </h2>
+
+            <p className="cs-flow-body cs-body">
+              Car rental apps routinely overwhelm users with endless damage liability tiers, hidden
+              cleaning deposits, and confusing fuel policies. We stripped the UI down to the core
+              factors drivers actually care about: transmission, vehicle clearance, clean cabin,
+              and upfront hourly cost.
+            </p>
+
+            {/* Key Principle Insight */}
+            <div className="cs-flow-insight cs-flow-insight--dyocar">
+              <div className="cs-flow-insight__header">
+                <span className="cs-flow-insight__icon">⚡</span>
+                <span className="cs-flow-insight__label cs-code2">Design Tenet</span>
+              </div>
+              <p className="cs-flow-insight__text cs-body">
+                Keep the booking path light. Every ancillary decision before payment lowers conversion;
+                defer customization to the post-booking grace window.
+              </p>
+            </div>
+          </div>
+
+          {/* Expansive Showcase Frame */}
+          <div className="cs-flow-media">
             <div className="lp-showcase-frame">
               <ImagePlaceholder
                 name="fleet catalog and vehicle detail"
@@ -435,31 +452,6 @@ export default function DyocarSections() {
               />
             </div>
           </div>
-
-          {/* Right Column: Col-Span 4 - Narrative */}
-          <div className="lp-col-4 col-span-4 lp-solution__left">
-            <h2 className="lp-solution__headline cs-h2">
-              Clarity over complexity
-            </h2>
-
-            <p className="lp-solution__desc cs-body">
-              Car rental apps routinely overwhelm users with endless damage liability tiers, hidden
-              cleaning deposits, and confusing fuel policies. We stripped the UI down to the core
-              factors drivers actually care about: transmission, vehicle clearance, clean cabin,
-              and upfront hourly cost.
-            </p>
-
-            <div className="lp-takeaway-card">
-              <div className="lp-takeaway-card__header">
-                <span className="lp-takeaway-card__icon">⚡</span>
-                <span className="lp-takeaway-card__label cs-code2">Design Tenet</span>
-              </div>
-              <p className="lp-takeaway-card__text cs-body">
-                Keep the booking path light. Every ancillary decision before payment lowers conversion;
-                defer customization to the post-booking grace window.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -467,25 +459,25 @@ export default function DyocarSections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 6: EDGE CASES & THE "PREP-LOCK" WINDOW
-          2-Column Balanced Modular Grid (grid-cols-2 / 6 cols each)
+          SECTION 6: EDGE CASES & THE "PREP-LOCK" WINDOW (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--edge-cases" id="section-edge-cases">
-        <div className="lp-section__container lp-grid-balanced grid-cols-2">
-          {/* Left Card: Interactive Prep-Lock Widget */}
-          <div className="lp-card lp-card--modular lp-edge-card">
-            <h2 className="lp-card__headline cs-h2">
+      <section className="lp-section cs-flow-section" id="section-edge-cases">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
               Personalization without checkout friction
             </h2>
 
-            <p className="lp-card__text cs-body">
+            <p className="cs-flow-body cs-body">
               Riders frequently requested specialized in-cabin amenities (dashcam, child safety
               seats, fresh aroma, highway snacks). But presenting these during checkout caused
               decision fatigue. We introduced the <strong>Prep-Lock Window</strong>: riders can modify
               in-cabin add-ons after booking, right until the hub staff locks vehicle prep.
             </p>
+          </div>
 
-            {/* Interactive Add-ons Simulator */}
+          {/* Interactive Add-ons Simulator in Single Flow */}
+          <div className="cs-flow-feature">
             <div className="dy-prep-widget">
               <div className="dy-prep-widget__header">
                 <div className="dy-prep-widget__status">
@@ -553,55 +545,52 @@ export default function DyocarSections() {
             </div>
           </div>
 
-          {/* Right Card: Post-Booking Reassurance & Screenshot */}
-          <div className="lp-card lp-card--modular lp-edge-card">
-            <div className="lp-edge-narrative">
-              <p className="lp-card__text cs-body">
-                Instead of a sterile "Payment Success" receipt, the post-booking experience provides
-                an active, reassuring timeline: payment received, booking review in progress,
-                and delivery schedule. WhatsApp notifications keep the customer informed without
-                requiring them to keep the app open.
-              </p>
-            </div>
+          <div className="cs-flow-prose">
+            <p className="cs-flow-body cs-body">
+              Instead of a sterile "Payment Success" receipt, the post-booking experience provides
+              an active, reassuring timeline: payment received, booking review in progress,
+              and delivery schedule. WhatsApp notifications keep the customer informed without
+              requiring them to keep the app open.
+            </p>
+          </div>
 
-            {/* Media: Dyocar-5.jpg */}
-            <div className="lp-edge-media">
-              <ImagePlaceholder
-                name="addons checkout and status confirmation"
-                alt="Dyocar add-ons customization, UPI checkout, and post-booking status timeline"
-                caption="Checkout & Reassurance: Optional trip add-ons, transparent UPI billing, and live post-booking status timeline."
-                badge="Checkout & Post-Booking Status"
-                aspectRatio="16 / 10"
-                fallbackType="hifi-2"
-                src="/Screens/1400/dyocar-5.jpg"
-                annotations={[
-                  {
-                    id: 1,
-                    x: "24%",
-                    y: "28%",
-                    tag: "Cabin Comfort",
-                    title: "Zero-Friction Add-Ons",
-                    text: "Free essentials (air freshener, ashtray) paired with paid upgrades (snacks, baby seats).",
-                  },
-                  {
-                    id: 2,
-                    x: "52%",
-                    y: "48%",
-                    tag: "Frictionless Pay",
-                    title: "UPI Direct Integration",
-                    text: "Google Pay, PhonePe, and Paytm auto-detection for 1-tap checkout.",
-                  },
-                  {
-                    id: 3,
-                    x: "82%",
-                    y: "44%",
-                    tag: "Active Timeline",
-                    title: "Reassuring Status Journey",
-                    text: "Live milestone tracking with guaranteed 10–15 min WhatsApp confirmation SLA.",
-                  },
-                ]}
-              />
-            </div>
+          {/* Expansive Showcase Frame */}
+          <div className="cs-flow-media">
+            <ImagePlaceholder
+              name="addons checkout and status confirmation"
+              alt="Dyocar add-ons customization, UPI checkout, and post-booking status timeline"
+              caption="Checkout & Reassurance: Optional trip add-ons, transparent UPI billing, and live post-booking status timeline."
+              badge="Checkout & Post-Booking Status"
+              aspectRatio="16 / 10"
+              fallbackType="hifi-2"
+              src="/Screens/1400/dyocar-5.jpg"
+              annotations={[
+                {
+                  id: 1,
+                  x: "24%",
+                  y: "28%",
+                  tag: "Cabin Comfort",
+                  title: "Zero-Friction Add-Ons",
+                  text: "Free essentials (air freshener, ashtray) paired with paid upgrades (snacks, baby seats).",
+                },
+                {
+                  id: 2,
+                  x: "52%",
+                  y: "48%",
+                  tag: "Frictionless Pay",
+                  title: "UPI Direct Integration",
+                  text: "Google Pay, PhonePe, and Paytm auto-detection for 1-tap checkout.",
+                },
+                {
+                  id: 3,
+                  x: "82%",
+                  y: "44%",
+                  tag: "Active Timeline",
+                  title: "Reassuring Status Journey",
+                  text: "Live milestone tracking with guaranteed 10–15 min WhatsApp confirmation SLA.",
+                },
+              ]}
+            />
           </div>
         </div>
       </section>
@@ -610,18 +599,16 @@ export default function DyocarSections() {
       <div className="lp-section-spacer" aria-hidden="true" />
 
       {/* ========================================================
-          SECTION 7: DESIGN SYSTEM & OPERATIONAL TOKENS
-          2-Column Asymmetric Grid (12 cols: 5 left / 7 right)
+          SECTION 7: DESIGN SYSTEM & OPERATIONAL TOKENS (EDITORIAL SINGLE FLOW)
          ======================================================== */}
-      <section className="lp-section lp-section--design-system" id="section-design-system">
-        <div className="lp-section__container lp-grid-12 grid-cols-12">
-          {/* Left Column: Col-Span 5 */}
-          <div className="lp-col-5 col-span-5 lp-strategy__right">
-            <h2 className="lp-strategy__headline cs-h2">
+      <section className="lp-section cs-flow-section" id="section-design-system">
+        <div className="lp-section__container cs-flow-container">
+          <div className="cs-flow-prose">
+            <h2 className="cs-flow-headline cs-h2">
               A Design System Built for High-Stress Ops
             </h2>
 
-            <p className="lp-strategy__paragraph cs-body">
+            <p className="cs-flow-body cs-body">
               Hub operations are loud, high-pressure environments. Dispatchers manage phone calls,
               walk-in customers, and vehicle turnaround simultaneously. Every UI token in the
               design system was engineered for immediate visual disambiguation.
@@ -643,45 +630,43 @@ export default function DyocarSections() {
             </div>
           </div>
 
-          {/* Right Column: Col-Span 7 - Screenshot 4 */}
-          <div className="lp-col-7 col-span-7 lp-strategy__left">
-            <div className="lp-strategy__media-wrap">
-              <ImagePlaceholder
-                name="dyocar component library design system"
-                alt="Dyocar design system component library showing buttons, chips, alerts, and counters"
-                caption="Operational Design System: High-contrast buttons, status chips, multi-payment rails, and urgency alert banners."
-                badge="Design System: Operational Tokens"
-                aspectRatio="16 / 10"
-                fallbackType="wireframe"
-                src="/Screens/1400/dyocar-4.jpg"
-                annotations={[
-                  {
-                    id: 1,
-                    x: "24%",
-                    y: "14%",
-                    tag: "Action Hierarchy",
-                    title: "Distinct Button States",
-                    text: "Filled emerald for confirmations, neutral dark for routine tasks, high-visibility red for rejections.",
-                  },
-                  {
-                    id: 2,
-                    x: "30%",
-                    y: "48%",
-                    tag: "Alert Semantics",
-                    title: "High-Contrast Alert Banners",
-                    text: "Contextual banners for KYC verification, inspector arrival, and prep locks.",
-                  },
-                  {
-                    id: 3,
-                    x: "30%",
-                    y: "74%",
-                    tag: "Telemetry",
-                    title: "Live Stat Cards",
-                    text: "Real-time counters for fleet status, verifying queues, and late trips.",
-                  },
-                ]}
-              />
-            </div>
+          {/* Expansive Showcase Frame */}
+          <div className="cs-flow-media">
+            <ImagePlaceholder
+              name="dyocar component library design system"
+              alt="Dyocar design system component library showing buttons, chips, alerts, and counters"
+              caption="Operational Design System: High-contrast buttons, status chips, multi-payment rails, and urgency alert banners."
+              badge="Design System: Operational Tokens"
+              aspectRatio="16 / 10"
+              fallbackType="wireframe"
+              src="/Screens/1400/dyocar-4.jpg"
+              annotations={[
+                {
+                  id: 1,
+                  x: "24%",
+                  y: "14%",
+                  tag: "Action Hierarchy",
+                  title: "Distinct Button States",
+                  text: "Filled emerald for confirmations, neutral dark for routine tasks, high-visibility red for rejections.",
+                },
+                {
+                  id: 2,
+                  x: "30%",
+                  y: "48%",
+                  tag: "Alert Semantics",
+                  title: "High-Contrast Alert Banners",
+                  text: "Contextual banners for KYC verification, inspector arrival, and prep locks.",
+                },
+                {
+                  id: 3,
+                  x: "30%",
+                  y: "74%",
+                  tag: "Telemetry",
+                  title: "Live Stat Cards",
+                  text: "Real-time counters for fleet status, verifying queues, and late trips.",
+                },
+              ]}
+            />
           </div>
         </div>
       </section>

@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { HugeiconsIcon } from "@hugeicons/react";
-import ActionButton from "./components/ActionButton.jsx";
 import AppBar from "./components/AppBar.jsx";
 import Boot from "./components/Boot.jsx";
 import BottomNav from "./components/BottomNav.jsx";
@@ -9,14 +7,13 @@ import Cursor from "./components/Cursor.jsx";
 import HeroName from "./components/HeroName.jsx";
 import HeroZeroOne from "./components/HeroZeroOne.jsx";
 import LocaleCard from "./components/LocaleCard.jsx";
-import FooterName from "./components/FooterName.jsx";
+import Footer from "./components/Footer.jsx";
 import Shimeji from "./components/Shimeji.jsx";
 import Vita from "./components/Vita.jsx";
 import WorkFrame from "./components/WorkFrame.jsx";
 import WorkHeader from "./components/WorkHeader.jsx";
 import WorkGrid from "./components/WorkGrid.jsx";
 import { applyNoIndexMeta, isWorkDomain } from "./utils/domain.js";
-import { CONTACT, SOCIAL } from "./data/nav.js";
 
 const WORK = [
   {
@@ -25,18 +22,8 @@ const WORK = [
     tagline: "Hyper-personalized car rental",
     credit: "Founding Designer",
     shots: [
-      {
-        src: "/Screens/2400/dyocar-1.jpg",
-        width: 8041,
-        height: 5882,
-        tags: ["Marketplace", "Discovery"],
-        note: "Listing detail with live inventory and saved search.",
-      },
-      {
-        src: "/Screens/2400/dyocar-2.jpg",
-        width: 8041,
-        height: 5346,
-      },
+      { src: "/Screens/2400/dyocar-1.jpg", width: 8041, height: 5882 },
+      { src: "/Screens/2400/dyocar-2.jpg", width: 8041, height: 5346 },
       { src: "/Screens/2400/dyocar-3.jpg", width: 8041, height: 5346 },
       { src: "/Screens/2400/dyocar-4.jpg", width: 8041, height: 7968 },
       { src: "/Screens/2400/dyocar-5.jpg", width: 8041, height: 5346 },
@@ -48,18 +35,8 @@ const WORK = [
     tagline: "Human venture capital network",
     credit: "Product Designer, partner with Focusoft HQ",
     shots: [
-      {
-        src: "/Screens/2400/Pairty-1.jpg",
-        width: 12062,
-        height: 6812,
-      },
-      {
-        src: "/Screens/2400/Pairty-2.jpg",
-        width: 12062,
-        height: 7977,
-        tags: ["Identity Systems"],
-        note: "Verification gate before professional matching.",
-      },
+      { src: "/Screens/2400/Pairty-1.jpg", width: 12062, height: 6812 },
+      { src: "/Screens/2400/Pairty-2.jpg", width: 12062, height: 7977 },
       { src: "/Screens/2400/Pairty-3.jpg", width: 2400, height: 1432 },
     ],
   },
@@ -69,16 +46,8 @@ const WORK = [
     tagline: "AI & digital innovation studio",
     credit: "Founding Designer",
     shots: [
-      {
-        src: "/Screens/2400/focusoft.jpg",
-        width: 2400,
-        height: 1539,
-      },
-      {
-        src: "/Screens/2400/focusoft-2.jpg",
-        width: 2400,
-        height: 1479,
-      },
+      { src: "/Screens/2400/focusoft.jpg", width: 2400, height: 1539 },
+      { src: "/Screens/2400/focusoft-2.jpg", width: 2400, height: 1479 },
     ],
   },
   {
@@ -90,13 +59,7 @@ const WORK = [
       { src: "/Screens/2400/lessonpal-1.jpg", width: 8041, height: 8862 },
       { src: "/Screens/2400/lessonpal-2.jpg", width: 8041, height: 5318 },
       { src: "/Screens/2400/lessonpal-3.jpg", width: 8041, height: 4806 },
-      {
-        src: "/Screens/2400/lessonpal-4.jpg",
-        width: 8041,
-        height: 4806,
-        tags: ["Role Systems", "Multi-Party"],
-        note: "Who can post, see, and escalate in-thread.",
-      },
+      { src: "/Screens/2400/lessonpal-4.jpg", width: 8041, height: 4806 },
       { src: "/Screens/2400/lessonpal-5.jpg", width: 8041, height: 5159 },
       { src: "/Screens/2400/lessonpal-6.jpg", width: 2400, height: 1587 },
       { src: "/Screens/2400/lessonpal-7.jpg", width: 8041, height: 4806 },
@@ -451,12 +414,8 @@ export default function App({ isWorkView }) {
               logo={group.logo}
             />
             {group.shots.map(
-              (
-                { src, width, height, note },
-                shotIndex
-              ) => {
+              ({ src, width, height }, shotIndex) => {
                 const index = shotOffset + shotIndex;
-                const hasFoot = Boolean(note);
 
                 return (
                   <div key={src} className="work-shot">
@@ -471,13 +430,6 @@ export default function App({ isWorkView }) {
                       allowLazy={bootDone}
                       onReady={index === 0 ? markCriticalReady : undefined}
                     />
-                    {hasFoot ? (
-                      <div className="work-frame-meta">
-                        {note ? (
-                          <p className="work-frame-note">{note}</p>
-                        ) : null}
-                      </div>
-                    ) : null}
                   </div>
                 );
               }
@@ -544,128 +496,7 @@ export default function App({ isWorkView }) {
         </>
       )}
 
-      <section id="contact" className="contact" aria-labelledby="contact-heading">
-        <div className="contact__box">
-          <div className="contact__stage">
-            <div className="contact__inner">
-              <span className="contact__kicker">
-                <span className="contact__kicker-line" aria-hidden="true" />
-                Collaboration
-              </span>
-              <h2 id="contact-heading" className="contact__title">
-                Let’s build something people can rely on
-              </h2>
-              <div className="contact__actions">
-                <ActionButton
-                  className="hero__cta hero__cta--primary contact__primary-btn"
-                  href={CONTACT.href}
-                  external={CONTACT.external}
-                  tooltip={CONTACT.tooltip}
-                  tooltipPlace="below"
-                >
-                  {CONTACT.label}
-                </ActionButton>
-                <div className="contact__social">
-                  {SOCIAL.map(({ id, label, href, icon, tooltip, external }) => (
-                    <ActionButton
-                      key={id}
-                      className="contact__icon"
-                      href={href}
-                      external={external}
-                      tooltip={tooltip}
-                      tooltipPlace="below"
-                      aria-label={label}
-                    >
-                      <HugeiconsIcon icon={icon} size={18} strokeWidth={1} />
-                    </ActionButton>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="contact__extra">
-              <a
-                className="contact__studio-card"
-                href="https://nesaasity.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Visit Nesaasity - Design and Development Studio"
-              >
-                <div className="contact__studio-header">
-                  <span className="contact__studio-badge">
-                    <span className="contact__studio-dot" aria-hidden="true" />
-                    design &amp; dev studio
-                  </span>
-                  <span className="contact__studio-arrow" aria-hidden="true">
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M7 17L17 7M17 7H7M17 7V17" />
-                    </svg>
-                  </span>
-                </div>
-                <div className="contact__studio-body">
-                  <h3 className="contact__studio-name">nesaasity</h3>
-                  <p className="contact__studio-desc">
-                    0 → 1 MVP engineering, high-voltage UI/UX, and AI-native products.
-                  </p>
-                </div>
-                <div className="contact__studio-footer">
-                  <span className="contact__studio-link-text">
-                    Visit studio
-                    <span className="contact__studio-link-chevron" aria-hidden="true">→</span>
-                  </span>
-                </div>
-              </a>
-            </div>
-          </div>
-          <FooterName />
-        </div>
-        <div className="contact__legal">
-          <p className="contact__copyright">
-            © {new Date().getFullYear()} Nikitha Bobbary
-          </p>
-          <div className="contact__legal-meta">
-            <span className="contact__status-badge">
-              <span className="contact__status-dot" aria-hidden="true" />
-              Available for select 0 → 1 projects
-            </span>
-            <button
-              type="button"
-              className="contact__back-top"
-              onClick={() => {
-                if (window.lenis) {
-                  window.lenis.scrollTo(0);
-                } else {
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }
-              }}
-              aria-label="Back to top"
-            >
-              Back to top
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M12 19V5M5 12l7-7 7 7" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </section>
+      <Footer />
 
       <BottomNav visible={bottomNavVisible} isWork={isWork} />
     </div>

@@ -1,9 +1,11 @@
+import WavyPixelCanvas from "./WavyPixelCanvas.jsx";
+
 /**
  * ScreenMockup
  * 
  * Clean, bezel-less presentation for case study card preview images.
  * Displays the artwork directly edge-to-edge without hardware frames,
- * artificial bezels, camera cutouts, or glass reflections.
+ * enhanced with an interactive living wavy pixel shader on hover.
  */
 export default function ScreenMockup({
   src,
@@ -25,6 +27,12 @@ export default function ScreenMockup({
         className="screen-mockup-image"
         loading="lazy"
         decoding="async"
+      />
+      <WavyPixelCanvas
+        src={src}
+        alt={alt}
+        naturalWidth={width}
+        naturalHeight={height}
       />
     </div>
   );
