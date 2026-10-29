@@ -14,6 +14,7 @@ in vec2 aUV;
 
 uniform vec2  uRes;          // Canvas resolution in DPR pixels (width, height)
 uniform vec4  uRect;         // Card rect in DPR pixels (left, top, width, height)
+uniform float uRot;          // Card rotation in radians
 uniform vec2  uCover;        // Texture aspect ratio cover scale
 uniform vec2  uFlat;         // Half-dimensions of flat center zone (flatX, flatY)
 uniform vec2  uAngle;        // Fold angles (angleX, angleY) in radians
@@ -40,8 +41,13 @@ void main() {
   vUV = vec2((aUV.x - 0.5) * uCover.x + 0.5, (aUV.y - 0.5) * uCover.y + 0.5);
   vQuad = aUV;
 
-  // Exact screen coordinate in DPR pixels
-  vec2 p = uRect.xy + aUV * uRect.zw;
+  // Exact screen coordinate in DPR pixels with card rotation around center
+  vec2 cardCenter = uRect.xy + uRect.zw * 0.5;
+  vec2 localP = (aUV - 0.5) * uRect.zw;
+  float cRot = cos(uRot);
+  float sRot = sin(uRot);
+  vec2 rotP = vec2(localP.x * cRot - localP.y * sRot, localP.x * sRot + localP.y * cRot);
+  vec2 p = cardCenter + rotP;
   vec2 center = uRes * 0.5;
 
   // 1. Horizontal fold along left & right edges (Concave: curves forward towards viewer)
@@ -100,7 +106,43 @@ float sdRoundedBox(vec2 p, vec2 b, float r) {
 
 void main() {
   vec2 p = (vQuad - 0.5) * uSize;
-  float d = sdRoundedBox(p, uSize * 0.5 - 1.0, uRadius);
+  vec2 halfSize = uSize * 0.5;
+  float dpr = max(1.0, uRadius / 16.0);
+
+  // Classic Postage Stamp Perforations (8:10 portrait aspect ratio)
+  float pitch = 14.0 * dpr;
+  float numHolesX = max(4.0, floor(uSize.x / pitch));
+  float pitchX = uSize.x / numHolesX;
+  float numHolesY = max(4.0, floor(uSize.y / pitch));
+  float pitchY = uSize.y / numHolesY;
+
+  // Scalloped cut hole radius (~22% of pitch)
+  float rHole = min(pitchX, pitchY) * 0.22;
+
+  // Nearest hole on horizontal edges (top/bottom)
+  float uX = (p.x + halfSize.x) / pitchX;
+  float kX = clamp(floor(uX), 0.0, numHolesX - 1.0);
+  float holeCenterX = (kX + 0.5) * pitchX - halfSize.x;
+  float dHoleH = length(vec2(p.x - holeCenterX, abs(p.y) - halfSize.y)) - rHole;
+
+  // Nearest hole on vertical edges (left/right)
+  float uY = (p.y + halfSize.y) / pitchY;
+  float kY = clamp(floor(uY), 0.0, numHolesY - 1.0);
+  float holeCenterY = (kY + 0.5) * pitchY - halfSize.y;
+  float dHoleV = length(vec2(abs(p.x) - halfSize.x, p.y - holeCenterY)) - rHole;
+
+  float dHole = min(dHoleH, dHoleV);
+
+  // Outer base card box with stamp corner radius
+  float cornerRadius = 4.0 * dpr;
+  float dBox = sdRoundedBox(p, halfSize - 1.0, cornerRadius);
+
+  // CSG Subtraction: Stamp box minus circular edge perforation cuts
+  float d = dBox;
+  if (dHole < 16.0 * dpr) {
+    d = max(dBox, -dHole);
+  }
+
   float aa = max(fwidth(d), 0.001);
   float mask = 1.0 - smoothstep(-aa, aa, d);
 
@@ -108,10 +150,18 @@ void main() {
 
   vec3 col = texture(uTex, vUV).rgb;
 
-  // Crisp static border matching site style
+  // Crisp static border matching site style along the stamp scallops
   float border = 1.0 - smoothstep(0.0, aa * 1.5, abs(d + 1.2));
-  vec3 borderColor = vec3(0.2, 0.22, 0.26);
-  col = mix(col, borderColor, border * 0.35);
+  vec3 borderColor = vec3(0.24, 0.26, 0.30);
+  col = mix(col, borderColor, border * 0.45);
+
+  // Delicate vintage stamp hairline frame
+  vec2 innerMargin = vec2(7.0 * dpr);
+  if (halfSize.x > innerMargin.x * 2.5 && halfSize.y > innerMargin.y * 2.5) {
+    float dInner = sdRoundedBox(p, halfSize - innerMargin, 2.0 * dpr);
+    float innerBorder = 1.0 - smoothstep(0.0, aa * 1.5, abs(dInner));
+    col = mix(col, vec3(0.92, 0.94, 0.98), innerBorder * 0.16);
+  }
 
   // Subtle concave lighting
   float depthLighting = clamp(0.9 + vDepth / 1800.0, 0.75, 1.08);
@@ -181,6 +231,33 @@ function createMesh(gl) {
   return { vao, vbo, ebo, count: indices.length };
 }
 
+// Pure deterministic pseudo-random hash for infinite 2D coordinates (c, r)
+function cellHash(c, r, seed = 0) {
+  let h = (c * 374761393 + r * 668265263 + seed * 961748927) ^ 0x5bf03635;
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+}
+
+// Guaranteed zero-overlap organic layout transform
+function getCardTransform(c, r, cellW, cellH, maxJitterX, maxJitterY) {
+  // Alternating column vertical stagger (breaks horizontal grid lines without horizontal collision)
+  const colStagger = (c % 2 !== 0 ? 0.35 : 0.0) * cellH;
+
+  // Controlled, bounded jitter strictly within the safe cell margin (guaranteed positive gap)
+  const jitterX = (cellHash(c, r, 1) - 0.5) * 2.0 * maxJitterX;
+  const jitterY = (cellHash(c, r, 2) - 0.5) * 2.0 * maxJitterY;
+
+  // Subtle organic stamp tilt (-1.8° to +1.8°)
+  const rotDeg = (cellHash(c, r, 3) - 0.5) * 3.6;
+  const rotRad = rotDeg * (Math.PI / 180);
+
+  return {
+    x: c * cellW + jitterX,
+    y: r * cellH + colStagger + jitterY,
+    rot: rotRad,
+  };
+}
+
 export default function PlayWarp() {
   const canvasRef = useRef(null);
   const [activeItem, setActiveItem] = useState(null);
@@ -245,6 +322,7 @@ export default function PlayWarp() {
     const uniforms = {
       uRes: gl.getUniformLocation(program, "uRes"),
       uRect: gl.getUniformLocation(program, "uRect"),
+      uRot: gl.getUniformLocation(program, "uRot"),
       uCover: gl.getUniformLocation(program, "uCover"),
       uFlat: gl.getUniformLocation(program, "uFlat"),
       uAngle: gl.getUniformLocation(program, "uAngle"),
@@ -287,6 +365,11 @@ export default function PlayWarp() {
       textureMap.set(item.src, tex);
 
       img.onload = () => {
+        if (img.naturalWidth && img.naturalHeight) {
+          item.width = img.naturalWidth;
+          item.height = img.naturalHeight;
+          item.aspect = img.naturalWidth / img.naturalHeight;
+        }
         gl.bindTexture(gl.TEXTURE_2D, tex);
         gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
         gl.texImage2D(
@@ -358,17 +441,18 @@ export default function PlayWarp() {
       gl.useProgram(program);
       gl.uniform2f(uniforms.uRes, canvas.width, canvas.height);
 
-      // Card Dimensions & Spacing
-      const baseCols = vw > 1600 ? 5 : vw > 1100 ? 4 : vw > 600 ? 3 : 2;
-      const gapX = vw > 768 ? 20 : 12;
-      const gapY = vw > 768 ? 20 : 12;
+      // Card Dimensions & Guaranteed Collision-Free Organic Spacing
+      const baseCols = vw > 1600 ? 10 : vw > 1100 ? 8 : vw > 600 ? 6 : 4;
+      const minGapX = vw > 768 ? 16 : 10;
+      const minGapY = vw > 768 ? 18 : 12;
+      const maxJitterX = vw > 768 ? 10 : 6;
+      const maxJitterY = vw > 768 ? 12 : 7;
 
-      // Standard card dimensions
-      const cardW = Math.round((vw - (baseCols - 1) * gapX) / baseCols);
-      const cardH = Math.round(cardW * 0.625); // 16:10 aspect ratio
+      const cardW = Math.round((vw - (baseCols - 1) * (minGapX + 2 * maxJitterX)) / baseCols);
+      const cardH = Math.round(cardW * 1.25); // 8:10 aspect ratio (4:5)
 
-      const cellW = cardW + gapX;
-      const cellH = cardH + gapY;
+      const cellW = cardW + minGapX + 2 * maxJitterX;
+      const cellH = cardH + minGapY + 2 * maxJitterY;
 
       // Dynamic Speed Distortion Factor (0.0 when static, 1.0 at nice scrolling speed)
       const t = Math.min(1.0, state.velocity / 160.0);
@@ -402,19 +486,20 @@ export default function PlayWarp() {
 
       // FULL BLEED 100% WIDTH & HEIGHT INFINITE MOSAIC:
       // Render columns starting BEFORE the left edge to AFTER the right edge,
-      // so cards completely cover the entire screen width even under 3D perspective fold.
-      const minCol = Math.floor((-state.x - cardW * 2) / cellW);
-      const maxCol = Math.ceil((vw - state.x + cardW * 2) / cellW);
+      // expanded to account for organic offsets, stagger, and 3D perspective fold.
+      const minCol = Math.floor((-state.x - cardW * 3) / cellW);
+      const maxCol = Math.ceil((vw - state.x + cardW * 3) / cellW);
 
-      const minRow = Math.floor((state.y - cardH * 2) / cellH);
-      const maxRow = Math.ceil((state.y + vh + cardH * 2) / cellH);
+      const minRow = Math.floor((state.y - cardH * 3) / cellH);
+      const maxRow = Math.ceil((state.y + vh + cardH * 3) / cellH);
 
       const totalItems = PLAY_ITEMS.length;
 
       for (let r = minRow; r <= maxRow; r++) {
         for (let c = minCol; c <= maxCol; c++) {
-          const screenX = c * cellW + state.x;
-          const screenY = r * cellH - state.y;
+          const { x: stampX, y: stampY, rot: stampRot } = getCardTransform(c, r, cellW, cellH, maxJitterX, maxJitterY);
+          const screenX = stampX + state.x;
+          const screenY = stampY - state.y;
 
           // Continuous positive modulo 2D indexing
           const itemIndex = ((r * baseCols + c) % totalItems + totalItems) % totalItems;
@@ -430,9 +515,10 @@ export default function PlayWarp() {
             cardW * dpr,
             cardH * dpr
           );
+          gl.uniform1f(uniforms.uRot, stampRot);
 
           // Aspect Ratio Cover
-          const naturalW = item.width || 16;
+          const naturalW = item.width || 8;
           const naturalH = item.height || 10;
           const frameAspect = cardW / cardH;
           const imgAspect = naturalW / naturalH;
@@ -500,20 +586,56 @@ export default function PlayWarp() {
           const clickX = e.clientX - rect.left;
           const clickY = e.clientY - rect.top;
           const vw = window.innerWidth;
-          const baseCols = vw > 1600 ? 5 : vw > 1100 ? 4 : vw > 600 ? 3 : 2;
-          const gapX = vw > 768 ? 20 : 12;
-          const gapY = vw > 768 ? 20 : 12;
-          const cardW = Math.round((vw - (baseCols - 1) * gapX) / baseCols);
-          const cardH = Math.round(cardW * 0.625);
-          const cellW = cardW + gapX;
-          const cellH = cardH + gapY;
+          const baseCols = vw > 1600 ? 10 : vw > 1100 ? 8 : vw > 600 ? 6 : 4;
+          const minGapX = vw > 768 ? 16 : 10;
+          const minGapY = vw > 768 ? 18 : 12;
+          const maxJitterX = vw > 768 ? 10 : 6;
+          const maxJitterY = vw > 768 ? 12 : 7;
 
-          const col = Math.floor((clickX - scrollRef.current.x) / cellW);
-          const row = Math.floor((clickY + scrollRef.current.y) / cellH);
-          const totalItems = PLAY_ITEMS.length;
-          const itemIndex = ((row * baseCols + col) % totalItems + totalItems) % totalItems;
-          if (PLAY_ITEMS[itemIndex]) {
-            setActiveItem(PLAY_ITEMS[itemIndex]);
+          const cardW = Math.round((vw - (baseCols - 1) * (minGapX + 2 * maxJitterX)) / baseCols);
+          const cardH = Math.round(cardW * 1.25); // 8:10 aspect ratio (4:5)
+
+          const cellW = cardW + minGapX + 2 * maxJitterX;
+          const cellH = cardH + minGapY + 2 * maxJitterY;
+
+          // Find candidate cells in 5x5 neighborhood around click point
+          const approxC = Math.floor((clickX - scrollRef.current.x) / cellW);
+          const approxR = Math.floor((clickY + scrollRef.current.y) / cellH);
+
+          let bestDist = Infinity;
+          let hitItem = null;
+
+          for (let dr = -2; dr <= 2; dr++) {
+            for (let dc = -2; dc <= 2; dc++) {
+              const c = approxC + dc;
+              const r = approxR + dr;
+              const { x: stampX, y: stampY, rot: stampRot } = getCardTransform(c, r, cellW, cellH, maxJitterX, maxJitterY);
+              const screenX = stampX + scrollRef.current.x;
+              const screenY = stampY - scrollRef.current.y;
+              const centerX = screenX + cardW * 0.5;
+              const centerY = screenY + cardH * 0.5;
+
+              const dx = clickX - centerX;
+              const dy = clickY - centerY;
+              const cosR = Math.cos(-stampRot);
+              const sinR = Math.sin(-stampRot);
+              const localX = dx * cosR - dy * sinR;
+              const localY = dx * sinR + dy * cosR;
+
+              if (Math.abs(localX) <= cardW * 0.5 + 4 && Math.abs(localY) <= cardH * 0.5 + 4) {
+                const distSq = dx * dx + dy * dy;
+                if (distSq < bestDist) {
+                  bestDist = distSq;
+                  const totalItems = PLAY_ITEMS.length;
+                  const itemIndex = ((r * baseCols + c) % totalItems + totalItems) % totalItems;
+                  hitItem = PLAY_ITEMS[itemIndex];
+                }
+              }
+            }
+          }
+
+          if (hitItem) {
+            setActiveItem(hitItem);
           }
         }
       }
@@ -681,16 +803,105 @@ function PureMedia({ item }) {
     }
   }, [isJson, item?.json, src]);
 
+  // 8:10 Postage Stamp Geometry for Lightbox (800 x 1000 coordinate space)
+  const STAMP_WIDTH = 800;
+  const STAMP_HEIGHT = 1000;
+  const STAMP_PITCH = 40;
+  const STAMP_HOLE_R = 8.8; // ~22% of pitch
+  const STAMP_CORNER_R = 8;
+
+  function buildStampPath(
+    width = STAMP_WIDTH,
+    height = STAMP_HEIGHT,
+    pitch = STAMP_PITCH,
+    rHole = STAMP_HOLE_R,
+    cornerR = STAMP_CORNER_R
+  ) {
+    const numHolesX = width / pitch; // 20 holes
+    const numHolesY = height / pitch; // 25 holes
+    let d = `M ${cornerR} 0 `;
+
+    // Top edge: left to right
+    for (let i = 0; i < numHolesX; i++) {
+      const cx = (i + 0.5) * pitch;
+      d += `L ${cx - rHole} 0 A ${rHole} ${rHole} 0 0 0 ${cx + rHole} 0 `;
+    }
+    d += `L ${width - cornerR} 0 A ${cornerR} ${cornerR} 0 0 1 ${width} ${cornerR} `;
+
+    // Right edge: top to bottom
+    for (let i = 0; i < numHolesY; i++) {
+      const cy = (i + 0.5) * pitch;
+      d += `L ${width} ${cy - rHole} A ${rHole} ${rHole} 0 0 0 ${width} ${cy + rHole} `;
+    }
+    d += `L ${width} ${height - cornerR} A ${cornerR} ${cornerR} 0 0 1 ${width - cornerR} ${height} `;
+
+    // Bottom edge: right to left
+    for (let i = numHolesX - 1; i >= 0; i--) {
+      const cx = (i + 0.5) * pitch;
+      d += `L ${cx + rHole} ${height} A ${rHole} ${rHole} 0 0 0 ${cx - rHole} ${height} `;
+    }
+    d += `L ${cornerR} ${height} A ${cornerR} ${cornerR} 0 0 1 0 ${height - cornerR} `;
+
+    // Left edge: bottom to top
+    for (let i = numHolesY - 1; i >= 0; i--) {
+      const cy = (i + 0.5) * pitch;
+      d += `L 0 ${cy + rHole} A ${rHole} ${rHole} 0 0 0 0 ${cy - rHole} `;
+    }
+    d += `L 0 ${cornerR} A ${cornerR} ${cornerR} 0 0 1 ${cornerR} 0 Z`;
+
+    return d;
+  }
+
+  const STAMP_PATH_D = buildStampPath();
+
   if (isVideo) {
     return (
-      <video
-        src={src}
-        className="play-lightbox__pure-media"
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
+      <div className="play-lightbox__stamp-wrapper">
+        <svg
+          viewBox={`0 0 ${STAMP_WIDTH} ${STAMP_HEIGHT}`}
+          className="play-lightbox__stamp-svg"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <clipPath id="lightbox-stamp-clip">
+              <path d={STAMP_PATH_D} />
+            </clipPath>
+          </defs>
+          <path d={STAMP_PATH_D} fill="#14171d" />
+          <foreignObject
+            x="0"
+            y="0"
+            width={STAMP_WIDTH}
+            height={STAMP_HEIGHT}
+            clipPath="url(#lightbox-stamp-clip)"
+          >
+            <video
+              src={src}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          </foreignObject>
+          <path
+            d={STAMP_PATH_D}
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.28)"
+            strokeWidth="2"
+          />
+          <rect
+            x="24"
+            y="24"
+            width={STAMP_WIDTH - 48}
+            height={STAMP_HEIGHT - 48}
+            rx="6"
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.22)"
+            strokeWidth="1.2"
+          />
+        </svg>
+      </div>
     );
   }
 
@@ -701,19 +912,54 @@ function PureMedia({ item }) {
           {jsonContent
             ? JSON.stringify(jsonContent, null, 2)
             : jsonError
-            ? `// Unable to load JSON from ${src}`
-            : "// Loading JSON..."}
+              ? `// Unable to load JSON from ${src}`
+              : "// Loading JSON..."}
         </pre>
       </div>
     );
   }
 
   return (
-    <img
-      src={src}
-      alt=""
-      className="play-lightbox__pure-media"
-      draggable={false}
-    />
+    <div className="play-lightbox__stamp-wrapper">
+      <svg
+        viewBox={`0 0 ${STAMP_WIDTH} ${STAMP_HEIGHT}`}
+        className="play-lightbox__stamp-svg"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <clipPath id="lightbox-stamp-clip">
+            <path d={STAMP_PATH_D} />
+          </clipPath>
+        </defs>
+        {/* Dark foundation */}
+        <path d={STAMP_PATH_D} fill="#14171d" />
+        {/* 8:10 Artwork clipped into the perforated stamp */}
+        <image
+          href={src}
+          width={STAMP_WIDTH}
+          height={STAMP_HEIGHT}
+          preserveAspectRatio="xMidYMid slice"
+          clipPath="url(#lightbox-stamp-clip)"
+        />
+        {/* Outer perforated contour border */}
+        <path
+          d={STAMP_PATH_D}
+          fill="none"
+          stroke="rgba(255, 255, 255, 0.28)"
+          strokeWidth="2"
+        />
+        {/* Inner delicate hairline stamp frame */}
+        <rect
+          x="24"
+          y="24"
+          width={STAMP_WIDTH - 48}
+          height={STAMP_HEIGHT - 48}
+          rx="6"
+          fill="none"
+          stroke="rgba(255, 255, 255, 0.22)"
+          strokeWidth="1.2"
+        />
+      </svg>
+    </div>
   );
 }
